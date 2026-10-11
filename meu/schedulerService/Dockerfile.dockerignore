@@ -1,0 +1,17 @@
+# Repository-root context; send only this service and shared trading sources.
+**
+!meu/
+!meu/schedulerService/
+!meu/schedulerService/**
+!shared/
+!shared/trading/
+!shared/trading/**
+**/node_modules
+**/.env
+**/.env.*
+**/.git
+**/coverage*
+**/.next
+**/research-output
+**/scripts/research-delta-contracts.ts
+**/schedulerService/src/tests

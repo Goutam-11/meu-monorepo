@@ -1,0 +1,86 @@
+/* Documentation snapshot of src/app/globals.css. Re-extract when source changes.
+   Standalone previews default to Graphite; application source remains authoritative. */
+:root, .dark, [data-theme="sculpt-dark"] {
+  --background: #303438;
+  --foreground: #f2f2f2;
+  --card: #303438;
+  --popover: #34393e;
+  --primary: #205a46;
+  --primary-foreground: #ffffff;
+  --secondary: #383d42;
+  --muted: #2b2f33;
+  --muted-foreground: #b3b3b3;
+  --accent: #1b3026;
+  --border: #535a61;
+  --input: #535a61;
+  --destructive: #f3939f;
+  --destructive-foreground: #31151b;
+  --success: #88ceb0;
+  --warning: #e9c46a;
+  --chart-2: #a0b4a9;
+  --chart-3: #e9c46a;
+  --chart-4: #aaa9be;
+  --chart-5: #c799ab;
+  --neu-raised: 7px 7px 18px #24272a, -7px -7px 18px #3c4146;
+  --neu-control: 3px 3px 8px #24272a, -3px -3px 8px #3c4146;
+  --neu-inset: inset 3px 3px 7px #24272a, inset -3px -3px 7px #3c4146;
+  --neu-floating: 12px 18px 40px #16191c80;
+  --surface-edge: #ffffff0a;
+  --forest: #205a46;
+  --forest-foreground: #fff5e6;
+  --apricot: #e9c46a;
+  --apricot-foreground: #342b21;
+  --focus-ring: #88ceb0;
+}
+
+[data-theme="sculpt-light"] {
+  --radius: 1rem;
+  --background: #e6e3df;
+  --foreground: #29352e;
+  --card: #e6e3df;
+  --popover: #eeebe6;
+  --primary: #205a46;
+  --primary-foreground: #ffffff;
+  --secondary: #dedbd5;
+  --muted: #dedbd5;
+  --muted-foreground: #62685f;
+  --accent: #d3ddd3;
+  --border: #c8c8bf;
+  --input: #c8c8bf;
+  --destructive: #b13648;
+  --destructive-foreground: #ffffff;
+  --success: #237555;
+  --warning: #8c610f;
+  --chart-2: #798d82;
+  --chart-3: #9b8065;
+  --chart-4: #868599;
+  --chart-5: #9e6d7e;
+  --neu-raised: 7px 7px 18px #c7c4bd, -7px -7px 18px #ffffff;
+  --neu-control: 3px 3px 7px #c8c5be, -3px -3px 7px #ffffff;
+  --neu-inset: inset 3px 3px 7px #cbc8c1, inset -3px -3px 7px #f8f5ef;
+  --neu-floating: 12px 18px 40px #29352e33;
+  --surface-edge: #ffffffb3;
+  --forest: #205a46;
+  --forest-foreground: #fff5e6;
+  --apricot: #e9b47d;
+  --apricot-foreground: #342b21;
+}
+
+:root {
+  --font-sans: var(--font-geist-sans, "Geist"), sans-serif;
+  --font-mono: var(--font-geist-mono, "Geist Mono"), monospace;
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Contextual action overrides copied from application CSS. */
+.balance-panel a[data-slot="button"] {background:var(--forest-foreground);color:var(--forest);box-shadow:3px 4px 8px #102a2340;}
+.balance-panel a[data-slot="button"]:hover {background:#f0e5d3;}
+:root:not([data-theme="sculpt-light"]) .balance-panel a[data-slot="button"], .dark .balance-panel a[data-slot="button"], [data-theme="sculpt-dark"] .balance-panel a[data-slot="button"] {box-shadow:3px 4px 8px #102a2340;}
+:root:not([data-theme="sculpt-light"]) .balance-panel a[data-slot="button"]:hover, .dark .balance-panel a[data-slot="button"]:hover, [data-theme="sculpt-dark"] .balance-panel a[data-slot="button"]:hover {background:#f0e5d3;}
+
+.dark [data-slot="button"][data-variant="secondary"] {background:var(--apricot);color:var(--apricot-foreground);}
+.dark [data-slot="button"][data-variant="secondary"]:hover {background:#dfb95e;}
+.dark .text-primary, .dark [data-slot="button"][data-variant="link"], .dark [data-slot="sidebar-menu-button"][data-active="true"] {color:var(--success);}

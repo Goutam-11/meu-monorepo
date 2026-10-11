@@ -1,0 +1,33 @@
+# Development changes sources without replacing the persistent queue volume.
+services:
+  frontend:
+    build:
+      target: development
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./meu_frontend/src:/app/meu_frontend/src:ro,z
+      - ./meu_frontend/public:/app/meu_frontend/public:ro,z
+      - ./shared/trading:/app/shared/trading:ro,z
+      - ./meu/schedulerService/src:/app/meu/schedulerService/src:ro,z
+      - frontend-next:/app/meu_frontend/.next
+  scheduler:
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./meu/schedulerService/src:/app/meu/schedulerService/src:ro,z
+      - ./meu/schedulerService/index.ts:/app/meu/schedulerService/index.ts:ro,z
+      - ./shared/trading:/app/shared/trading:ro,z
+  worker:
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./meu/schedulerService/src:/app/meu/schedulerService/src:ro,z
+      - ./shared/trading:/app/shared/trading:ro,z
+  notifications:
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./meu/notificationService/src:/app/meu/notificationService/src:ro,z
+volumes:
+  frontend-next:

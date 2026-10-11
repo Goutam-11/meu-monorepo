@@ -1,0 +1,58 @@
+# Dependencies and generated application output
+**/node_modules/
+**/.next/
+**/src/generated/prisma/
+**/*.tsbuildinfo
+**/coverage/
+**/dist/
+**/out/
+**/__pycache__/
+**/*.pyc
+**/*.log
+**/.DS_Store
+
+# Secrets and local state
+**/.env
+**/.env.*
+!**/.env.example
+**/*.pem
+**/*.key
+/.local/
+**/.cache/
+**/.impeccable/
+**/.opencode/
+
+# Local research: retained on disk, not published
+/scripts/research/
+/scripts/compare-exit-policies.ts
+/scripts/compare-signal-policies.ts
+/scripts/check-bedrock-access.py
+/bedrock-access-report.json
+/meu/schedulerService/research-output/
+/meu/schedulerService/scripts/research-delta-contracts.ts
+/meu/schedulerService/src/tests/
+/Makefile.local
+/docs/reports/
+/docs/*20??-??-??*.md
+
+# College submissions and personal screenshots
+/docs/*.docx
+/docs/*.pptx
+/docs/meu_images/
+/docs/ppt-assets/
+/docs/ppt-output/
+
+# Design exploration; keep the maintained design system and runtime assets
+/meu_frontend/opendesign/mockups/
+/meu_frontend/opendesign/index.html
+/meu_frontend/opendesign/manifest.json
+/meu_frontend/scripts/build-design-preview.mjs
+/meu_frontend/public/img/auth/*.webp.json
+/meu_frontend/CLAUDE.md
+
+# Legacy manual broker experiments and account snapshots
+/meu_frontend/tests/agentTest.ts
+/meu_frontend/tests/balance.json
+/meu_frontend/tests/indicators.ts
+/meu_frontend/tests/test.ts
+/meu_frontend/tests/test2.ts

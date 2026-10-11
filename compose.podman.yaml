@@ -1,0 +1,29 @@
+# Linux rootless Podman: avoid bridge/pasta failures reaching Atlas and push providers.
+# Redis remains private; host-network services use its shared Unix socket.
+services:
+  frontend:
+    network_mode: host
+    environment:
+      HOSTNAME: ${FRONTEND_BIND:-127.0.0.1}
+      PORT: ${FRONTEND_PORT:-3000}
+      REDIS_SOCKET_PATH: /redis/redis.sock
+    volumes:
+      - redis-data:/redis:ro
+  scheduler:
+    network_mode: host
+    environment:
+      REDIS_SOCKET_PATH: /redis/redis.sock
+    volumes:
+      - redis-data:/redis:ro
+  worker:
+    network_mode: host
+    environment:
+      REDIS_SOCKET_PATH: /redis/redis.sock
+    volumes:
+      - redis-data:/redis:ro
+  notifications:
+    network_mode: host
+    environment:
+      REDIS_SOCKET_PATH: /redis/redis.sock
+    volumes:
+      - redis-data:/redis:ro

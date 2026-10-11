@@ -1,0 +1,26 @@
+# Root-context allowlist: reports, screenshots and other repo files stay outside images.
+**
+!meu_frontend/
+!meu_frontend/**
+!meu/
+!meu/schedulerService/
+!meu/schedulerService/**
+!meu/notificationService/
+!meu/notificationService/**
+!shared/
+!shared/trading/
+!shared/trading/**
+**/node_modules
+**/.next
+**/.env
+**/.env.*
+**/.git
+**/coverage
+**/*.tsbuildinfo
+**/src/generated/prisma
+**/.impeccable
+**/.opencode
+**/opendesign/mockups
+**/research-output
+**/scripts/research-delta-contracts.ts
+**/schedulerService/src/tests

@@ -1,0 +1,24 @@
+'use client';
+import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useQuery } from '@tanstack/react-query';
+import { useTRPC } from '@/trpc/client';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import type { PaperState } from '../../../../../shared/trading/paperTrading';
+export function PaperPortfolio({agentId,embedded=false}:{agentId:string;embedded?:boolean}) {
+  const trpc=useTRPC();
+  const [sessionId,setSessionId]=useState('current');
+  const sessions=useQuery(trpc.backtests.paperSessions.queryOptions({agentId}));
+  const query=useQuery(trpc.backtests.paperState.queryOptions({agentId,...(sessionId!=='current'?{sessionId}:{})},{refetchInterval:sessionId==='current'?30000:false}));
+  const data=query.data as (Omit<PaperState,'history'> & {equity:number;historyCount:number})|null|undefined;
+  const money=(n:number)=>Number.isFinite(n)?n.toFixed(2):'Unavailable';
+  return <section className={embedded ? "space-y-4 pt-4" : "neu-panel space-y-4 p-6"} aria-labelledby="paper-heading"><h2 id="paper-heading" className="text-xl font-semibold">Paper portfolio</h2><p className="text-sm text-muted-foreground">Simulated USD funds. Public Delta candles, approximate funding and liquidation. The current portfolio refreshes every 30 seconds.</p>
+    {(sessions.data?.some(session=>!session.current) || sessionId!=='current') && <div className="max-w-sm space-y-2"><label htmlFor={`paper-session-${agentId}`} className="text-sm font-medium">Portfolio history · latest 20</label><Select value={sessionId} onValueChange={setSessionId}><SelectTrigger id={`paper-session-${agentId}`} className="w-full"><SelectValue/></SelectTrigger><SelectContent><SelectItem value="current">Current configuration</SelectItem>{sessions.data?.filter(session=>!session.current).map(session=><SelectItem key={session.id} value={session.id}>{session.algorithm} {session.timeframe ?? ''} · {session.updatedAt?new Date(session.updatedAt).toLocaleDateString():session.id.slice(-8)}</SelectItem>)}</SelectContent></Select></div>}
+    {sessions.isError && <p className="text-sm text-destructive">Could not load portfolio history. <Button variant="link" onClick={()=>sessions.refetch()}>Retry history</Button></p>}
+    {sessionId!=='current' && <p className="text-sm text-muted-foreground">Retained portfolio from a previous configuration. It is read-only and is not used when this agent resumes.</p>}
+    {query.isLoading?<Skeleton className="h-20 w-full"/>:query.isError?<p role="alert" className="text-sm text-destructive">Could not load paper state. <Button variant="link" onClick={()=>query.refetch()}>Retry</Button></p>:!data?<p className="text-sm text-muted-foreground">Start this paper agent to initialize its portfolio. Its first run warms up indicators without opening a position.</p>:<><dl className="grid grid-cols-2 gap-4 text-sm tabular-nums">{[['Cash (USD)',money(data.cash)],['Equity (USD)',money(data.equity)],['Completed trades',data.totalTradeCount],['Fees (USD)',money(data.totalFees)],['Funding (USD)',money(data.totalFunding)],['Last candle (UTC)',new Date(data.lastCandle*1000).toISOString().replace('T',' ').slice(0,16)]].map(([label,value])=><div key={String(label)}><dt className="text-muted-foreground">{label}</dt><dd className="mt-1 font-semibold">{value}</dd></div>)}</dl><p className="text-sm">{data.position?`Open ${data.position.sign===1?'long':'short'} · ${data.position.contracts} contracts · entry ${money(data.position.entry)} · stop ${money(data.position.stop)} · target ${money(data.position.target)}`:'No open simulated position.'}</p>
+    <p className="text-xs text-muted-foreground">Daily counters use India midnight. Pausing stops new simulated entries; protective exits during a pause are reconciled on resume. Retains the latest 200 trades; review/reset required after 10,000 indicator candles.</p>
+    <details><summary className="min-h-11 cursor-pointer text-sm font-medium">Recent simulated trades</summary>{data.trades?.length?<div className="overflow-x-auto"><table className="w-full text-left text-xs tabular-nums"><thead><tr>{['Side','Entry (UTC)','Exit (UTC)','Contracts','Net P&L (USD)','Reason'].map(h=><th key={h} className="p-2">{h}</th>)}</tr></thead><tbody>{data.trades.slice(-20).reverse().map((t,i)=><tr key={`${t.entryTimestamp}-${i}`} className="border-t border-border"><td className="p-2">{t.side}</td><td className="whitespace-nowrap p-2">{new Date(t.entryTimestamp*1000).toISOString().slice(0,16)}</td><td className="whitespace-nowrap p-2">{new Date(t.exitTimestamp*1000).toISOString().slice(0,16)}</td><td className="p-2">{t.contracts}</td><td className="p-2">{money(t.netPnl)}</td><td className="p-2">{t.reason}</td></tr>)}</tbody></table></div>:<p className="text-sm text-muted-foreground">No completed simulated trades yet.</p>}</details></>}
+  </section>;
+}

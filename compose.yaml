@@ -1,0 +1,100 @@
+name: meu
+
+x-service: &service
+  restart: unless-stopped
+  stop_grace_period: 6m
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+x-runtime: &runtime
+  NODE_ENV: production
+  PRETTY_LOGS: "false"
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+  REDIS_URL: redis://redis:6379
+  ENCRYPTION_KEY: ${ENCRYPTION_KEY:?Set the existing shared encryption key in the root .env}
+
+services:
+  frontend:
+    <<: *service
+    build:
+      context: .
+      dockerfile: meu_frontend/Dockerfile
+      target: production
+      args:
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+        NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${NEXT_PUBLIC_VAPID_PUBLIC_KEY:-}
+    env_file: ./meu_frontend/.env
+    environment:
+      <<: *runtime
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+    ports:
+      - "${FRONTEND_BIND:-127.0.0.1}:${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bun", "-e", "const r=await fetch('http://127.0.0.1:3000/api/health');if(!r.ok)process.exit(1)"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+  scheduler:
+    <<: *service
+    build:
+      context: .
+      dockerfile: meu/schedulerService/Dockerfile
+    env_file: ./meu/schedulerService/.env
+    environment: *runtime
+    command: ["bun", "run", "index.ts"]
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  worker:
+    <<: *service
+    build:
+      context: .
+      dockerfile: meu/schedulerService/Dockerfile
+    env_file: ./meu/schedulerService/.env
+    environment: *runtime
+    command: ["bun", "run", "src/workers/worker.ts"]
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  notifications:
+    <<: *service
+    build:
+      context: .
+      dockerfile: meu/notificationService/Dockerfile
+    env_file: ./meu/notificationService/.env
+    environment:
+      NODE_ENV: production
+      PRETTY_LOGS: "false"
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    <<: *service
+    image: docker.io/library/redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec", "--maxmemory-policy", "noeviction", "--unixsocket", "/data/redis.sock", "--unixsocketperm", "660"]
+    stop_grace_period: 30s
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # Redis is private to the stack; no host port is published.
+
+volumes:
+  redis-data:
