@@ -533,7 +533,7 @@ External or unresolved imports: `mongodb`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `reserveDailyEntry` | [16](../../meu/schedulerService/src/agent/dailyRiskUsage.ts#L16) | `db.collection`, `marketDate`, `now.getTime`, `usage.findOne`, `usage.updateOne` |
+| `reserveDailyEntry` | [16](../../meu/schedulerService/src/agent/dailyRiskUsage.ts#L16) | `Number.isSafeInteger`, `db.collection`, `marketDate`, `now.getTime`, `usage.findOne`, `usage.updateOne` |
 
 <a id="file-76fbe977857f"></a>
 

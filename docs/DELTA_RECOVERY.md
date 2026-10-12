@@ -258,3 +258,11 @@ coordinator; an interrupted edit can retain an `AGENT_EDIT` claim. These are not
 currently released automatically. Safe takeover needs verified liveness and
 fencing on writes. Do not use a TTL or delete a lock merely because it is old.
 See the current audit (local evidence, excluded from Git) for the remaining design work.
+
+## Daily-counter failure before submission
+
+Daily entry reservations initialize their Mongo record using only its unique ID, then increment counters with a conditional atomic update. MongoDB rejects `$expr` in an upsert predicate (error 224); initialization and reservation must remain separate. A database error during reservation is an explicit pre-submission refusal: no broker call has been made. Counters are never reset or refunded on an ambiguous database acknowledgement.
+
+Older workers could leave a PENDING OrderIntent without a ManagedCryptoOrders record when the reservation query failed. Missing managed identity or an empty broker account alone does **not** justify releasing that lock. Administrator review must verify the worker's pre-submission error and deployed code path, preserve evidence when classifying the intent as refused, then use ordinary broker reconciliation. Do not delete locks or replay the original order. The agent stays paused after recovery.
+
+Screen blanking alone does not stop server processes. Laptop suspension, loss of network or a stopped container can interrupt local execution. Inspect the actual worker/database/broker error rather than assuming the display caused it. For unattended trading, the host must stay awake and connected.

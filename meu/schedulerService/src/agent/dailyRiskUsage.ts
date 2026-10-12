@@ -46,22 +46,32 @@ export async function reserveDailyEntry(
     },
   }];
 
-  // An upsert may race another first reservation. Retry the duplicate-key case against its record.
-  for (let attempt = 0; attempt < 3; attempt++) {
+  try {
+    // MongoDB forbids $expr in an upsert predicate. Initialize by unique ID only;
+    // the conditional increment below remains the atomic daily-limit boundary.
     try {
-      const result = await usage.updateOne(filter, update, { upsert: true });
-      if (result.matchedCount || result.upsertedCount) return { marketDate: day, timezone };
+      await usage.updateOne({ _id: id }, { $setOnInsert: {
+        agentId, marketDate: day, timezone, tradesReserved: 0, positionsOpenedReserved: 0, updatedAt: now,
+      } }, { upsert: true });
     } catch (error) {
       if ((error as { code?: number }).code !== 11000) throw error;
     }
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const result = await usage.updateOne(filter, update);
+      if (result.matchedCount) return { marketDate: day, timezone };
 
-    const current = await usage.findOne({ _id: id });
-    if (current && current.tradesReserved >= policy.risk.maxTradesPerDay) {
-      throw new OrderRejectedError("Maximum trades for this agent and market day reached");
+      const current = await usage.findOne({ _id: id });
+      if (current && current.tradesReserved >= policy.risk.maxTradesPerDay) {
+        throw new OrderRejectedError("Maximum trades for this agent and market day reached");
+      }
+      if (opensPosition && current && current.positionsOpenedReserved >= policy.risk.maxPositionsOpenedPerDay) {
+        throw new OrderRejectedError("Maximum positions opened for this agent and market day reached");
+      }
     }
-    if (opensPosition && current && current.positionsOpenedReserved >= policy.risk.maxPositionsOpenedPerDay) {
-      throw new OrderRejectedError("Maximum positions opened for this agent and market day reached");
-    }
+    throw new OrderRejectedError("Could not reserve the daily entry safely; no broker order was sent");
+  } catch (error) {
+    if (error instanceof OrderRejectedError) throw error;
+    const code = (error as { code?: unknown } | null)?.code;
+    throw new OrderRejectedError(`Daily entry counter could not be reserved${Number.isSafeInteger(code) ? ` (database error ${code})` : ''}. No broker order was sent. Retry after database connectivity or configuration is restored; do not reset the daily counters.`);
   }
-  throw new OrderRejectedError("Could not reserve the daily entry safely; no broker order was sent");
 }

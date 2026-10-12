@@ -461,3 +461,11 @@ describe('pure venue target-size leverage previews',()=>{
     }
   });
 });
+
+ test('failed daily-counter reservation is refused before any broker submission',async()=>{
+  const state=fixture();
+  state.safety.reserveDailyEntry=async()=>{throw new OrderRejectedError('Daily entry counter could not be reserved (database error 224). No broker order was sent.');};
+  const result=await state.enter();
+  expect(result.success).toBe(false);expect(result.error).toContain('No broker order was sent');
+  expect(state.placed).toHaveLength(0);expect(state.failures[0]).toBeInstanceOf(OrderRejectedError);
+ });
