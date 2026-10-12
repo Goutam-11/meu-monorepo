@@ -14,7 +14,7 @@ import { strategyStateKey } from '../../../../../shared/trading/strategies';
 import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';
 
 type Lock = {_id:string;executionId:string;kind?:string};
-type Execution = {_id:string;agentId:string;state:string;finishedAt?:{$date:string};recovery?:{outcome?:string;fromCandle?:number;intents?:Prisma.InputJsonValue[]}};
+type Execution = {_id:string;agentId:string;state:string;startedAt?:{$date:string};finishedAt?:{$date:string};recovery?:{outcome?:string;fromCandle?:number;intents?:Prisma.InputJsonValue[]}};
 type Intent = {_id:string;executionId:string;state:string;intent:{clientOrderId?:string;order_id?:string;action?:string;symbol?:string;leverage?:number;leverageCeiling?:number};recovery?:{brokerOrderId?:string}};
 type Owner = ReconciliationOwner & {accountKey:string;userId:string;periodId?:string};
 type Managed = ReconciliationOrder & {accountKey:string;userId:string;updatedAt?:unknown};
@@ -46,7 +46,21 @@ export async function recoverDeltaExecution(agent:Agent,userId:string) {
     acquired=true;
     const [execution]=await readRows<Execution>({find:'AgentExecutions',filter:{_id:held.executionId,agentId:agent.id}},1);
     const interrupted=execution?.state==='COMPLETED'&&execution.recovery?.outcome==='BROKER_RECONCILED_FLAT';
-    if(!execution || (!interrupted && execution.state!=='REVIEW_REQUIRED') || !execution.finishedAt?.$date)fail('The holding execution has not finished. Wait for the worker; an active execution cannot be unlocked.');
+    const orphan=execution?.state==='STARTED';
+    const verifyOrphan=async()=>{
+      const {redis}=await import('../../../../../meu/schedulerService/src/lib/redis');
+      const key=`bull:agent-execution:${held.executionId}`;
+      const [heartbeat,active,failed,data]=await Promise.race([Promise.all([redis.exists(`${key}:lock`),redis.lpos('bull:agent-execution:active',held.executionId),redis.zscore('bull:agent-execution:failed',held.executionId),redis.hget(key,'data')]),new Promise<never>((_,reject)=>{const timer=setTimeout(()=>reject(new Error('Queue evidence verification timed out')),5000);timer.unref();})]);
+      let saved;
+      try { saved=typeof data==='string'&&data.length<10000 ? JSON.parse(data) : null; } catch { saved=null; }
+      const evidence=saved?.recoveryFailure;
+      if(heartbeat||active!==null||!failed||!Number.isFinite(Number(failed))||saved?.agentId!==agent.id||saved?.userId!==userId||evidence?.version!==1||evidence.runId!==held.executionId||evidence.brokerOperationRequested!==false||
+        typeof evidence.code!=='string'||!/^[A-Z_]{1,80}$/.test(evidence.code)||!Number.isFinite(Date.parse(evidence.failedAt))||!execution?.startedAt?.$date||!Number.isFinite(Date.parse(execution.startedAt.$date))||Date.parse(evidence.failedAt)<Date.parse(execution.startedAt.$date))
+        fail('The database still shows STARTED and no verified terminal, pre-order queue evidence is available. An active or uncertain execution cannot be unlocked; administrator review is required if its worker already stopped.');
+      return {code:evidence.code as string,failedAt:evidence.failedAt as string};
+    };
+    const orphanEvidence=orphan ? await verifyOrphan() : undefined;
+    if(!execution || (!orphan && (!interrupted && execution.state!=='REVIEW_REQUIRED' || !execution.finishedAt?.$date)))fail('The holding execution has not finished. Wait for the worker; an active execution cannot be unlocked.');
     const {exchange,connection}=await executionConnection(agent.exchangeId,userId);
     if(!['DELTA','BINANCE'].includes(connection.name.toUpperCase()) || connection.sandbox)fail('Broker recovery supports Delta India and Binance USD-M production accounts.');
     await exchange.loadMarkets();
@@ -67,6 +81,7 @@ export async function recoverDeltaExecution(agent:Agent,userId:string) {
         new Promise<never>((_,reject)=>{const timer=setTimeout(()=>reject(new Error('Queue verification timed out')),5000);timer.unref();}),
       ]);
       if(active[0] || active[1]!==null)fail('This execution is still active in the worker queue. Wait for it to finish before retrying recovery.');
+      if(orphan && JSON.stringify(await verifyOrphan())!==JSON.stringify(orphanEvidence))fail('Queue recovery evidence changed during verification. Scan again.');
       const locks=await readRows<Lock>({find:'ExecutionLocks',filter:{_id:{$in:[...scopes,...connectionIds.map(id=>`exchange:${id}`),...livePeers.map(a=>`agent:${a.id}`)]}}},300);
       if(locks.some(l=>l.executionId!==held.executionId || !scopes.includes(l._id) || l.kind) || locks.length!==3)fail('Another operation or changed lock owns this account. Recovery will not release its locks.');
       const unfinished=await readRows({find:'AgentExecutions',filter:{agentId:{$in:livePeers.map(a=>a.id)},state:{$ne:'COMPLETED'},_id:{$ne:held.executionId}}},100);
@@ -88,6 +103,7 @@ export async function recoverDeltaExecution(agent:Agent,userId:string) {
     const periods=await readRows<{_id:string;endedAt?:{$date:string}}>({find:'CryptoOwnershipPeriods',filter:{_id:{$in:owners.flatMap(o=>o.periodId?[o.periodId]:[])},accountKey,agentId:agent.id}},100);
     if(owners.some(o=>o.periodId&&!periods.some(p=>p._id===o.periodId)))fail('A saved ownership period is missing. Restore it before recovering; risk attribution cannot be discarded.');
     const intents=await readRows<Intent>({find:'OrderIntents',filter:{executionId:held.executionId}},100);
+    if(orphan && intents.length)fail('The interrupted execution has order operations. Pre-order queue evidence cannot recover it; inspect its broker submission history.');
     const broker=await inspectDeltaOwnership(exchange,owners,managed);
     if(broker.positions.length)fail(`The exchange still has an open position (${broker.positions.map(p=>p.symbol).join(', ')}). Manage or close it on the exchange, then scan again. Recovery does not close positions.`);
     if(broker.pending.length)fail(`The exchange still has pending orders (${broker.pending.map(o=>`${o.symbol}: ${o.brokerOrderId}`).join(', ')}). Review/cancel them on the exchange, then scan again. Recovery does not cancel orders.`);
@@ -137,7 +153,7 @@ export async function recoverDeltaExecution(agent:Agent,userId:string) {
     for(const intent of intents)if(['delta-leverage','crypto-leverage'].includes(intent.intent?.action ?? '')&&intent.state!=='REFUSED')await verifyLeverageIntent(intent);
     await assertUnchanged();
     const verifiedAt={$date:new Date().toISOString()};
-    const recovery={outcome:'BROKER_RECONCILED_FLAT',userId,verifiedAt,brokerOrders:broker.orders,intents:execution.recovery?.intents??intentEvidence,ownerIds:owners.map(o=>o._id),...(cursor&&history?{fromCandle:execution.recovery?.fromCandle??cursor.lastCandle,toCandle:history.candles.at(-1)!.timestamp,dataHash:history.dataHash}:{})};
+    const recovery={outcome:'BROKER_RECONCILED_FLAT',userId,verifiedAt,brokerOrders:broker.orders,intents:execution.recovery?.intents??intentEvidence,ownerIds:owners.map(o=>o._id),...(orphanEvidence?{queueFailure:orphanEvidence}:{}),...(cursor&&history?{fromCandle:execution.recovery?.fromCandle??cursor.lastCandle,toCandle:history.candles.at(-1)!.timestamp,dataHash:history.dataHash}:{})};
     written(await prisma.$runCommandRaw({update:'AgentExecutions',updates:[{q:{_id:held.executionId,agentId:agent.id,state:execution.state},u:{$set:{recovery,originalState:'REVIEW_REQUIRED'}}}]}));
     for(const saved of managed) {
       const actual=broker.orders.find(o=>o.clientOrderId===saved.clientOrderId);
@@ -150,7 +166,7 @@ export async function recoverDeltaExecution(agent:Agent,userId:string) {
     }
     for(const evidence of intentEvidence)if(evidence.state==='PENDING')written(await prisma.$runCommandRaw({update:'OrderIntents',updates:[{q:{_id:evidence.id,executionId:held.executionId,state:'PENDING'},u:{$set:{state:'RECONCILED',originalState:'PENDING',recovery:{...evidence,userId,verifiedAt}}}}]}));
     if(cursor&&history)written(await prisma.$runCommandRaw({update:'CryptoStrategyState',updates:[{q:{_id:cursor._id,userId,lastCandle:cursor.lastCandle},u:{$set:{history:history.candles,lastCandle:history.candles.at(-1)!.timestamp},$unset:{entryOrderId:'',side:'',filled:''}}}]}));
-    written(await prisma.$runCommandRaw({update:'AgentExecutions',updates:[{q:{_id:held.executionId,agentId:agent.id,state:execution.state},u:{$set:{state:'COMPLETED',recovery,originalState:'REVIEW_REQUIRED'}}}]}));
+    written(await prisma.$runCommandRaw({update:'AgentExecutions',updates:[{q:{_id:held.executionId,agentId:agent.id,state:execution.state},u:{$set:{state:'COMPLETED',recovery,originalState:orphan?'STARTED':'REVIEW_REQUIRED',...(orphan?{finishedAt:verifiedAt}:{})}}}]}));
     // Release only this execution's scopes. Exchange remains held until the last delete.
     written(await prisma.$runCommandRaw({delete:'ExecutionLocks',ordered:true,deletes:scopes.map(_id=>({q:{_id,executionId:held.executionId},limit:1}))}),3);
     appLog('info','exchange.recovery.completed',{operation:'trpc.exchange.recoverExecution'});

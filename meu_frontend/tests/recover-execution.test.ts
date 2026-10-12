@@ -4,6 +4,7 @@ const agent={id:'a'.repeat(24),exchangeId:'b'.repeat(24),userId:'owner',status:'
 const executionId='failed-run',accountKey='delta:test';
 const scopes=[`agent:${agent.id}`,`account:${accountKey}`,`exchange:${agent.exchangeId}`];
 let rows:Record<string,Row[]>,running=0,active=false,changed=false,unknown=false,partialDelete=false,failAudit=false,snapshotChanged=false,raceCoordinator=false;
+let queueEvidence:Row|null=null;
 let positions:Row[]=[],pending:Row[]=[],writes=0,scans=0,verifiedLeverage=1,leverageReads=0;
 function matches(row:Row,filter:Row):boolean{return Object.entries(filter).every(([key,v])=>{
  if(v&&typeof v==='object'&&!Array.isArray(v)){
@@ -13,7 +14,7 @@ function matches(row:Row,filter:Row):boolean{return Object.entries(filter).every
 });}
 mock.module('server-only',()=>({}));
 mock.module('@/lib/app-logger',()=>({appLog:()=>{}}));
-mock.module('../../meu/schedulerService/src/lib/redis',()=>({redis:{exists:async()=>active?1:0,lpos:async()=>active?0:null}}));
+mock.module('../../meu/schedulerService/src/lib/redis',()=>({redis:{exists:async()=>active?1:0,lpos:async()=>active?0:null,zscore:async()=>queueEvidence?"1":null,hget:async()=>queueEvidence?JSON.stringify({agentId:agent.id,userId:"owner",recoveryFailure:queueEvidence}):null}}));
 mock.module('../src/features/exchange/server/execution-account',()=>({executionConnection:async()=>({exchange:{id:'delta',loadMarkets:async()=>{},market:()=>({symbol:'BTCUSD',active:true,contract:true,swap:true,linear:true,quote:'USD',settle:'USD',contractSize:0.001}),fetchMarginMode:async()=>({marginMode:'isolated'}),fetchLeverage:async()=>{leverageReads++;return {marginMode:'isolated',longLeverage:verifiedLeverage,shortLeverage:verifiedLeverage};}},connection:{name:'DELTA',sandbox:false}}),registerExecutionAccount:async()=>({accountKey}),linkedExchangeIds:async()=>[agent.exchangeId]}));
 mock.module('../src/features/exchange/server/reconciliation',()=>({readRows:async(command:Row,max:number)=>{const result=(rows[command.find]??[]).filter(r=>matches(r,command.filter??{}));if(result.length>max)throw Error('too many');return structuredClone(result);}}));
 mock.module('../../meu/schedulerService/src/agent/deltaReconciliation',()=>({inspectDeltaOwnership:async(_ex:unknown,_owners:unknown,managed:Row[])=>{
@@ -31,7 +32,7 @@ mock.module('@/lib/db',()=>({default:{
 }}));
 const {recoverDeltaExecution}=await import('../src/features/exchange/server/recover-execution');
 beforeEach(()=>{
- running=0;active=changed=unknown=partialDelete=failAudit=snapshotChanged=raceCoordinator=false;positions=[];pending=[];writes=scans=0;verifiedLeverage=1;leverageReads=0;
+ queueEvidence=null;running=0;active=changed=unknown=partialDelete=failAudit=snapshotChanged=raceCoordinator=false;positions=[];pending=[];writes=scans=0;verifiedLeverage=1;leverageReads=0;
  rows={ExecutionLocks:scopes.map(_id=>({_id,executionId})),AgentExecutions:[{_id:executionId,agentId:agent.id,state:'REVIEW_REQUIRED',finishedAt:{$date:new Date().toISOString()}}],CryptoPositionOwners:[],ManagedCryptoOrders:[],OrderIntents:[]};
 });
 const recover=()=>recoverDeltaExecution(agent as never,'owner');
@@ -73,7 +74,7 @@ test('interrupted audit completion and partial lock release can safely be retrie
  await recover();expect(rows.ExecutionLocks).toHaveLength(0);expect(rows.OrderIntents[0].state).toBe('RECONCILED');
 });
 test('foreign user and active execution are rejected',async()=>{
- await expect(recoverDeltaExecution(agent as never,'other')).rejects.toThrow('Pause');rows.AgentExecutions[0].state='STARTED';await expect(recover()).rejects.toThrow('has not finished');expect(writes).toBe(0);
+ await expect(recoverDeltaExecution(agent as never,'other')).rejects.toThrow('Pause');rows.AgentExecutions[0].state='STARTED';await expect(recover()).rejects.toThrow('database still shows STARTED');expect(writes).toBe(0);
 });
 
 test('cancel and reduction operations resolve only against their exact managed identities',async()=>{
@@ -129,4 +130,18 @@ test('LLM automatic leverage setting recovers using its saved native-stop ceilin
  const llm={...agent,strategy:'LLM_TRADING',market:{symbols:['BTCUSD']},strategyConfig:{sizing:{version:1,mode:'STOP_LOSS',leverageMode:'AUTO',leverage:2,maxMarginPct:100,maxExposureMultiple:2,feeBps:10,slippageBps:5}}};
  await recoverDeltaExecution(llm as never,'owner');
  expect(rows.OrderIntents[0]).toMatchObject({state:'RECONCILED'});expect(leverageReads).toBe(2);expect(rows.ExecutionLocks).toHaveLength(0);
+});
+
+test('terminal pre-order queue evidence recovers an orphaned STARTED database record',async()=>{
+ rows.AgentExecutions[0]={_id:executionId,agentId:agent.id,state:'STARTED',startedAt:{$date:'2026-01-01T00:00:00Z'}};
+ queueEvidence={version:1,runId:executionId,brokerOperationRequested:false,failedAt:'2026-01-01T00:02:00Z',code:'LLM_REQUEST_TIMEOUT'};
+ await recover();expect(rows.AgentExecutions[0]).toMatchObject({state:'COMPLETED',originalState:'STARTED',recovery:{queueFailure:{code:'LLM_REQUEST_TIMEOUT'}}});expect(rows.ExecutionLocks).toHaveLength(0);
+});
+test('orphan recovery refuses an active worker, mismatched evidence or any order intent',async()=>{
+ rows.AgentExecutions[0]={_id:executionId,agentId:agent.id,state:'STARTED',startedAt:{$date:'2026-01-01T00:00:00Z'}};
+ queueEvidence={version:1,runId:executionId,brokerOperationRequested:false,failedAt:'2026-01-01T00:02:00Z',code:'LLM_REQUEST_TIMEOUT'};
+ active=true;await expect(recover()).rejects.toThrow('no verified terminal');active=false;
+ queueEvidence.runId='other';await expect(recover()).rejects.toThrow('no verified terminal');queueEvidence.runId=executionId;
+ rows.OrderIntents=[{_id:'unexpected',executionId,state:'PENDING',intent:{action:'crypto-entry'}}];
+ await expect(recover()).rejects.toThrow('has order operations');expect(rows.ExecutionLocks).toHaveLength(3);expect(writes).toBe(0);
 });

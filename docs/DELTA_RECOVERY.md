@@ -266,3 +266,9 @@ Daily entry reservations initialize their Mongo record using only its unique ID,
 Older workers could leave a PENDING OrderIntent without a ManagedCryptoOrders record when the reservation query failed. Missing managed identity or an empty broker account alone does **not** justify releasing that lock. Administrator review must verify the worker's pre-submission error and deployed code path, preserve evidence when classifying the intent as refused, then use ordinary broker reconciliation. Do not delete locks or replay the original order. The agent stays paused after recovery.
 
 Screen blanking alone does not stop server processes. Laptop suspension, loss of network or a stopped container can interrupt local execution. Inspect the actual worker/database/broker error rather than assuming the display caused it. For unattended trading, the host must stay awake and connected.
+
+## Database outage after a read-only run
+
+A provider timeout can finish its queue job while MongoDB is unavailable, leaving a stale STARTED execution record. Claimed runs now store a small independent failure receipt in the persistent queue before attempting Mongo failure/retry writes. It contains the run identity, timestamp, failure code and explicit `brokerOperationRequested: false`; no prompts or keys. Retry persistence errors retain the original provider cause. Failure-audit persistence is attempted even when saving the pause fails.
+
+Account recovery can use this receipt only for a paused agent whose queue job is terminal-failed, has no heartbeat or active-list membership, and has no recorded order intents. It rechecks queue evidence and the usual unchanged locks/agent/account state, and verifies a flat broker account twice. It never repeats an order. Missing or mismatched evidence, an active worker or any operation intent blocks this fallback. Older executions without receipts still need administrator verification; elapsed time is not proof.

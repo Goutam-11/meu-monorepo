@@ -2,7 +2,7 @@ import { afterAll, beforeEach, describe, expect, mock, test } from "bun:test";
 import { DeltaDataError, DeltaDataValidationError } from '../../../shared/trading/delta-data';
 import { validateCryptoStrategy } from '../src/agent/cryptoStrategyConfig';
 import { MissedLiveCandlesError } from '../src/agent/cryptoStrategyConfig';
-import { ObjectId } from "mongodb";
+import { ObjectId, type Db } from "mongodb";
 import { OrderRejectedError, CryptoProtectionError, CryptoSettingsUncertainError, DeltaLeverageUncertainError, type ExecutionSafety } from "../src/agent/tradeGuard";
 import { buildRunMemory, memoryContext } from "../src/agent/runMemory";
 
@@ -254,7 +254,8 @@ describe("worker replay and durable claims", () => {
       } catch { /* production tools convert rejected operations to tool results */ }
       return "agent continued";
     };
-    const job = { id: `ambiguous-${runAt}`, data: { agentId: agentId.toHexString(), userId: owner, runAt } };
+    const recoveryWrites:unknown[]=[];
+    const job = { id: `ambiguous-${runAt}`, data: { agentId: agentId.toHexString(), userId: owner, runAt },updateData:async(data:unknown)=>{recoveryWrites.push(data);} };
     await expect(processor(job)).rejects.toThrow("reconcile OrderIntents");
     await processor(job);
 
@@ -263,6 +264,7 @@ describe("worker replay and durable claims", () => {
     expect(state.agent.status).toBe("PAUSED");
     expect(state.executions.get(job.id)?.state).toBe("REVIEW_REQUIRED");
     expect(state.intents.get(`${job.id}-1`)?.state).toBe("PENDING");
+    expect(recoveryWrites).toHaveLength(0);
     expect(state.locks.size).toBe(3);
     expect(logEvents.map(entry => entry.event)).toContain("order.uncertain");
     expect(logEvents.map(entry => entry.event)).toContain("lock.retained");
@@ -482,3 +484,13 @@ test('LLM-swallowed protection failures preserve typed reason and account locks'
     expect(state.executions.get(code)).toMatchObject({ state: 'COMPLETED', outcome: 'DATA_UNAVAILABLE', failure: { code, candleTimeframe: '15m', brokerOperationRequested: false } });
   }
  });
+
+test('database failure after a read-only timeout preserves recovery evidence independently in the queue',async()=>{
+ const state=makeDb();const captured:Record<string,unknown>[]=[];
+ const brokenDb={collection:(name:string)=>{const col=state.db.collection(name);return name==='AgentExecutions'?{...col,updateOne:async()=>{throw new Error('database unavailable');}}:col;}} as unknown as Db;
+ runAgent=async()=>{throw Object.assign(new Error('provider timed out'),{name:'TimeoutError'});};
+ const job={id:'orphan-readonly-timeout',data:{agentId:String(agentId),userId:owner,runAt},updateData:async(data:Record<string,unknown>)=>{captured.push(data);}};
+ await expect(((await import('../src/workers/worker')).createRunProcessor(brokenDb) as Processor)(job)).rejects.toThrow('database unavailable');
+ expect(captured[0]).toMatchObject({recoveryFailure:{version:1,runId:job.id,brokerOperationRequested:false,code:'LLM_REQUEST_TIMEOUT'}});
+ expect(state.executions.get(job.id)?.state).toBe('STARTED');expect(state.intents.size).toBe(0);expect(state.locks.size).toBeGreaterThan(0);expect(state.agent.status).toBe('PAUSED');
+});

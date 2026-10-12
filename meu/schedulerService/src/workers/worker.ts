@@ -32,7 +32,7 @@ import { LLM_REQUEST_TIMEOUT_MS, type LLMProviderId } from "@/agent/providers";
 import { buildRunMemory, formatRunMemory, memoryContext, operationReceipt, type OperationReceipt } from "@/agent/runMemory";
 
 const log = logger.child({ module: "worker" });
-type AgentJobData = { agentId: string; userId: string; runAt: number };
+type AgentJobData = { agentId: string; userId: string; runAt: number; recoveryFailure?: {version:1;runId:string;brokerOperationRequested:false;failedAt:string;code:string} };
 const providers: Record<string, LLMProviderId> = {
   OPENROUTER: "openrouter", OPENAI: "openai", ANTHROPIC: "anthropic", NVIDIA_NIM: "nvidia", OPENCODE: "opencode", AMAZON_BEDROCK: "bedrock",
 };
@@ -339,6 +339,12 @@ export function createRunProcessor(db: Db) {
       }
     } catch (err) {
       let failure = executionFailure(err,{stage: err instanceof Error && ["AI_APICallError","APICallError","TimeoutError"].includes(err.name) ? "llm_request" : stage,...(['LLM_TRADING','HYBRID'].includes(agent.strategy) ? {llmProvider,llmEndpoint,llmModel:agent.llmModel,llmRequestTimeoutMs:LLM_REQUEST_TIMEOUT_MS} : {}),brokerOperationRequested,runId:executionId,scheduledAt:runAt,mode:agent.executionMode ?? 'LIVE',strategy:agent.strategy,symbols:agent.market?.symbols ?? [],lockCount:acquired.length,cadenceSeconds:Number.isSafeInteger(cadence) ? cadence : undefined,candleTimeframe:agent.strategy==='LLM_TRADING' ? llmAnalysisTimeframe : ['15m','1h','4h','1d'].includes(agent.strategyConfig?.timeframe) ? agent.strategyConfig.timeframe : undefined});
+      // Keep independent evidence in durable queue storage before Mongo failure writes.
+      // Only a claimed run with no requested broker operation can use this fallback.
+      if (claimed && !brokerOperationRequested) {
+        try { await job.updateData({...job.data,recoveryFailure:{version:1,runId:executionId,brokerOperationRequested:false,failedAt:failure.failedAt,code:failure.code}}); }
+        catch(queueError) { log.error({event:'run.recovery_evidence_failed',...errMeta(queueError)},'Could not save queue recovery evidence; retained locks still require review'); }
+      }
       if (err instanceof ExecutionLockReviewError && !claimed && stage === 'claim_execution') {
         const waitCount=Math.min(1000,Math.max(0,Number(agent.executionWaitCount)||0)+1);
         const retryAt=Date.now()+Math.min(5*60_000,30_000*2**Math.min(waitCount-1,4));
@@ -374,7 +380,7 @@ export function createRunProcessor(db: Db) {
             message:`${failure.summary} ${llmProvider ? `Provider: ${llmProvider}. Model: ${agent.llmModel}. ` : ''}${agent.market.symbols.join(', ')} / ${failure.candleTimeframe ?? 'configured interval'}. ${deferredFailure.nextAction} Next scheduled retry: ${new Date(retryAt).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',timeZoneName:'short'})}.`,
             metadata:deferredFailure});
           return;
-        } catch (retryError) { completed=false; err=retryError; failure=executionFailure(err,{stage:'persist_data_retry',runId:executionId,scheduledAt:runAt,mode:agent.executionMode ?? 'LIVE',strategy:agent.strategy,symbols:agent.market.symbols,lockCount:acquired.length,cadenceSeconds:Number.isSafeInteger(cadence) ? cadence : undefined,candleTimeframe:agent.strategy==='LLM_TRADING' ? llmAnalysisTimeframe : ['15m','1h','4h','1d'].includes(agent.strategyConfig?.timeframe) ? agent.strategyConfig.timeframe : undefined}); }
+        } catch (retryError) { completed=false; err=retryError; log.error({event:'run.retry_persist_failed',...errMeta(retryError),originalFailureCode:failure.code},'Could not persist or schedule the retry'); failure={...failure,summary:failure.summary+' The retry state could not be saved.',nextAction:'Keep this agent paused and use account recovery after database connectivity is restored. No broker operation was requested in this run.'}; }
       }
       const rejectedBeforeOrders = claimed && !brokerOperationRequested && ['LLM_TRADING','HYBRID'].includes(agent.strategy) && ['AI_APICallError','APICallError'].includes(failure.errorType) && [400,401,403,404,422].includes(failure.httpStatus ?? 0);
       // These typed failures occur while loading/validating history, before
@@ -387,8 +393,10 @@ export function createRunProcessor(db: Db) {
       if (rejectedStrategyData) failure={...failure,nextAction:err instanceof MissedLiveCandlesError ? 'No broker operation was requested. Execution locks will be released after the failure is saved. Resume this agent to refresh indicator history and skip old signals; other agents can continue.' : 'No broker operation was requested. Execution locks will be released after the failure is saved. Check market-data availability and retry Resume to load fresh completed candles; other agents can continue.'};
       if (rejectedByGuard) failure={...failure,nextAction:'No entry order or uncertain broker operation remains; any setting update was verified. Execution locks will be released after the failure is saved. Review the guard reason above and adjust the agent configuration or account state, then Resume. Other agents can continue.'};
       log.error({ event: safeToRelease ? 'run.rejected_before_orders' : 'run.review_required', stage, exchangeId: String(agent.exchangeId), durationMs: Date.now() - startedAt, ...errMeta(err), failure }, safeToRelease ? 'Agent paused; execution locks can be released after failure persistence' : 'Agent run failed; pausing for review');
-      await agents.updateOne({ _id: agent._id, userId }, { $set: { status: "PAUSED", updatedAt: new Date() } });
-      await deleteAgentCached(agentId);
+      try { await agents.updateOne({ _id: agent._id, userId }, { $set: { status: "PAUSED", updatedAt: new Date() } }); }
+      catch(pauseError) { log.error({event:'run.pause_persist_failed',...errMeta(pauseError)},'Could not persist pause; execution locks remain held'); }
+      try { await deleteAgentCached(agentId); }
+      catch(cacheError) { log.error({event:'run.cache_remove_failed',...errMeta(cacheError)},'Could not remove agent registry entry'); }
       let executionRecordSaved=false;
       try {
         if (claimed) {
