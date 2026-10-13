@@ -14,6 +14,7 @@ Source review: **11 October 2026**. This is the maintained entry point. Historic
 | Start the stack, view logs or diagnose a restart | [Containers](CONTAINERS.md), [logging](LOGGING.md) |
 | Recover a retained execution | [Delta recovery](DELTA_RECOVERY.md), [reconciliation](RECONCILIATION.md) |
 | Review documented strategy mechanics and release selection | [Strategy research and selection](STRATEGY_SELECTION.md) |
+| Understand the internal four-hour squeeze candidate and its measured limits | [Squeeze + directional efficiency specification](SQUEEZE_RESEARCH.md) |
 | Review the plan for simpler, capital-efficient automated trading | [Small-account trading audit and development plan](SMALL_ACCOUNT_TRADING_PLAN.md) |
 
 ## Feature references

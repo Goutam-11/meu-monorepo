@@ -4,6 +4,8 @@ Reviewed 11 October 2026. Sources: original strategy publications, official Trad
 
 This document recommends development and selection decisions. It does not report a new profitable strategy or new backtest results. No agents, settings, orders or services were changed during this review.
 
+Later research is documented separately in [four-hour squeeze + directional efficiency](SQUEEZE_RESEARCH.md). It includes exact mechanics, per-coin/capital results and limitations from 13 October. It is an internal candidate, not a promoted replacement for the current strategy catalog; the engineering ordering below is not an updated profitability ranking.
+
 ## 1. Decision for Meu
 
 Build a small, reviewed strategy catalog:
