@@ -6,6 +6,8 @@ This document recommends development and selection decisions. It does not report
 
 Later research is documented separately in [four-hour squeeze + directional efficiency](SQUEEZE_RESEARCH.md). It includes exact mechanics, per-coin/capital results and limitations from 13 October. It is an internal candidate, not a promoted replacement for the current strategy catalog; the engineering ordering below is not an updated profitability ranking.
 
+The current research objective and broad qualification criteria are in [multi-market algorithm families](MULTI_MARKET_RESEARCH.md). It records common-rule tests across seven tickers and keeps trend, breakout and range evidence separate; selection cannot rely on a single ticker's return.
+
 ## 1. Decision for Meu
 
 Build a small, reviewed strategy catalog:

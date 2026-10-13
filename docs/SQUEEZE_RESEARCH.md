@@ -2,6 +2,8 @@
 
 Research specification reviewed **13 October 2026**. This is an internal candidate, not the existing Bollinger + RSI agent and not a selectable live strategy. Its implementation and simulations are local research artifacts, excluded from Git; this specification is maintained documentation.
 
+Meu's development objective is broader than this candidate: [multi-market family research](MULTI_MARKET_RESEARCH.md) evaluates common rules across the fixed ticker universe and assesses trend, breakout and mean-reversion families separately. An XRP result alone cannot qualify a release.
+
 ## Purpose
 
 Find a directional move after volatility contracts, while rejecting breakouts with excessive back-and-forth movement. The intent is to reduce paid churn and hold worthwhile trends. Neither agreement between indicators nor positive historical returns guarantees an edge.
