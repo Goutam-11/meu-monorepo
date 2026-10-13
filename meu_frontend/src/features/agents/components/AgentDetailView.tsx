@@ -72,7 +72,7 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-6 lg:p-10 space-y-8 ">
+    <div className="min-h-screen min-w-0 w-full max-w-full bg-background p-4 sm:p-6 lg:p-10 space-y-8 [overflow-wrap:anywhere]">
       {/* L1: Header & Identity */}
       <motion.header
         initial="hidden"
@@ -81,7 +81,7 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
         variants={fadeUp}
         className="flex flex-col md:flex-row md:items-center justify-between gap-6"
       >
-        <div className="flex items-center gap-5">
+        <div className="flex min-w-0 items-center gap-5">
           <div className="h-16 w-16 bg-primary/15 text-primary ring-1 ring-inset ring-primary/30 flex items-center justify-center text-xl font-extrabold tracking-tight shrink-0">
             {agent.name.split(/[\s-_]+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase()}
           </div>
@@ -253,7 +253,7 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
           animate="visible"
           custom={5}
           variants={fadeUp}
-          className="lg:col-span-2 space-y-6"
+          className="min-w-0 lg:col-span-2 space-y-6"
         >
           {/* Market Scope */}
           <section className="space-y-4">
@@ -399,7 +399,7 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
           animate="visible"
           custom={6}
           variants={fadeUp}
-          className="space-y-6"
+          className="min-w-0 space-y-6"
         >
           <Card className="bg-transparent shadow-none">
             <CardHeader>
@@ -445,7 +445,7 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
                       {item.label}
                     </span>
                     <span
-                      className={`font-medium text-right text-foreground ${
+                      className={`min-w-0 font-medium text-right text-foreground ${
                         item.mono ? "font-mono" : ""
                       } ${item.tabular ? "tabular-nums" : ""} ${
                         item.truncate ? "truncate max-w-[140px]" : ""
@@ -468,7 +468,7 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
           animate="visible"
           custom={7}
           variants={fadeUp}
-          className="space-y-4 pt-4"
+          className="min-w-0 space-y-4 pt-4"
         >
           <div className="flex items-center justify-between ">
             <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
@@ -493,11 +493,11 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1 flex-1 min-w-0">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
+                      <div className="flex items-start gap-2 text-xs text-muted-foreground font-mono">
                         <Clock className="h-3 w-3 shrink-0" />
                         {format(new Date(run.createdAt), "MMM d, yyyy HH:mm:ss OOOO")}
                       </div>
-                      <div className="text-sm text-foreground leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all [&>*:first-child]:mt-0">
+                      <div className="min-w-0 max-w-full text-sm text-foreground leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all [&>*:first-child]:mt-0 [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_img]:max-w-full">
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>
                           {run.llmResponse?.trim() || "No readable model output was saved for this run. Completion alone does not confirm a trading decision; inspect its execution evidence."}
                         </ReactMarkdown>

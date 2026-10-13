@@ -12,10 +12,10 @@ export default function RootLayout({
   return (
     <SidebarProvider className="ambient-canvas flex h-screen w-full">
       <AppSidebar />
-      <SidebarInset className="flex min-h-0 flex-1">
-        <div className="flex min-h-0 flex-col flex-1">
+      <SidebarInset className="flex min-h-0 min-w-0 flex-1">
+        <div className="flex min-h-0 min-w-0 flex-col flex-1">
           <Header />
-          <main className="flex-1 min-h-0 overflow-auto relative z-[1]">
+          <main className="flex-1 min-h-0 min-w-0 overflow-auto relative z-[1]">
             {children}
           </main>
         </div>
