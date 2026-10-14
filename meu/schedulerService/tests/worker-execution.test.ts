@@ -1,10 +1,10 @@
 import { afterAll, beforeEach, describe, expect, mock, test } from "bun:test";
 import { DeltaDataError, DeltaDataValidationError } from '../../../shared/trading/delta-data';
-import { validateCryptoStrategy } from '../src/agent/cryptoStrategyConfig';
-import { MissedLiveCandlesError } from '../src/agent/cryptoStrategyConfig';
+import { validateCryptoStrategy } from '../src/algorithms/crypto/cryptoStrategyConfig';
+import { MissedLiveCandlesError } from '../src/algorithms/crypto/cryptoStrategyConfig';
 import { ObjectId, type Db } from "mongodb";
-import { OrderRejectedError, CryptoProtectionError, CryptoSettingsUncertainError, DeltaLeverageUncertainError, type ExecutionSafety } from "../src/agent/tradeGuard";
-import { buildRunMemory, memoryContext } from "../src/agent/runMemory";
+import { OrderRejectedError, CryptoProtectionError, CryptoSettingsUncertainError, DeltaLeverageUncertainError, type ExecutionSafety } from "../src/execution/tradeGuard";
+import { buildRunMemory, memoryContext } from "../src/agents/llm/runMemory";
 
 let runLive: (params:Record<string,unknown>)=>Promise<string> = async()=>"ALGO ok";
 let runPaper: (params: Record<string, unknown>) => Promise<string> = async () => "PAPER ok";
@@ -17,7 +17,7 @@ type Processor = (job: { id: string; data: { agentId: string; userId: string; ru
 
 let preparationFailure = false;
 let ownerActive = false;
-mock.module('@/agent/runCryptoStrategy', () => ({runPaperStrategy:(params:Record<string,unknown>)=>runPaper(params),runLiveCryptoStrategy:(params:Record<string,unknown>)=>runLive(params),validateCryptoStrategy}));
+mock.module('@/algorithms/crypto/runCryptoStrategy', () => ({runPaperStrategy:(params:Record<string,unknown>)=>runPaper(params),runLiveCryptoStrategy:(params:Record<string,unknown>)=>runLive(params),validateCryptoStrategy}));
 mock.module("@/queue/queue", () => ({ AGENT_QUEUE_NAME: "agent-execution", agentQueue: { getJob: async () => ({ getState: async () => ownerActive ? "active" : "failed" }), toKey: (key: string) => key } }));
 mock.module("@/lib/redis", () => ({
   redis: { exists: async () => ownerActive ? 1 : 0 }, setAgentCached: async () => {}, deleteAgentCached: async () => {}, closeRedis: async () => {},
@@ -27,15 +27,15 @@ mock.module("@/config/config", () => ({
   exchangeMap: { DELTA: class {id='delta';async loadMarkets(){if(preparationFailure)throw Object.assign(new Error('network in market discovery'),{name:'RequestTimeout'});} market(){return{symbol:'BTC/USD:USD'};}}, BINANCE: class FakeExchange { timeframes = { "1m": "1m", "15m": "15m" }; async loadMarkets() {} } },
   configureCryptoExchange: () => {},
 }));
-mock.module('@/agent/cryptoAccount',()=>({identifyDeltaAccount:async()=> 'delta:fixture',registerDeltaAccount:async()=>({limits:{}}),accountRiskSchema:{parse:()=>({})},createCryptoAccountContext:()=>({scopeSnapshot:async(snapshot:unknown)=>snapshot})}));
-mock.module('@/agent/cryptoRisk',()=>({cryptoEntrySnapshot:async()=>({}),cryptoEntryMarket:()=>({symbol:'BTC/USD:USD'})}));
+mock.module('@/brokers/crypto/cryptoAccount',()=>({identifyDeltaAccount:async()=> 'delta:fixture',registerDeltaAccount:async()=>({limits:{}}),accountRiskSchema:{parse:()=>({})},createCryptoAccountContext:()=>({scopeSnapshot:async(snapshot:unknown)=>snapshot})}));
+mock.module('@/brokers/crypto/cryptoRisk',()=>({cryptoEntrySnapshot:async()=>({}),cryptoEntryMarket:()=>({symbol:'BTC/USD:USD'})}));
 mock.module("@/config/encryption", () => ({ decryptSecret: (value: string) => value }));
-mock.module("@/agent/vercelAgent", () => ({ tradingAgent: (params: Record<string, unknown>) => runAgent(params) }));
-mock.module("@/agent/zerodhaAgent", () => ({
+mock.module("@/agents/llm/vercelAgent", () => ({ tradingAgent: (params: Record<string, unknown>) => runAgent(params) }));
+mock.module("@/agents/llm/zerodhaAgent", () => ({
   zerodhaTradingAgent: async () => "ok",
   getNseInstrumentMap: async () => [],
 }));
-mock.module("@/agent/kiteTokenManager", () => ({ getKiteForExchange: async () => null }));
+mock.module("@/brokers/kite/kiteTokenManager", () => ({ getKiteForExchange: async () => null }));
 mock.module("@/lib/marketHours", () => ({ isIndianMarketOpen: () => true, nextMarketOpen: () => new Date(Date.now() + 60_000) }));
 mock.module("@/lib/notifications", () => ({ emitNotification: async (notice: unknown) => { notices.push(notice); }, setLegacyNotificationCollection: () => {} }));
 mock.module("@/lib/logger", () => ({
@@ -475,7 +475,7 @@ test('LLM-swallowed protection failures preserve typed reason and account locks'
  });
 
  test('typed primary LLM candle failures wait and release locks before any broker request', async () => {
-  const { LlmMarketDataError } = await import('../src/agentFunctions/cmFunctions');
+  const { LlmMarketDataError } = await import('../src/market-data/cryptoAnalysis');
   for (const code of ['LLM_MARKET_DATA_STALE', 'LLM_MARKET_DATA_INVALID', 'LLM_MARKET_DATA_INSUFFICIENT', 'LLM_MARKET_DATA_UNAVAILABLE'] as const) {
     const state = makeDb(); state.agent.strategyConfig = { analysisTimeframe: '15m' };
     runAgent = async () => { throw new LlmMarketDataError(code, '15m'); };

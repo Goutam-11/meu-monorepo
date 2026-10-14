@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { assertOrderAllowed, sizeLongPosition } from "../src/agent/tradeGuard";
+import { assertOrderAllowed, sizeLongPosition } from "../src/execution/tradeGuard";
 import { encryptSecret, decryptSecret } from "../src/config/encryption";
 
 const policy = { symbols: ["INFY"], capital: { allocated: 10000, currency: "INR" },

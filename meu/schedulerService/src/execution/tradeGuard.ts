@@ -1,6 +1,6 @@
 import { sizeEntry, validateSizingPolicy, type SizingPolicy } from "../../../../shared/trading/sizing";
 import type { MarketInterface, Order, Position } from "ccxt";
-import type { CryptoRiskSnapshot } from "./cryptoRisk";
+import type { CryptoRiskSnapshot } from "../brokers/crypto/cryptoRisk";
 export type TradingPolicy = {
   symbols: string[];
   sizing?: SizingPolicy;

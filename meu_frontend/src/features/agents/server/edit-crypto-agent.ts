@@ -7,7 +7,7 @@ import type { Prisma } from '@/generated/prisma/client';
 import { configuredCryptoAgentSchema } from '@/features/backtests/validation';
 import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';
 import { executionConnection, registerExecutionAccount } from '@/features/exchange/server/execution-account';
-import { cryptoEntryMarket, fetchCryptoOpenOrders, normalizeCryptoPositions } from '../../../../../meu/schedulerService/src/agent/cryptoRisk';
+import { cryptoEntryMarket, fetchCryptoOpenOrders, normalizeCryptoPositions } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
 
 export const editCryptoAgentSchema = configuredCryptoAgentSchema.safeExtend({
   id: z.string().regex(/^[a-f0-9]{24}$/i),

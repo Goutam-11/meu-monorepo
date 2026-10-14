@@ -1,11 +1,11 @@
-import {fetchManagedCryptoOrder} from './binanceExecution';
+import {fetchManagedCryptoOrder} from '../binance/binanceExecution';
 import { createHash, randomUUID } from 'node:crypto';
 import type { Db } from 'mongodb';
 import type { Exchange, MarketInterface, Order, Position } from 'ccxt';
 import { z } from 'zod';
-import { defaultAccountRisk, type AccountRiskLimits } from '../../../../shared/trading/accountRisk';
-export { defaultAccountRisk, type AccountRiskLimits } from '../../../../shared/trading/accountRisk';
-import { OrderRejectedError, type ExecutionSafety } from './tradeGuard';
+import { defaultAccountRisk, type AccountRiskLimits } from '../../../../../shared/trading/accountRisk';
+export { defaultAccountRisk, type AccountRiskLimits } from '../../../../../shared/trading/accountRisk';
+import { OrderRejectedError, type ExecutionSafety } from '../../execution/tradeGuard';
 import { fetchCryptoOpenOrders, type CryptoRiskSnapshot } from './cryptoRisk';
 
 export const accountRiskSchema = z.object({

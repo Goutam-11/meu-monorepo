@@ -1,6 +1,6 @@
 import {describe,expect,test} from 'bun:test';
 import {defaultSizingPolicy, sizeEntry, validateSizingPolicy, minimumViableLeverage, sizeAutomaticSimulationEntry} from '../../../shared/trading/sizing';
-import {formatTradingPolicy, sizeLongPosition, assertOrderAllowed, type TradingPolicy} from '../src/agent/tradeGuard';
+import {formatTradingPolicy, sizeLongPosition, assertOrderAllowed, type TradingPolicy} from '../src/execution/tradeGuard';
 
 const policy:TradingPolicy = {symbols:['INFY'],capital:{allocated:20,currency:'INR'},risk:{maxRiskPerTradePct:2,maxDailyLossPct:5,maxOpenPositions:1,maxTradesPerDay:1,maxPositionsOpenedPerDay:1}};
 const input={riskBudget:0.4,marginBudget:20,exposureBudget:40,unitRisk:0.012,unitMargin:0.503,unitNotional:1,minAmount:1,roundDown:Math.floor};

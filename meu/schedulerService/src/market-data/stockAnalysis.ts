@@ -1,4 +1,4 @@
-import { macd, rsi } from "./mIndicators";
+import { macd, rsi } from "./indicators";
 
 
 export async function fetchYahooOHLCV(

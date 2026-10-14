@@ -30,6 +30,10 @@ bun run src/workers/worker.ts
 
 Copy `.env.example` to `.env`. Configure `MONGO_URI`, `DATABASE_NAME`, Redis and the same 64-character hexadecimal `ENCRYPTION_KEY` used by the frontend. Mongo must support change streams. Keep the existing encryption key when restarting against encrypted records. LLM and broker API credentials belong in saved app credentials/connections, not copied into this package's environment.
 
+## Source layout
+
+LLM orchestration lives in `src/agents/llm`, deterministic runners in `src/algorithms`, guarded tools and policy checks in `src/execution`, exchange integration in `src/brokers`, and analysis helpers in `src/market-data`. Shared strategy mathematics remain in `../../shared/trading`. See [folder responsibilities and dependency diagram](../../docs/SCHEDULER_STRUCTURE.md) before adding or moving modules.
+
 ## Runtime dispatch
 
 | Agent | Worker entry point | Current support |

@@ -1,7 +1,7 @@
-import { LlmMarketDataError } from "../agentFunctions/cmFunctions";
+import { LlmMarketDataError } from "../market-data/cryptoAnalysis";
 import { DeltaDataError, DeltaDataValidationError } from '../../../../shared/trading/delta-data';
-import { MissedLiveCandlesError } from '../agent/cryptoStrategyConfig';
-import { OrderRejectedError, DeltaLeverageUncertainError, CryptoSettingsUncertainError, CryptoProtectionError } from '../agent/tradeGuard';
+import { MissedLiveCandlesError } from '../algorithms/crypto/cryptoStrategyConfig';
+import { OrderRejectedError, DeltaLeverageUncertainError, CryptoSettingsUncertainError, CryptoProtectionError } from '../execution/tradeGuard';
 
 export class ExecutionLockReviewError extends Error {
   constructor(readonly scope:string, readonly ownerExecutionId?:string, readonly ownerState?:string) {

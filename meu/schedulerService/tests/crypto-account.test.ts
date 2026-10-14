@@ -2,9 +2,9 @@ import { test, expect } from 'bun:test';
 import { createHash } from 'node:crypto';
 import type { Db } from 'mongodb';
 import type { Exchange, MarketInterface, Order, Position } from 'ccxt';
-import { createCryptoAccountContext, deltaAccountKey, registerDeltaAccount, defaultAccountRisk } from '../src/agent/cryptoAccount';
-import { sizeCryptoEntry, type CryptoRiskSnapshot } from '../src/agent/cryptoRisk';
-import type { TradingPolicy } from '../src/agent/tradeGuard';
+import { createCryptoAccountContext, deltaAccountKey, registerDeltaAccount, defaultAccountRisk } from '../src/brokers/crypto/cryptoAccount';
+import { sizeCryptoEntry, type CryptoRiskSnapshot } from '../src/brokers/crypto/cryptoRisk';
+import type { TradingPolicy } from '../src/execution/tradeGuard';
 
 type Row = Record<string, any>;
 function matches(row: Row, query: Row): boolean {

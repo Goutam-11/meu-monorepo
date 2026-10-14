@@ -1,14 +1,14 @@
-import {prepareBinanceAccount,submitBinanceProtectedEntry} from '../../binanceExecution';
+import {prepareBinanceAccount,submitBinanceProtectedEntry} from '../../brokers/binance/binanceExecution';
 import { instrumentTools } from "@/lib/toolLogging";
-import { CryptoSettingsUncertainError, DeltaLeverageUncertainError, OrderRejectedError, type ExecutionSafety } from "../../tradeGuard";
-import { cryptoEntryMarket, cryptoEntrySnapshot, fetchCryptoOpenOrders, normalizeCryptoPositions, sizeCryptoEntry, previewAutomaticCryptoLeverage, fetchCryptoLeverage } from "../../cryptoRisk";
+import { CryptoSettingsUncertainError, DeltaLeverageUncertainError, OrderRejectedError, type ExecutionSafety } from "../tradeGuard";
+import { cryptoEntryMarket, cryptoEntrySnapshot, fetchCryptoOpenOrders, normalizeCryptoPositions, sizeCryptoEntry, previewAutomaticCryptoLeverage, fetchCryptoLeverage } from "../../brokers/crypto/cryptoRisk";
 import { createHash, randomUUID } from "node:crypto";
 import { tool } from "ai";
 import { InsufficientFunds, InvalidOrder, type Exchange } from "ccxt";
 import z from "zod";
 import { logger, errMeta } from "@/lib/logger";
 
-import { prepareDeltaStrategyAccount } from "../../deltaStart";
+import { prepareDeltaStrategyAccount } from "../../brokers/delta/deltaStart";
 
 const log = logger.child({ module: "cryptoTools" });
 

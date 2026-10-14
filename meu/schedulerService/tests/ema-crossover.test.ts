@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { evaluateEmaCrossover, runBacktest, type Candle } from "../src/strategy/emaCrossover";
+import { evaluateEmaCrossover, runBacktest, type Candle } from "../src/algorithms/emaCrossover";
 
 const config = { fastPeriod: 2, slowPeriod: 3, initialCapital: 1_000, quantity: 1, feeBps: 0, slippageBps: 0 };
 

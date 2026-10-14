@@ -1,7 +1,7 @@
 import { reconciliationReport, readRows } from './reconciliation';
 import { recoverDeltaExecution } from './recover-execution';
 import { randomUUID } from 'node:crypto';
-import { accountRiskSchema, defaultAccountRisk } from '../../../../../meu/schedulerService/src/agent/cryptoAccount';
+import { accountRiskSchema, defaultAccountRisk } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoAccount';
 import { executionConnection, registerExecutionAccount, linkedExchangeIds } from './execution-account';
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";

@@ -1,8 +1,8 @@
 import {test,expect} from 'bun:test';
 import ccxt,{InvalidOrder,type Order,type MarketInterface,type Position} from 'ccxt';
 import {configureCryptoExchange} from '../src/config/config';
-import {prepareBinanceAccount,submitBinanceProtectedEntry,fetchManagedCryptoOrder} from '../src/agent/binanceExecution';
-import type {ExecutionSafety} from '../src/agent/tradeGuard';
+import {prepareBinanceAccount,submitBinanceProtectedEntry,fetchManagedCryptoOrder} from '../src/brokers/binance/binanceExecution';
+import type {ExecutionSafety} from '../src/execution/tradeGuard';
 function fixture() {
  const exchange=new ccxt.binance();configureCryptoExchange(exchange,false);const symbol='BTC/USDT:USDT';
  exchange.setMarkets([{id:'BTCUSDT',symbol,base:'BTC',quote:'USDT',settle:'USDT',type:'swap',swap:true,contract:true,linear:true,inverse:false,active:true,contractSize:1,taker:0.0005,precision:{amount:0.001,price:0.1},limits:{amount:{min:0.001,max:100},cost:{min:5}},info:{}} as unknown as MarketInterface]);
@@ -53,7 +53,7 @@ test('installed CCXT emits conditional close-position request without quantity o
 test('Binance LLM tool chooses minimum viable leverage within the saved ceiling',async()=>{
  const s=fixture();s.safety.policy.sizing!.leverageMode='AUTO';s.safety.policy.sizing!.leverage=4;s.safety.policy.sizing!.maxExposureMultiple=4;
  s.exchange.fetchTicker=async()=>({bid:99999.9,ask:100000,last:100000}) as never;
- const {getCryptoTools}=await import('../src/agent/tools/cryptoTools/cryptoTools');
+ const {getCryptoTools}=await import('../src/execution/crypto/cryptoTools');
  const tools=getCryptoTools({exchange:s.exchange,safety:s.safety});
  const result=await (tools.setLeverage.execute as unknown as (input:unknown)=>Promise<{success:boolean;data?:{leverage:number}}> )({symbol:s.symbol,side:'buy',stop_loss:0.01});
  expect(result).toMatchObject({success:true,data:{leverage:2}});expect(s.safety.policy.sizing!.leverage).toBe(4);expect(s.writes).toEqual([]);

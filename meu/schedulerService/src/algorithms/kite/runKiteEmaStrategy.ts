@@ -1,8 +1,8 @@
 import { KiteConnect } from "kiteconnect";
-import { sizeLongPosition, type ExecutionSafety } from "./tradeGuard";
-import { submitKiteOrder } from "./tools/zerodhaTools/stockTools";
+import { sizeLongPosition, type ExecutionSafety } from "../../execution/tradeGuard";
+import { submitKiteOrder } from "../../execution/kite/stockTools";
 import { getKiteEmaSignals } from "./kiteEmaSignals";
-import type { EmaCrossoverParams } from "@/strategy/emaCrossover";
+import type { EmaCrossoverParams } from "@/algorithms/emaCrossover";
 
 type Kite = InstanceType<typeof KiteConnect>;
 

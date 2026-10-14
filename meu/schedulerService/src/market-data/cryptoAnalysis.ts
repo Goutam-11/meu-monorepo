@@ -1,5 +1,5 @@
 import type { Exchange, OHLCV } from "ccxt";
-import { macd, rsi } from "./mIndicators";
+import { macd, rsi } from "./indicators";
 
 export const ANALYSIS_TIMEFRAMES = ["1m", "5m", "15m", "1h", "4h"] as const;
 export type AnalysisTimeframe = typeof ANALYSIS_TIMEFRAMES[number];

@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import ccxt, { type MarketInterface, type Position } from "ccxt";
-import { prepareDeltaStrategyAccount } from "../src/agent/deltaStart";
-import { fetchCryptoLeverage } from "../src/agent/cryptoRisk";
-import { OrderRejectedError } from "../src/agent/tradeGuard";
+import { prepareDeltaStrategyAccount } from "../src/brokers/delta/deltaStart";
+import { fetchCryptoLeverage } from "../src/brokers/crypto/cryptoRisk";
+import { OrderRejectedError } from "../src/execution/tradeGuard";
 
 function fixture() {
   const exchange = new ccxt.delta();

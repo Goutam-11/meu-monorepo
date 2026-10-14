@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server';
 import prisma from '@/lib/db';
 import type { Prisma } from '@/generated/prisma/client';
 import { executionConnection, registerExecutionAccount, linkedExchangeIds } from './execution-account';
-import { inspectDeltaOwnership, type ReconciliationOwner, type ReconciliationOrder } from '../../../../../meu/schedulerService/src/agent/deltaReconciliation';
+import { inspectDeltaOwnership, type ReconciliationOwner, type ReconciliationOrder } from '../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation';
 
 const active = new Set<string>();
 export async function readRows<T>(command: Prisma.InputJsonObject, maximum: number): Promise<T[]> {

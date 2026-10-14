@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import type { Db } from "mongodb";
-import { reserveDailyEntry } from "../src/agent/dailyRiskUsage";
-import type { TradingPolicy } from "../src/agent/tradeGuard";
+import { reserveDailyEntry } from "../src/execution/dailyRiskUsage";
+import type { TradingPolicy } from "../src/execution/tradeGuard";
 
 function makeDb() {
   const records = new Map<string, { _id: string; agentId: string; marketDate: string; timezone: string; tradesReserved: number; positionsOpenedReserved: number; updatedAt: Date }>();

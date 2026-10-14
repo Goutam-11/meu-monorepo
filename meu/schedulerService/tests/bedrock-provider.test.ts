@@ -1,7 +1,7 @@
 import { test, expect } from 'bun:test';
 import { generateText, tool, stepCountIs } from 'ai';
 import { z } from 'zod';
-import { llmProviderMap, resolveLLMProvider } from '../src/agent/providers';
+import { llmProviderMap, resolveLLMProvider } from '../src/agents/llm/providers';
 
 test('Bedrock requires explicit saved key and region, without using ambient AWS credentials', () => {
   expect(resolveLLMProvider('bedrock').id).toBe('bedrock');

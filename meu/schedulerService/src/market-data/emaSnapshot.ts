@@ -1,5 +1,5 @@
-import { getOHLCV } from "@/agentFunctions/cmFunctions";
-import { ema } from "@/agentFunctions/mIndicators";
+import { getOHLCV } from "@/market-data/cryptoAnalysis";
+import { ema } from "@/market-data/indicators";
 import type { Exchange } from "ccxt";
 
 export async function getIndicators(timeframe: string = "1m", symbol: string = "BTC/USD", slice: number = 30, exchange: Exchange) {

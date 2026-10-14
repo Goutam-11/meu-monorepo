@@ -7,9 +7,9 @@ import prisma from '@/lib/db';
 import { appLog } from '@/lib/app-logger';
 import { readRows } from './reconciliation';
 import { executionConnection, linkedExchangeIds, registerExecutionAccount } from './execution-account';
-import {fetchCryptoLeverage,cryptoEntryMarket} from '../../../../../meu/schedulerService/src/agent/cryptoRisk';
-import { inspectDeltaOwnership, type ReconciliationOrder, type ReconciliationOwner } from '../../../../../meu/schedulerService/src/agent/deltaReconciliation';
-import { intervals, validateCryptoStrategy } from '../../../../../meu/schedulerService/src/agent/cryptoStrategyConfig';
+import {fetchCryptoLeverage,cryptoEntryMarket} from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
+import { inspectDeltaOwnership, type ReconciliationOrder, type ReconciliationOwner } from '../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation';
+import { intervals, validateCryptoStrategy } from '../../../../../meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig';
 import { strategyStateKey } from '../../../../../shared/trading/strategies';
 import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';
 

@@ -1,6 +1,6 @@
 import {test,expect} from 'bun:test';
 import type {Exchange,Order,Position} from 'ccxt';
-import {inspectDeltaOwnership,type ReconciliationOwner,type ReconciliationOrder} from '../src/agent/deltaReconciliation';
+import {inspectDeltaOwnership,type ReconciliationOwner,type ReconciliationOrder} from '../src/brokers/delta/deltaReconciliation';
 const symbol='XRP/USD:USD';
 const owner:ReconciliationOwner={_id:'owner',agentId:'agent',symbol,state:'OPEN',orderRefs:['order']};
 const saved:ReconciliationOrder={_id:'order',agentId:'agent',symbol,clientOrderId:'client',brokerOrderId:'broker',state:'ACCEPTED',side:'buy',amount:2};

@@ -2,7 +2,7 @@ import ccxt from "../../meu/schedulerService/node_modules/ccxt/js/ccxt.js";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { decryptSecret } from "../src/lib/encryption";
 import { configureCryptoExchange } from "../../meu/schedulerService/src/config/config";
-import { fetchCryptoOpenOrders, fetchDailyCryptoLoss } from "../../meu/schedulerService/src/agent/cryptoRisk";
+import { fetchCryptoOpenOrders, fetchDailyCryptoLoss } from "../../meu/schedulerService/src/brokers/crypto/cryptoRisk";
 
 // Read-only broker preflight. Never submits orders, alters account settings,
 // starts workers or reserves daily counters. Logs no credentials or raw responses.

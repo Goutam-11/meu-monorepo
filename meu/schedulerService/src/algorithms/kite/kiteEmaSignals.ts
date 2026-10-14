@@ -1,6 +1,6 @@
 import { KiteConnect } from "kiteconnect";
-import { evaluateEmaCrossover, type Candle, type EmaCrossoverParams, type StrategyDecision } from "@/strategy/emaCrossover";
-import { getNseInstrumentMap } from "./zerodhaAgent";
+import { evaluateEmaCrossover, type Candle, type EmaCrossoverParams, type StrategyDecision } from "@/algorithms/emaCrossover";
+import { getNseInstrumentMap } from "../../agents/llm/zerodhaAgent";
 
 type Kite = InstanceType<typeof KiteConnect>;
 type KiteCandle = { date: string | Date; open: number; high: number; low: number; close: number; volume: number };

@@ -1,13 +1,13 @@
-import { formatTradingPolicy, type ExecutionSafety } from "./tradeGuard";
+import { formatTradingPolicy, type ExecutionSafety } from "../../execution/tradeGuard";
 import { ToolLoopAgent } from "ai";
 import { KiteConnect } from "kiteconnect";
 
 type Kite = InstanceType<typeof KiteConnect>;
-import { ZPROMPT } from "@/agent/prompts/zerodhaAgentPrompt";
+import { ZPROMPT } from "@/agents/llm/prompts/zerodhaAgentPrompt";
 import { MEMORY_INSTRUCTIONS } from "./runMemory";
-import { getZerodhaTools } from "@/agent/tools/zerodhaTools/stockTools";
-import { macd, rsi, ema } from "@/agentFunctions/mIndicators";
-import { resolveLLMProvider, LLM_REQUEST_TIMEOUT_MS, type LLMProviderId } from "@/agent/providers";
+import { getZerodhaTools } from "@/execution/kite/stockTools";
+import { macd, rsi, ema } from "@/market-data/indicators";
+import { resolveLLMProvider, LLM_REQUEST_TIMEOUT_MS, type LLMProviderId } from "@/agents/llm/providers";
 import { logger, errMeta } from "@/lib/logger";
 
 const log = logger.child({ module: "zerodhaAgent" });

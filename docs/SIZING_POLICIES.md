@@ -118,9 +118,9 @@ flowchart TD
 |---|---|
 | `shared/trading/sizing.ts` | Pure budget calculation, rounding checks, automatic simulation sizing |
 | `shared/trading/perpetualBacktest.ts`, `paperTrading.ts` | Historical and forward simulation consumers |
-| `schedulerService/src/agent/tradeGuard.ts` | Policy type, LLM policy text and conservative stock guard |
-| `schedulerService/src/agent/cryptoRisk.ts` | Broker snapshots, contract limits and protected crypto sizing/what-if leverage |
-| `schedulerService/src/agent/runCryptoStrategy.ts`, `deltaStart.ts` | Flat-ticker setting preparation and deterministic execution |
+| `schedulerService/src/execution/tradeGuard.ts` | Policy type, LLM policy text and conservative stock guard |
+| `schedulerService/src/brokers/crypto/cryptoRisk.ts` | Broker snapshots, contract limits and protected crypto sizing/what-if leverage |
+| `schedulerService/src/algorithms/crypto/runCryptoStrategy.ts`, `deltaStart.ts` | Flat-ticker setting preparation and deterministic execution |
 | `schedulerService/src/workers/worker.ts` | Saved-policy loading, durable intents, serial broker operations and locks |
 | `meu_frontend/src/features/agents/validation.ts` | Generic policy input validation |
 | `meu_frontend/src/features/backtests/validation.ts` | Algorithm and simulation policy validation |

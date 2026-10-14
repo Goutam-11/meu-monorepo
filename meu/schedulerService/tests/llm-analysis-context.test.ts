@@ -1,16 +1,16 @@
 import { afterAll, beforeEach, expect, mock, test } from 'bun:test';
 import type { Exchange } from 'ccxt';
-import { TPROMPT } from '../src/agent/prompts/testPrompt';
+import { TPROMPT } from '../src/agents/llm/prompts/tradingPrompt';
 let prompt = '';
 let invocations = 0;
 mock.module('ai', () => ({ ToolLoopAgent: class {
   async generate(input: { prompt: string }) { invocations++; prompt = input.prompt; return { text: 'HOLD', steps: [], finishReason: 'stop', totalUsage: {} }; }
 } }));
-mock.module('@/agent/tools/cryptoTools/cryptoTools', () => ({ getCryptoTools: () => ({}) }));
-mock.module('@/agent/providers', () => ({ LLM_REQUEST_TIMEOUT_MS: 1000, resolveLLMProvider: () => ({ id: 'fixture', createModel: () => ({}) }) }));
-mock.module('@/agent/cryptoRisk', () => ({ normalizeCryptoPositions: (_exchange: unknown, positions: unknown) => positions }));
+mock.module('@/execution/crypto/cryptoTools', () => ({ getCryptoTools: () => ({}) }));
+mock.module('@/agents/llm/providers', () => ({ LLM_REQUEST_TIMEOUT_MS: 1000, resolveLLMProvider: () => ({ id: 'fixture', createModel: () => ({}) }) }));
+mock.module('@/brokers/crypto/cryptoRisk', () => ({ normalizeCryptoPositions: (_exchange: unknown, positions: unknown) => positions }));
 mock.module('@/lib/logger', () => ({ logger: { child: () => ({ info() {}, error() {} }) }, errMeta: () => ({}) }));
-const { tradingAgent } = await import('../src/agent/vercelAgent');
+const { tradingAgent } = await import('../src/agents/llm/vercelAgent');
 const timeframes = { '15m': 900_000, '4h': 14_400_000, '1d': 86_400_000 };
 function exchange(optionalFailure = false, stalePrimary = false) {
   let brokerReads = 0;

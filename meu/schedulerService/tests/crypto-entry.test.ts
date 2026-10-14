@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test";
 import ccxt, { type Balances, type MarketInterface, type Order, type Position } from "ccxt";
 import { configureCryptoExchange } from "../src/config/config";
-import { cryptoDayStart, fetchDailyCryptoLoss, cryptoEntrySnapshot, previewAutomaticCryptoLeverage } from "../src/agent/cryptoRisk";
-import { getCryptoTools } from "../src/agent/tools/cryptoTools/cryptoTools";
-import { OrderRejectedError, type ExecutionSafety, type TradingPolicy } from "../src/agent/tradeGuard";
+import { cryptoDayStart, fetchDailyCryptoLoss, cryptoEntrySnapshot, previewAutomaticCryptoLeverage } from "../src/brokers/crypto/cryptoRisk";
+import { getCryptoTools } from "../src/execution/crypto/cryptoTools";
+import { OrderRejectedError, type ExecutionSafety, type TradingPolicy } from "../src/execution/tradeGuard";
 
 function fixture(id: "delta" | "binance" = "delta") {
   const exchange = id === "delta" ? new ccxt.delta() : new ccxt.binance();

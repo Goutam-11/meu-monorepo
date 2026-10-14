@@ -1,6 +1,6 @@
 import type { Exchange } from "ccxt";
-import { cryptoEntryMarket, fetchCryptoLeverage, fetchCryptoOpenOrders, normalizeCryptoPositions } from "./cryptoRisk";
-import { OrderRejectedError } from "./tradeGuard";
+import { cryptoEntryMarket, fetchCryptoLeverage, fetchCryptoOpenOrders, normalizeCryptoPositions } from "../crypto/cryptoRisk";
+import { OrderRejectedError } from "../../execution/tradeGuard";
 
 type DeltaStartOptions = {
   allowAccountModeChange: boolean;

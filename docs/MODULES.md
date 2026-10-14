@@ -4,19 +4,21 @@
 
 This page describes runtime responsibilities. The generated reference enumerates local imports and named functions with source lines and direct calls. A direct call is syntax evidence, not proof that it executes on every branch. Database, queue and HTTP dependencies need the architecture diagrams as well.
 
+See [scheduler folder responsibilities and dependency diagram](SCHEDULER_STRUCTURE.md) for the source layout and rules for adding modules.
+
 ## Main boundaries
 
 | Area | Entry points and collaborators | Responsibility |
 |---|---|---|
 | Auth and API | `meu_frontend/src/trpc/init.ts`, `src/trpc/routers/_app.ts`, feature `server/router.ts` files | Better Auth session → protected procedure → authenticated owner filters → validation and storage. Never trust an owner ID supplied by a form. |
-| Agent lifecycle | agents router, `start-delta-agent.ts`, scheduler `agent/deltaStart.ts` | Create paused, edit with version/lock checks, validate owned references, preflight settings, activate or pause. |
+| Agent lifecycle | agents router, `start-delta-agent.ts`, scheduler `brokers/delta/deltaStart.ts` | Create paused, edit with version/lock checks, validate owned references, preflight settings, activate or pause. |
 | Scheduling | scheduler `index.ts`, `watchers/watcher.ts`, `schedulers/scheduler.ts`, `queue/queue.ts` | Bootstrap RUNNING records, refresh registry, reconcile durable next-run pointers, enqueue stable jobs. |
 | Execution | `workers/worker.ts`, `workers/executionFailure.ts` | Reload authoritative config, claim scopes, dispatch strategy, persist run/failure evidence, notify, release only safely completed claims. |
-| LLM strategies | `agent/vercelAgent.ts`, `zerodhaAgent.ts`, `providers.ts`, `runMemory.ts`, prompts and tools | Provider construction, bounded recent compatible context, model/tool loop. Broker tools still pass execution guards. |
-| Delta algorithms | `agent/runCryptoStrategy.ts`, `cryptoStrategyConfig.ts`, `cryptoRisk.ts`, `cryptoAccount.ts` | Closed-candle cursor, strategy signals, deterministic sizing, ownership, native protection, live/paper dispatch. |
-| Stock strategies | `agent/runKiteEmaStrategy.ts`, `kiteEmaSignals.ts`, `tradeGuard.ts`, Zerodha tools | Legacy Kite EMA/hybrid paths and stock order safety; these are not the Delta perpetual simulator. |
+| LLM strategies | `agents/llm/vercelAgent.ts`, `zerodhaAgent.ts`, `providers.ts`, `runMemory.ts`, prompts and tools | Provider construction, bounded recent compatible context, model/tool loop. Broker tools still pass execution guards. |
+| Delta algorithms | `algorithms/crypto/`, `brokers/crypto/cryptoRisk.ts`, `brokers/crypto/cryptoAccount.ts` | Closed-candle cursor, strategy signals, deterministic sizing, ownership, native protection, live/paper dispatch. |
+| Stock strategies | `algorithms/kite/runKiteEmaStrategy.ts`, `kiteEmaSignals.ts`, `tradeGuard.ts`, Zerodha tools | Legacy Kite EMA/hybrid paths and stock order safety; these are not the Delta perpetual simulator. |
 | Shared research | `shared/trading/strategies.ts`, `perpetualBacktest.ts`, `paperTrading.ts`, `delta-data.ts` | Versioned deterministic signals, historical simulation, forward simulated state and trusted market history. |
-| Recovery | exchange router, `recover-execution.ts`, scheduler `deltaReconciliation.ts` | Inspect account, verify broker evidence and queue inactivity, reconcile proven terminal flat executions. |
+| Recovery | exchange router, `recover-execution.ts`, scheduler `brokers/delta/deltaReconciliation.ts` | Inspect account, verify broker evidence and queue inactivity, reconcile proven terminal flat executions. |
 | Notifications | scheduler `lib/notifications.ts`, notificationService `src`, frontend notification routes and push subscription route | Queue producer → idempotent inbox persistence → bounded push delivery → SSE/poll invalidation. |
 
 All scheduler paths in the table are relative to `meu/schedulerService/src`; frontend paths are relative to `meu_frontend`. Use the generated index for exact current exports rather than copying this table into implementation.

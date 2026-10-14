@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import type { Exchange } from "ccxt";
-import { getCryptoTools } from "../src/agent/tools/cryptoTools/cryptoTools";
-import type { ExecutionSafety } from "../src/agent/tradeGuard";
+import { getCryptoTools } from "../src/execution/crypto/cryptoTools";
+import type { ExecutionSafety } from "../src/execution/tradeGuard";
 
 const policy = {
   symbols: ["BTC/USDT"],

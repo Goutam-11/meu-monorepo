@@ -1,8 +1,8 @@
 import {test,expect} from 'bun:test';
 import ccxt, {type MarketInterface,type Order,type Position} from 'ccxt';
 import type {Db} from 'mongodb';
-import {runLiveCryptoStrategy,runPaperStrategy} from '../src/agent/runCryptoStrategy';
-import type {ExecutionSafety} from '../src/agent/tradeGuard';
+import {runLiveCryptoStrategy,runPaperStrategy} from '../src/algorithms/crypto/runCryptoStrategy';
+import type {ExecutionSafety} from '../src/execution/tradeGuard';
 import {createHash} from 'node:crypto';
 const interval=3600,end=Math.floor(Date.now()/1000/interval)*interval;
 const config={id:'ema' as const,fastPeriod:2,slowPeriod:3,lookback:3,atrPeriod:2,stopAtr:2,rewardRisk:1.5,timeframe:'1h' as const,simulation:{initialCapital:10000,leverage:2,riskPerTradePct:5,maxMarginPct:25,feeBps:5,slippageBps:2,fundingRatePct8h:0,maxTradesPerDay:10,maxPositionsOpenedPerDay:5,maxDailyLossPct:10,direction:'both' as const},contract:{symbol:'BTCUSD',contractSize:0.001,minContracts:1,maintenanceMarginRate:0.0025,settlement:'USD' as const}};

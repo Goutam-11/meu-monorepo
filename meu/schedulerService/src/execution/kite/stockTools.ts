@@ -3,7 +3,7 @@ import { KiteConnect, type Exchanges, type TransactionType, type Product, type O
 import { createHash } from "node:crypto";
 
 type Kite = InstanceType<typeof KiteConnect>;
-import { assertOrderAllowed, OrderRejectedError, sizeLongPosition, type ExecutionSafety } from "../../tradeGuard";
+import { assertOrderAllowed, OrderRejectedError, sizeLongPosition, type ExecutionSafety } from "../tradeGuard";
 import { isIndianMarketOpen } from "@/lib/marketHours";
 import { tool } from "ai";
 import { z } from "zod";

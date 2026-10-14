@@ -12,7 +12,7 @@ mock.module('../src/features/exchange/server/execution-account',()=>({
  registerExecutionAccount:async()=>({accountKey:'physical'}),
  linkedExchangeIds:async()=>['alias-a','alias-b'],
 }));
-mock.module('../../meu/schedulerService/src/agent/deltaReconciliation',()=>({
+mock.module('../../meu/schedulerService/src/brokers/delta/deltaReconciliation',()=>({
  inspectDeltaOwnership:async()=>{inspections++;if(brokerError)throw new Error('private broker response');return{issues:[],positions:[],orders:[],pending:[]};},
 }));
 mock.module('@/lib/db',()=>({default:{

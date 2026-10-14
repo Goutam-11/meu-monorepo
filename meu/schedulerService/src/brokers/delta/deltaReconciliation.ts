@@ -1,6 +1,6 @@
-import {fetchManagedCryptoOrder} from './binanceExecution';
+import {fetchManagedCryptoOrder} from '../binance/binanceExecution';
 import type { Exchange, Order } from 'ccxt';
-import { fetchCryptoOpenOrders, normalizeCryptoPositions } from './cryptoRisk';
+import { fetchCryptoOpenOrders, normalizeCryptoPositions } from '../crypto/cryptoRisk';
 
 export type ReconciliationOwner = {
   _id: string; agentId: string; symbol: string; state: string; orderRefs: string[];

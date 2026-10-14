@@ -8,8 +8,8 @@ import { readRows } from '@/features/exchange/server/reconciliation';
 import { executionConnection, registerExecutionAccount, linkedExchangeIds } from '@/features/exchange/server/execution-account';
 import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';
 import { strategyStateKey } from '../../../../../shared/trading/strategies';
-import { intervals, validateCryptoStrategy } from '../../../../../meu/schedulerService/src/agent/cryptoStrategyConfig';
-import { inspectDeltaOwnership } from '../../../../../meu/schedulerService/src/agent/deltaReconciliation';
+import { intervals, validateCryptoStrategy } from '../../../../../meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig';
+import { inspectDeltaOwnership } from '../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation';
 
 type Lock = { _id: string; executionId: string; kind?: string };
 type Execution = { _id: string; agentId: string; state: string; reviewReason?: string; failure?: {stage?:string;brokerOperationRequested?:boolean;errorType?:string}; startedAt: {$date:string}; finishedAt?: {$date:string}; recovery?: { outcome?: string; fromCandle?: number } };

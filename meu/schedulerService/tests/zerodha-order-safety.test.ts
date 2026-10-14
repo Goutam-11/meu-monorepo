@@ -1,8 +1,8 @@
 import { afterAll, describe, expect, mock, test } from "bun:test";
-import type { ExecutionSafety } from "../src/agent/tradeGuard";
+import type { ExecutionSafety } from "../src/execution/tradeGuard";
 
 mock.module("@/lib/marketHours", () => ({ isIndianMarketOpen: () => true }));
-const { kiteAgentTag } = await import("../src/agent/tools/zerodhaTools/stockTools");
+const { kiteAgentTag } = await import("../src/execution/kite/stockTools");
 
 const policy = {
   symbols: ["INFY"],
@@ -35,7 +35,7 @@ function makeTools(snapshot: {
     reserveDailyEntry: async () => {},
     executeOrder: async (_intent, execute) => execute(),
   };
-  return { tools: (async () => (await import("../src/agent/tools/zerodhaTools/stockTools")).getZerodhaTools({ kc: kc as never, safety }))(), placed, cancelled };
+  return { tools: (async () => (await import("../src/execution/kite/stockTools")).getZerodhaTools({ kc: kc as never, safety }))(), placed, cancelled };
 }
 
 const validOrder = {

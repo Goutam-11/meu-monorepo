@@ -38,8 +38,8 @@ Both agents target the same BTC position on the same account. Current ownership 
 | Priority | Verified finding | Consequence | Source |
 |---|---|---|---|
 | P0 | Crypto LLM dispatch always requests 1m analysis | Review cadence and analysis horizon are disconnected | `meu/schedulerService/src/workers/worker.ts` |
-| P0 | Intraday fetch starts 24h ago with limit 500, no pagination/freshness/closed-bar check | Depending on venue response semantics, analysis can use truncated or stale history and an unfinished candle | `meu/schedulerService/src/agentFunctions/cmFunctions.ts` |
-| P0 | OHLCV arrays interpolate without row structure; flat-price RSI becomes 100 | Model context and indicators can be misleading | `vercelAgent.ts`, `agentFunctions/mIndicators.ts` |
+| P0 | Intraday fetch starts 24h ago with limit 500, no pagination/freshness/closed-bar check | Depending on venue response semantics, analysis can use truncated or stale history and an unfinished candle | `meu/schedulerService/src/market-data/cryptoAnalysis.ts` |
+| P0 | OHLCV arrays interpolate without row structure; flat-price RSI becomes 100 | Model context and indicators can be misleading | `vercelAgent.ts`, `market-data/indicators.ts` |
 | P0 | Opening Advanced changes whether daily loss is derived or taken from a default field | At 5% risk, merely opening the panel can change daily allowance from 15% to 3% | `meu_frontend/src/features/backtests/components/backtest-workspace.tsx` |
 | P0 | Backtests default to fee/slippage 5/2 bps, agent creation 10/5, live fee floor 10 bps | A selected historical result may not reflect executable economics | Backtest workspace, `createAgent.tsx`, `cryptoRisk.ts` |
 | P1 | AUTO returns the first leverage permitting any minimum order | Approved risk and exposure can remain underused even when a larger bounded order is fundable | `shared/trading/sizing.ts`, `cryptoRisk.ts` |

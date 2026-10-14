@@ -14,47 +14,47 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu/notificationService/src/logger.ts](#file-2e9c14c312be) | 3 | 0 |
 | [meu/notificationService/src/push-validation.ts](#file-f870d3f0c2aa) | 3 | 0 |
 | [meu/schedulerService/index.ts](#file-b5c082703924) | 2 | 5 |
-| [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011) | 6 | 2 |
-| [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77) | 12 | 4 |
-| [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) | 16 | 5 |
-| [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c) | 1 | 4 |
-| [meu/schedulerService/src/agent/dailyRiskUsage.ts](#file-4af6b185e722) | 1 | 2 |
-| [meu/schedulerService/src/agent/deltaReconciliation.ts](#file-76fbe977857f) | 1 | 2 |
-| [meu/schedulerService/src/agent/deltaStart.ts](#file-29349fb39a30) | 3 | 2 |
-| [meu/schedulerService/src/agent/kiteEmaSignals.ts](#file-5fb7eeb8b03a) | 1 | 2 |
-| [meu/schedulerService/src/agent/kiteTokenManager.ts](#file-8bbb5e919689) | 4 | 2 |
-| [meu/schedulerService/src/agent/prompts/cryptoAgentPrompt.ts](#file-47f54733b6b1) | 0 | 0 |
-| [meu/schedulerService/src/agent/prompts/stockAgentPrompt.ts](#file-868a4e1d784d) | 0 | 0 |
-| [meu/schedulerService/src/agent/prompts/testPrompt.ts](#file-3cb0b615d9c3) | 0 | 0 |
-| [meu/schedulerService/src/agent/prompts/zerodhaAgentPrompt.ts](#file-efcf498bd6e3) | 0 | 0 |
-| [meu/schedulerService/src/agent/providers.ts](#file-36c08f3ddd12) | 4 | 0 |
-| [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a) | 8 | 12 |
-| [meu/schedulerService/src/agent/runKiteEmaStrategy.ts](#file-b92ffa2998cd) | 2 | 4 |
-| [meu/schedulerService/src/agent/runMemory.ts](#file-6fee954f052b) | 5 | 0 |
-| [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6) | 17 | 6 |
-| [meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](#file-e5ec902684c5) | 13 | 4 |
-| [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) | 5 | 2 |
-| [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96) | 2 | 8 |
-| [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043) | 4 | 7 |
-| [meu/schedulerService/src/agentFunctions/cmFunctions.ts](#file-0c9701193f49) | 7 | 1 |
-| [meu/schedulerService/src/agentFunctions/mIndicators.ts](#file-0143ca2b04c3) | 3 | 0 |
-| [meu/schedulerService/src/agentFunctions/smFunctions.ts](#file-dceba1bb5321) | 4 | 1 |
-| [meu/schedulerService/src/alogorithmFunctions/helperFunc/helper.ts](#file-8ce72d39ea49) | 1 | 2 |
+| [meu/schedulerService/src/agents/llm/prompts/cryptoAgentPrompt.ts](#file-901becb5c0bf) | 0 | 0 |
+| [meu/schedulerService/src/agents/llm/prompts/stockAgentPrompt.ts](#file-44561f276203) | 0 | 0 |
+| [meu/schedulerService/src/agents/llm/prompts/tradingPrompt.ts](#file-ce309e1095e3) | 0 | 0 |
+| [meu/schedulerService/src/agents/llm/prompts/zerodhaAgentPrompt.ts](#file-d6d4afdba380) | 0 | 0 |
+| [meu/schedulerService/src/agents/llm/providers.ts](#file-52ea280ce42d) | 4 | 0 |
+| [meu/schedulerService/src/agents/llm/runMemory.ts](#file-f4f060233fd7) | 5 | 0 |
+| [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661) | 2 | 8 |
+| [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e) | 4 | 7 |
+| [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f) | 1 | 4 |
+| [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586) | 8 | 12 |
+| [meu/schedulerService/src/algorithms/emaCrossover.ts](#file-14a300d88a33) | 0 | 1 |
+| [meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts](#file-7d719200c45d) | 1 | 2 |
+| [meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts](#file-670f89e9ba10) | 2 | 4 |
+| [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed) | 6 | 2 |
+| [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886) | 12 | 4 |
+| [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) | 16 | 5 |
+| [meu/schedulerService/src/brokers/delta/deltaReconciliation.ts](#file-c1cc1175ff3a) | 1 | 2 |
+| [meu/schedulerService/src/brokers/delta/deltaStart.ts](#file-6557ced7c80f) | 3 | 2 |
+| [meu/schedulerService/src/brokers/kite/kiteTokenManager.ts](#file-2e463653a27f) | 4 | 2 |
 | [meu/schedulerService/src/config/config.ts](#file-9ba5db203d2d) | 2 | 0 |
 | [meu/schedulerService/src/config/encryption.ts](#file-17ef44ed3ae4) | 3 | 0 |
 | [meu/schedulerService/src/db/db.ts](#file-8327b69a7bcf) | 2 | 1 |
+| [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf) | 17 | 6 |
+| [meu/schedulerService/src/execution/dailyRiskUsage.ts](#file-103be3729f36) | 1 | 2 |
+| [meu/schedulerService/src/execution/kite/stockTools.ts](#file-162fdce9c91b) | 13 | 4 |
+| [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) | 5 | 2 |
 | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) | 8 | 0 |
 | [meu/schedulerService/src/lib/marketHours.ts](#file-81bfe3a96d76) | 7 | 0 |
 | [meu/schedulerService/src/lib/notifications.ts](#file-61beab0a29e6) | 2 | 2 |
 | [meu/schedulerService/src/lib/redis.ts](#file-5940bbec8c7b) | 8 | 1 |
 | [meu/schedulerService/src/lib/toolLogging.ts](#file-314810885502) | 1 | 1 |
+| [meu/schedulerService/src/market-data/cryptoAnalysis.ts](#file-1502d3e4c75f) | 7 | 1 |
+| [meu/schedulerService/src/market-data/emaSnapshot.ts](#file-569b06ff8f40) | 1 | 2 |
+| [meu/schedulerService/src/market-data/indicators.ts](#file-d2e1147adc7f) | 3 | 0 |
+| [meu/schedulerService/src/market-data/stockAnalysis.ts](#file-e312506c168c) | 4 | 1 |
 | [meu/schedulerService/src/queue/queue.ts](#file-288fb59dec9a) | 0 | 2 |
 | [meu/schedulerService/src/schedulers/exchangeScheduler.ts](#file-aa69a844ce0a) | 0 | 0 |
 | [meu/schedulerService/src/schedulers/scheduler.ts](#file-7bac4a80687d) | 5 | 5 |
 | [meu/schedulerService/src/server/kiteCallbackServer.ts](#file-ca7985984e9f) | 0 | 0 |
 | [meu/schedulerService/src/state/setStates.ts](#file-69401e8508aa) | 3 | 2 |
 | [meu/schedulerService/src/state/state.ts](#file-cfa1bd7ef921) | 0 | 0 |
-| [meu/schedulerService/src/strategy/emaCrossover.ts](#file-f642851e8e77) | 0 | 1 |
 | [meu/schedulerService/src/watchers/exchangeWatcher.ts](#file-7bd004ca62ea) | 3 | 2 |
 | [meu/schedulerService/src/watchers/watcher.ts](#file-3269cd2c1301) | 3 | 3 |
 | [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f) | 1 | 4 |
@@ -350,25 +350,323 @@ External or unresolved imports: `pino`.
 | `main` | [12](../../meu/schedulerService/index.ts#L12) | `bootstrapAgents`, `connectDB`, `db.collection`, `log.info`, `startScheduler`, `startWatcher` |
 | `shutdown` | [44](../../meu/schedulerService/index.ts#L44) | `closeDB`, `errMeta`, `log.info`, `log.warn`, `process.exit` |
 
-<a id="file-3d372559d011"></a>
+<a id="file-901becb5c0bf"></a>
 
-## meu/schedulerService/src/agent/binanceExecution.ts
+## meu/schedulerService/src/agents/llm/prompts/cryptoAgentPrompt.ts
 
-[meu/schedulerService/src/agent/binanceExecution.ts](../../meu/schedulerService/src/agent/binanceExecution.ts)
+[meu/schedulerService/src/agents/llm/prompts/cryptoAgentPrompt.ts](../../meu/schedulerService/src/agents/llm/prompts/cryptoAgentPrompt.ts)
+
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
+<a id="file-44561f276203"></a>
+
+## meu/schedulerService/src/agents/llm/prompts/stockAgentPrompt.ts
+
+[meu/schedulerService/src/agents/llm/prompts/stockAgentPrompt.ts](../../meu/schedulerService/src/agents/llm/prompts/stockAgentPrompt.ts)
+
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
+<a id="file-ce309e1095e3"></a>
+
+## meu/schedulerService/src/agents/llm/prompts/tradingPrompt.ts
+
+[meu/schedulerService/src/agents/llm/prompts/tradingPrompt.ts](../../meu/schedulerService/src/agents/llm/prompts/tradingPrompt.ts)
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
+<a id="file-d6d4afdba380"></a>
+
+## meu/schedulerService/src/agents/llm/prompts/zerodhaAgentPrompt.ts
+
+[meu/schedulerService/src/agents/llm/prompts/zerodhaAgentPrompt.ts](../../meu/schedulerService/src/agents/llm/prompts/zerodhaAgentPrompt.ts)
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e)
+
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
+<a id="file-52ea280ce42d"></a>
+
+## meu/schedulerService/src/agents/llm/providers.ts
+
+[meu/schedulerService/src/agents/llm/providers.ts](../../meu/schedulerService/src/agents/llm/providers.ts)
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+- [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `@ai-sdk/amazon-bedrock`, `@ai-sdk/openai-compatible`, `ai`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `openAICompatibleProvider` | [36](../../meu/schedulerService/src/agents/llm/providers.ts#L36) | — |
+| `createModel` | [41](../../meu/schedulerService/src/agents/llm/providers.ts#L41) | `client.chatModel`, `createOpenAICompatible` |
+| `createModel` | [59](../../meu/schedulerService/src/agents/llm/providers.ts#L59) | `apiKey.trim`, `createAmazonBedrock`, `createOpenAICompatible` |
+| `resolveLLMProvider` | [111](../../meu/schedulerService/src/agents/llm/providers.ts#L111) | — |
+
+<a id="file-f4f060233fd7"></a>
+
+## meu/schedulerService/src/agents/llm/runMemory.ts
+
+[meu/schedulerService/src/agents/llm/runMemory.ts](../../meu/schedulerService/src/agents/llm/runMemory.ts)
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+- [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `node:crypto`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `operationReceipt` | [23](../../meu/schedulerService/src/agents/llm/runMemory.ts#L23) | `intent.action.slice`, `intent.symbol.slice`, `intent.tradingsymbol.slice` |
+| `buildRunMemory` | [31](../../meu/schedulerService/src/agents/llm/runMemory.ts#L31) | `JSON.parse`, `receipts.filter`, `receipts.slice`, `response.lastIndexOf`, `response.matchAll`, `response.slice`, `summarySchema.safeParse` |
+| `canonical` | [55](../../meu/schedulerService/src/agents/llm/runMemory.ts#L55) | `Array.isArray`, `Object.entries`, `Object.fromEntries`, `value.map` |
+| `memoryContext` | [62](../../meu/schedulerService/src/agents/llm/runMemory.ts#L62) | `Boolean`, `JSON.stringify`, `String`, `canonical`, `createHash` |
+| `formatRunMemory` | [74](../../meu/schedulerService/src/agents/llm/runMemory.ts#L74) | `JSON.stringify`, `Number.isFinite`, `String`, `date.getTime`, `date.toISOString` |
+
+<a id="file-72efcf4de661"></a>
+
+## meu/schedulerService/src/agents/llm/vercelAgent.ts
+
+[meu/schedulerService/src/agents/llm/vercelAgent.ts](../../meu/schedulerService/src/agents/llm/vercelAgent.ts)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `./cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
+| `../../brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `./runMemory` | [meu/schedulerService/src/agents/llm/runMemory.ts](#file-f4f060233fd7) |
+| `@/agents/llm/prompts/tradingPrompt` | [meu/schedulerService/src/agents/llm/prompts/tradingPrompt.ts](#file-ce309e1095e3) |
+| `@/agents/llm/providers` | [meu/schedulerService/src/agents/llm/providers.ts](#file-52ea280ce42d) |
+| `@/execution/crypto/cryptoTools` | [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf) |
+| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
+| `@/market-data/cryptoAnalysis` | [meu/schedulerService/src/market-data/cryptoAnalysis.ts](#file-1502d3e4c75f) |
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77)
-- [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2)
-- [meu/schedulerService/src/agent/deltaReconciliation.ts](#file-76fbe977857f)
-- [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `ai`, `ccxt`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `formatRecentTrades` | [45](../../meu/schedulerService/src/agents/llm/vercelAgent.ts#L45) | `lines.join`, `trades.slice` |
+| `tradingAgent` | [54](../../meu/schedulerService/src/agents/llm/vercelAgent.ts#L54) | `AbortSignal.timeout`, `Coin.map`, `Date.now`, `JSON.stringify`, `Object.entries`, `TPROMPT.replace`, `analysis.push`, `coins.toString`, `exchange.fetchBalance`, `exchange.fetchMyTrades`, `exchange.fetchPositions`, `exchange.market`, `formatMarketAnalysis`, `formatRecentTrades`, `formatTradingPolicy`, `getCryptoTools`, `getIntradayIndicators`, `log.info`, `marketData.push`, `normalizeCryptoPositions`, `openPositions.map`, `provider.createModel`, `resolveLLMProvider`, `result.steps.at`, `result.steps.reduce`, `result.text.trim`, `tradingAgent.generate` |
+
+<a id="file-d253cec9e69e"></a>
+
+## meu/schedulerService/src/agents/llm/zerodhaAgent.ts
+
+[meu/schedulerService/src/agents/llm/zerodhaAgent.ts](../../meu/schedulerService/src/agents/llm/zerodhaAgent.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `./runMemory` | [meu/schedulerService/src/agents/llm/runMemory.ts](#file-f4f060233fd7) |
+| `@/agents/llm/prompts/zerodhaAgentPrompt` | [meu/schedulerService/src/agents/llm/prompts/zerodhaAgentPrompt.ts](#file-d6d4afdba380) |
+| `@/agents/llm/providers` | [meu/schedulerService/src/agents/llm/providers.ts](#file-52ea280ce42d) |
+| `@/execution/kite/stockTools` | [meu/schedulerService/src/execution/kite/stockTools.ts](#file-162fdce9c91b) |
+| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
+| `@/market-data/indicators` | [meu/schedulerService/src/market-data/indicators.ts](#file-d2e1147adc7f) |
+
+### Imported by
+
+- [meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts](#file-7d719200c45d)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `ai`, `kiteconnect`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `getNseInstrumentMap` | [36](../../meu/schedulerService/src/agents/llm/zerodhaAgent.ts#L36) | `Date.now`, `all.map`, `kc.getInstruments` |
+| `describeCandles` | [50](../../meu/schedulerService/src/agents/llm/zerodhaAgent.ts#L50) | `candles.map`, `ema`, `macd`, `rsi` |
+| `zerodhaTradingAgent` | [72](../../meu/schedulerService/src/agents/llm/zerodhaAgent.ts#L72) | `AbortSignal.timeout`, `Date.now`, `JSON.stringify`, `agent.generate`, `describeCandles`, `errMeta`, `fmt`, `formatTradingPolicy`, `getNseInstrumentMap`, `getZerodhaTools`, `instruments.map`, `kc.getHistoricalData`, `kc.getHoldings`, `kc.getMargins`, `kc.getOrders`, `kc.getPositions`, `log.info`, `log.warn`, `provider.createModel`, `recentRuns.map`, `resolveLLMProvider`, `result.steps.at`, `result.steps.reduce`, `result.text.trim`, `symbols.join`, `today.getTime`, `tokenBySymbol.get` |
+| `fmt` | [90](../../meu/schedulerService/src/agents/llm/zerodhaAgent.ts#L90) | — |
+
+<a id="file-8a3ab198552f"></a>
+
+## meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts
+
+[meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](../../meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../../shared/trading/delta-data` | [shared/trading/delta-data.ts](#file-780ed3a879a0) |
+| `../../../../../shared/trading/exitPolicy` | [shared/trading/exitPolicy.ts](#file-6d32b175ded4) |
+| `../../../../../shared/trading/perpetualBacktest` | [shared/trading/perpetualBacktest.ts](#file-14821081d1df) |
+| `../../../../../shared/trading/strategies` | [shared/trading/strategies.ts](#file-08c346741655) |
+
+### Imported by
+
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+- [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+- [meu_frontend/src/features/agents/server/recover-delta-agent.ts](#file-681653d00ae2)
+- [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f)
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `validateCryptoStrategy` | [12](../../meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts#L12) | `Math.abs`, `Number.isFinite`, `Number.isSafeInteger`, `Object.hasOwn`, `validateExitPolicy`, `validateStrategy` |
+
+<a id="file-75b27250a586"></a>
+
+## meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts
+
+[meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../../shared/trading/delta-data` | [shared/trading/delta-data.ts](#file-780ed3a879a0) |
+| `../../../../../shared/trading/emaCrossover` | [shared/trading/emaCrossover.ts](#file-1d7dd8e6da1e) |
+| `../../../../../shared/trading/paperTrading` | [shared/trading/paperTrading.ts](#file-39c515f77d12) |
+| `../../../../../shared/trading/perpetualBacktest` | [shared/trading/perpetualBacktest.ts](#file-14821081d1df) |
+| `../../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
+| `../../../../../shared/trading/strategies` | [shared/trading/strategies.ts](#file-08c346741655) |
+| `../../brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+| `../../brokers/delta/deltaStart` | [meu/schedulerService/src/brokers/delta/deltaStart.ts](#file-6557ced7c80f) |
+| `../../execution/crypto/cryptoTools` | [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf) |
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `../../lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
+| `./cryptoStrategyConfig` | [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f) |
+
+### Imported by
+
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `ccxt`, `mongodb`, `node:crypto`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `history` | [20](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L20) | `Date.now`, `Math.floor`, `Math.max`, `loadDeltaBacktestData` |
+| `sameContract` | [27](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L27) | — |
+| `runPaperStrategy` | [30](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L30) | `advancePaperState`, `data.candles.at`, `db.collection`, `history`, `initializePaperState`, `log.info`, `records.findOne`, `records.insertOne`, `records.replaceOne`, `result.state.cash.toFixed`, `safety.assertActive`, `sameContract`, `strategyStateKey` |
+| `invoke` | [48](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L48) | `tool.execute` |
+| `ownedPosition` | [52](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L52) | `Number`, `Number.isFinite` |
+| `runLiveCryptoStrategy` | [57](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L57) | `Date.now`, `Math.abs`, `Math.min`, `Number`, `Number.isSafeInteger`, `Promise.all`, `createHash`, `cryptoEntryMarket`, `cryptoEntrySnapshot`, `data.candles.at`, `db.collection`, `entry.clientOrderId?.startsWith`, `errMeta`, `evaluateStrategy`, `exchange.fetchOrder`, `exchange.fetchPositions`, `exchange.fetchTicker`, `exchange.priceToPrecision`, `fetchCryptoLeverage`, `fetchCryptoOpenOrders`, `getCryptoTools`, `history`, `initialOrders.some`, `invoke`, `log.info`, `normalizeCryptoPositions`, `orders.some`, `ownedPosition`, `previewAutomaticCryptoLeverage`, `records.findOne`, `records.insertOne`, `records.replaceOne`, `safety.assertActive`, `safety.crypto.scopeSnapshot`, `safety.executeOrder`, `sameContract`, `strategyStateKey`, `validateQuote` |
+| `validateQuote` | [147](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L147) | `Date.now`, `Math.max`, `Number`, `Number.isFinite`, `evaluateMeanReversionEntry`, `exchange.priceToPrecision` |
+| `beforeWrite` | [187](../../meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts#L187) | `safety.assertActive` |
+
+<a id="file-14a300d88a33"></a>
+
+## meu/schedulerService/src/algorithms/emaCrossover.ts
+
+[meu/schedulerService/src/algorithms/emaCrossover.ts](../../meu/schedulerService/src/algorithms/emaCrossover.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../shared/trading/emaCrossover` | [shared/trading/emaCrossover.ts](#file-1d7dd8e6da1e) |
+
+### Imported by
+
+- [meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts](#file-7d719200c45d)
+- [meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts](#file-670f89e9ba10)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
+<a id="file-7d719200c45d"></a>
+
+## meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts
+
+[meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts](../../meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../agents/llm/zerodhaAgent` | [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e) |
+| `@/algorithms/emaCrossover` | [meu/schedulerService/src/algorithms/emaCrossover.ts](#file-14a300d88a33) |
+
+### Imported by
+
+- [meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts](#file-670f89e9ba10)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `kiteconnect`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `getKiteEmaSignals` | [15](../../meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts#L15) | `Number`, `evaluateEmaCrossover`, `getNseInstrumentMap`, `instruments.map`, `kc.getHistoricalData`, `kc.getPositions`, `now.getTime`, `now.toISOString`, `positions.net.find`, `raw.map`, `results.push`, `tokenBySymbol.get` |
+
+<a id="file-670f89e9ba10"></a>
+
+## meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts
+
+[meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts](../../meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../execution/kite/stockTools` | [meu/schedulerService/src/execution/kite/stockTools.ts](#file-162fdce9c91b) |
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `./kiteEmaSignals` | [meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts](#file-7d719200c45d) |
+| `@/algorithms/emaCrossover` | [meu/schedulerService/src/algorithms/emaCrossover.ts](#file-14a300d88a33) |
+
+### Imported by
+
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `kiteconnect`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `getLastPrice` | [9](../../meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts#L9) | `Number`, `Number.isFinite` |
+| `runKiteEmaStrategy` | [16](../../meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts#L16) | `Math.floor`, `Math.max`, `Number`, `Number.isSafeInteger`, `Promise.all`, `getKiteEmaSignals`, `getLastPrice`, `kc.getMargins`, `kc.getOrders`, `kc.getPositions`, `kc.getQuote`, `orders.filter`, `outcomes.join`, `outcomes.push`, `pending.reduce`, `positions.day.reduce`, `positions.net.reduce`, `sizeLongPosition`, `submitKiteOrder` |
+
+<a id="file-1fc4930582ed"></a>
+
+## meu/schedulerService/src/brokers/binance/binanceExecution.ts
+
+[meu/schedulerService/src/brokers/binance/binanceExecution.ts](../../meu/schedulerService/src/brokers/binance/binanceExecution.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `../crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+
+### Imported by
+
+- [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886)
+- [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c)
+- [meu/schedulerService/src/brokers/delta/deltaReconciliation.ts](#file-c1cc1175ff3a)
+- [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf)
 - [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
 
 External or unresolved imports: `ccxt`, `node:crypto`.
@@ -377,31 +675,31 @@ External or unresolved imports: `ccxt`, `node:crypto`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `prepareBinanceAccount` | [6](../../meu/schedulerService/src/agent/binanceExecution.ts#L6) | `Number.isInteger`, `Promise.all`, `beforeWrite`, `exchange.fetchBalance`, `exchange.fetchPositionMode`, `exchange.market`, `exchange.setLeverage`, `exchange.setMarginMode`, `fetchCryptoLeverage`, `flat` |
-| `flat` | [9](../../meu/schedulerService/src/agent/binanceExecution.ts#L9) | `Promise.all`, `exchange.fetchPositions`, `fetchCryptoOpenOrders`, `orders.some`, `positions.some` |
-| `loadBinanceTier` | [30](../../meu/schedulerService/src/agent/binanceExecution.ts#L30) | `Number`, `exchange.fetchMarketLeverageTiers`, `exchange.market`, `rows.find` |
-| `fetchManagedCryptoOrder` | [39](../../meu/schedulerService/src/agent/binanceExecution.ts#L39) | `Number`, `Number.isFinite`, `String`, `exchange.fetchOrder` |
-| `submitBinanceProtectedEntry` | [61](../../meu/schedulerService/src/agent/binanceExecution.ts#L61) | `createHash`, `cryptoEntryMarket`, `id`, `safety.executeOrder` |
-| `id` | [65](../../meu/schedulerService/src/agent/binanceExecution.ts#L65) | `randomUUID` |
+| `prepareBinanceAccount` | [6](../../meu/schedulerService/src/brokers/binance/binanceExecution.ts#L6) | `Number.isInteger`, `Promise.all`, `beforeWrite`, `exchange.fetchBalance`, `exchange.fetchPositionMode`, `exchange.market`, `exchange.setLeverage`, `exchange.setMarginMode`, `fetchCryptoLeverage`, `flat` |
+| `flat` | [9](../../meu/schedulerService/src/brokers/binance/binanceExecution.ts#L9) | `Promise.all`, `exchange.fetchPositions`, `fetchCryptoOpenOrders`, `orders.some`, `positions.some` |
+| `loadBinanceTier` | [30](../../meu/schedulerService/src/brokers/binance/binanceExecution.ts#L30) | `Number`, `exchange.fetchMarketLeverageTiers`, `exchange.market`, `rows.find` |
+| `fetchManagedCryptoOrder` | [39](../../meu/schedulerService/src/brokers/binance/binanceExecution.ts#L39) | `Number`, `Number.isFinite`, `String`, `exchange.fetchOrder` |
+| `submitBinanceProtectedEntry` | [61](../../meu/schedulerService/src/brokers/binance/binanceExecution.ts#L61) | `createHash`, `cryptoEntryMarket`, `id`, `safety.executeOrder` |
+| `id` | [65](../../meu/schedulerService/src/brokers/binance/binanceExecution.ts#L65) | `randomUUID` |
 
-<a id="file-af7774ae7e77"></a>
+<a id="file-8c5d1a686886"></a>
 
-## meu/schedulerService/src/agent/cryptoAccount.ts
+## meu/schedulerService/src/brokers/crypto/cryptoAccount.ts
 
-[meu/schedulerService/src/agent/cryptoAccount.ts](../../meu/schedulerService/src/agent/cryptoAccount.ts)
+[meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../shared/trading/accountRisk` | [shared/trading/accountRisk.ts](#file-60aebedf84e9) |
-| `./binanceExecution` | [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011) |
-| `./cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
+| `../../../../../shared/trading/accountRisk` | [shared/trading/accountRisk.ts](#file-60aebedf84e9) |
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `../binance/binanceExecution` | [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed) |
+| `./cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2)
+- [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
 - [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3)
 - [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a)
@@ -413,45 +711,45 @@ External or unresolved imports: `ccxt`, `mongodb`, `node:crypto`, `zod`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `deltaAccountKey` | [17](../../meu/schedulerService/src/agent/cryptoAccount.ts#L17) | `Number.isSafeInteger`, `String`, `createHash` |
-| `identifyDeltaAccount` | [22](../../meu/schedulerService/src/agent/cryptoAccount.ts#L22) | `String`, `createHash`, `deltaAccountKey`, `exchange.request` |
-| `registerDeltaAccount` | [39](../../meu/schedulerService/src/agent/cryptoAccount.ts#L39) | `accountRiskSchema.parse`, `accounts.findOne`, `accounts.updateOne`, `db.collection` |
-| `createCryptoAccountContext` | [52](../../meu/schedulerService/src/agent/cryptoAccount.ts#L52) | `accountRiskSchema.parse`, `createHash`, `db.collection` |
-| `productId` | [59](../../meu/schedulerService/src/agent/cryptoAccount.ts#L59) | `Number`, `Number.isSafeInteger`, `String`, `exchange.market` |
-| `key` | [65](../../meu/schedulerService/src/agent/cryptoAccount.ts#L65) | `productId` |
-| `verify` | [67](../../meu/schedulerService/src/agent/cryptoAccount.ts#L67) | `Math.abs`, `Number`, `Number.isFinite`, `fetchManagedCryptoOrder`, `orders.findOne`, `orders.updateOne`, `owners.updateOne`, `pending.some`, `periods.updateOne`, `positions.find` |
-| `scopeSnapshot` | [105](../../meu/schedulerService/src/agent/cryptoAccount.ts#L105) | `Number.isFinite`, `daily.findOne`, `daily.updateOne`, `db.collection`, `history.filter`, `key`, `owned.add`, `owned.has`, `owners.find`, `owners.findOne`, `periods.find`, `snapshot.openSymbols.has`, `verify` |
-| `assertOwnsPosition` | [135](../../meu/schedulerService/src/agent/cryptoAccount.ts#L135) | `fetchCryptoOpenOrders`, `key`, `owners.findOne`, `verify` |
-| `recordSubmission` | [140](../../meu/schedulerService/src/agent/cryptoAccount.ts#L140) | `clientOrderId.startsWith`, `key`, `orders.insertOne`, `owners.findOne`, `owners.insertOne`, `owners.replaceOne`, `owners.updateOne`, `periods.insertOne`, `productId`, `randomUUID` |
-| `recordAccepted` | [161](../../meu/schedulerService/src/agent/cryptoAccount.ts#L161) | `orders.findOne`, `orders.updateOne` |
-| `recordRefused` | [167](../../meu/schedulerService/src/agent/cryptoAccount.ts#L167) | `orders.updateOne` |
+| `deltaAccountKey` | [17](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L17) | `Number.isSafeInteger`, `String`, `createHash` |
+| `identifyDeltaAccount` | [22](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L22) | `String`, `createHash`, `deltaAccountKey`, `exchange.request` |
+| `registerDeltaAccount` | [39](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L39) | `accountRiskSchema.parse`, `accounts.findOne`, `accounts.updateOne`, `db.collection` |
+| `createCryptoAccountContext` | [52](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L52) | `accountRiskSchema.parse`, `createHash`, `db.collection` |
+| `productId` | [59](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L59) | `Number`, `Number.isSafeInteger`, `String`, `exchange.market` |
+| `key` | [65](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L65) | `productId` |
+| `verify` | [67](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L67) | `Math.abs`, `Number`, `Number.isFinite`, `fetchManagedCryptoOrder`, `orders.findOne`, `orders.updateOne`, `owners.updateOne`, `pending.some`, `periods.updateOne`, `positions.find` |
+| `scopeSnapshot` | [105](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L105) | `Number.isFinite`, `daily.findOne`, `daily.updateOne`, `db.collection`, `history.filter`, `key`, `owned.add`, `owned.has`, `owners.find`, `owners.findOne`, `periods.find`, `snapshot.openSymbols.has`, `verify` |
+| `assertOwnsPosition` | [135](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L135) | `fetchCryptoOpenOrders`, `key`, `owners.findOne`, `verify` |
+| `recordSubmission` | [140](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L140) | `clientOrderId.startsWith`, `key`, `orders.insertOne`, `owners.findOne`, `owners.insertOne`, `owners.replaceOne`, `owners.updateOne`, `periods.insertOne`, `productId`, `randomUUID` |
+| `recordAccepted` | [161](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L161) | `orders.findOne`, `orders.updateOne` |
+| `recordRefused` | [167](../../meu/schedulerService/src/brokers/crypto/cryptoAccount.ts#L167) | `orders.updateOne` |
 
-<a id="file-c8e8e8ba18d2"></a>
+<a id="file-6357ab2b453c"></a>
 
-## meu/schedulerService/src/agent/cryptoRisk.ts
+## meu/schedulerService/src/brokers/crypto/cryptoRisk.ts
 
-[meu/schedulerService/src/agent/cryptoRisk.ts](../../meu/schedulerService/src/agent/cryptoRisk.ts)
+[meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../shared/trading/marketDay` | [shared/trading/marketDay.ts](#file-79c73731e830) |
-| `../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
-| `./binanceExecution` | [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011) |
-| `./cryptoAccount` | [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
+| `../../../../../shared/trading/marketDay` | [shared/trading/marketDay.ts](#file-79c73731e830) |
+| `../../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `../binance/binanceExecution` | [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed) |
+| `./cryptoAccount` | [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886) |
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011)
-- [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77)
-- [meu/schedulerService/src/agent/deltaReconciliation.ts](#file-76fbe977857f)
-- [meu/schedulerService/src/agent/deltaStart.ts](#file-29349fb39a30)
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6)
-- [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452)
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+- [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed)
+- [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886)
+- [meu/schedulerService/src/brokers/delta/deltaReconciliation.ts](#file-c1cc1175ff3a)
+- [meu/schedulerService/src/brokers/delta/deltaStart.ts](#file-6557ced7c80f)
+- [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf)
+- [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
 - [meu_frontend/src/features/agents/server/edit-crypto-agent.ts](#file-5129a594abff)
 - [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3)
@@ -464,89 +762,35 @@ External or unresolved imports: `ccxt`, `zod`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `cryptoDayStart` | [15](../../meu/schedulerService/src/agent/cryptoRisk.ts#L15) | `Date.now`, `exchangeMarketTimezone`, `marketDayStart` |
-| `number` | [19](../../meu/schedulerService/src/agent/cryptoRisk.ts#L19) | `Number`, `Number.isFinite` |
-| `normalizeCryptoPositions` | [29](../../meu/schedulerService/src/agent/cryptoRisk.ts#L29) | `positions.map` |
-| `cryptoEntryMarket` | [43](../../meu/schedulerService/src/agent/cryptoRisk.ts#L43) | `exchange.market`, `number` |
-| `fetchCryptoLeverage` | [58](../../meu/schedulerService/src/agent/cryptoRisk.ts#L58) | `exchange.fetchLeverage`, `exchange.fetchLeverages`, `exchange.fetchMarginMode`, `exchange.market` |
-| `deltaRows` | [66](../../meu/schedulerService/src/agent/cryptoRisk.ts#L66) | `deltaPage.parse`, `exchange.request`, `rows.push`, `seen.add`, `seen.has` |
-| `fetchCryptoOpenOrders` | [84](../../meu/schedulerService/src/agent/cryptoRisk.ts#L84) | `Promise.all`, `deltaRows`, `exchange.fetchOpenOrders`, `raw.map` |
-| `fetchDailyCryptoLossReport` | [111](../../meu/schedulerService/src/agent/cryptoRisk.ts#L111) | `Date.now`, `Date.parse`, `Math.max`, `Number`, `Number.isFinite`, `Number.isSafeInteger`, `String`, `cryptoDayStart`, `deltaRows`, `events.push`, `exchange.fetchLedger`, `number`, `seen.add`, `seen.has` |
-| `fetchDailyCryptoLoss` | [162](../../meu/schedulerService/src/agent/cryptoRisk.ts#L162) | `Date.now`, `fetchDailyCryptoLossReport` |
-| `cryptoEntrySnapshot` | [166](../../meu/schedulerService/src/agent/cryptoRisk.ts#L166) | `Math.max`, `Number`, `Promise.all`, `cryptoDayStart`, `cryptoEntryMarket`, `exchange.fetchBalance`, `exchange.fetchPositionMode`, `exchange.fetchPositions`, `exchange.fetchTicker`, `exchange.request`, `fetchCryptoLeverage`, `fetchCryptoOpenOrders`, `fetchDailyCryptoLossReport`, `loadBinanceTier`, `metrics.push`, `normalizeCryptoPositions`, `number`, `openSymbols.add` |
-| `accountHeadroom` | [255](../../meu/schedulerService/src/agent/cryptoRisk.ts#L255) | `Math.min`, `account.openSymbols.has`, `values.every` |
-| `sizeCryptoEntry` | [269](../../meu/schedulerService/src/agent/cryptoRisk.ts#L269) | `Math.max`, `Math.min`, `Number`, `Number.isFinite`, `Number.isInteger`, `accountHeadroom`, `assertOrderAllowed`, `exchange.amountToPrecision`, `number`, `policy.symbols.find`, `sizeEntry`, `sizeProtectedFuturesEntry`, `snapshot.openSymbols.has`, `validateSizingPolicy` |
-| `roundDown` | [307](../../meu/schedulerService/src/agent/cryptoRisk.ts#L307) | `Number`, `exchange.amountToPrecision` |
-| `sizeProtectedFuturesEntry` | [353](../../meu/schedulerService/src/agent/cryptoRisk.ts#L353) | `Math.max`, `Math.min`, `Number.isSafeInteger`, `accountHeadroom`, `number`, `sizeEntry`, `snapshot.openSymbols.has` |
-| `roundDown` | [416](../../meu/schedulerService/src/agent/cryptoRisk.ts#L416) | `Number`, `exchange.amountToPrecision` |
-| `previewAutomaticCryptoLeverage` | [428](../../meu/schedulerService/src/agent/cryptoRisk.ts#L428) | `selectAutomaticLeverage` |
+| `cryptoDayStart` | [15](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L15) | `Date.now`, `exchangeMarketTimezone`, `marketDayStart` |
+| `number` | [19](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L19) | `Number`, `Number.isFinite` |
+| `normalizeCryptoPositions` | [29](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L29) | `positions.map` |
+| `cryptoEntryMarket` | [43](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L43) | `exchange.market`, `number` |
+| `fetchCryptoLeverage` | [58](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L58) | `exchange.fetchLeverage`, `exchange.fetchLeverages`, `exchange.fetchMarginMode`, `exchange.market` |
+| `deltaRows` | [66](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L66) | `deltaPage.parse`, `exchange.request`, `rows.push`, `seen.add`, `seen.has` |
+| `fetchCryptoOpenOrders` | [84](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L84) | `Promise.all`, `deltaRows`, `exchange.fetchOpenOrders`, `raw.map` |
+| `fetchDailyCryptoLossReport` | [111](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L111) | `Date.now`, `Date.parse`, `Math.max`, `Number`, `Number.isFinite`, `Number.isSafeInteger`, `String`, `cryptoDayStart`, `deltaRows`, `events.push`, `exchange.fetchLedger`, `number`, `seen.add`, `seen.has` |
+| `fetchDailyCryptoLoss` | [162](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L162) | `Date.now`, `fetchDailyCryptoLossReport` |
+| `cryptoEntrySnapshot` | [166](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L166) | `Math.max`, `Number`, `Promise.all`, `cryptoDayStart`, `cryptoEntryMarket`, `exchange.fetchBalance`, `exchange.fetchPositionMode`, `exchange.fetchPositions`, `exchange.fetchTicker`, `exchange.request`, `fetchCryptoLeverage`, `fetchCryptoOpenOrders`, `fetchDailyCryptoLossReport`, `loadBinanceTier`, `metrics.push`, `normalizeCryptoPositions`, `number`, `openSymbols.add` |
+| `accountHeadroom` | [255](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L255) | `Math.min`, `account.openSymbols.has`, `values.every` |
+| `sizeCryptoEntry` | [269](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L269) | `Math.max`, `Math.min`, `Number`, `Number.isFinite`, `Number.isInteger`, `accountHeadroom`, `assertOrderAllowed`, `exchange.amountToPrecision`, `number`, `policy.symbols.find`, `sizeEntry`, `sizeProtectedFuturesEntry`, `snapshot.openSymbols.has`, `validateSizingPolicy` |
+| `roundDown` | [307](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L307) | `Number`, `exchange.amountToPrecision` |
+| `sizeProtectedFuturesEntry` | [353](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L353) | `Math.max`, `Math.min`, `Number.isSafeInteger`, `accountHeadroom`, `number`, `sizeEntry`, `snapshot.openSymbols.has` |
+| `roundDown` | [416](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L416) | `Number`, `exchange.amountToPrecision` |
+| `previewAutomaticCryptoLeverage` | [428](../../meu/schedulerService/src/brokers/crypto/cryptoRisk.ts#L428) | `selectAutomaticLeverage` |
 
-<a id="file-717301bf538c"></a>
+<a id="file-c1cc1175ff3a"></a>
 
-## meu/schedulerService/src/agent/cryptoStrategyConfig.ts
+## meu/schedulerService/src/brokers/delta/deltaReconciliation.ts
 
-[meu/schedulerService/src/agent/cryptoStrategyConfig.ts](../../meu/schedulerService/src/agent/cryptoStrategyConfig.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../../../shared/trading/delta-data` | [shared/trading/delta-data.ts](#file-780ed3a879a0) |
-| `../../../../shared/trading/exitPolicy` | [shared/trading/exitPolicy.ts](#file-6d32b175ded4) |
-| `../../../../shared/trading/perpetualBacktest` | [shared/trading/perpetualBacktest.ts](#file-14821081d1df) |
-| `../../../../shared/trading/strategies` | [shared/trading/strategies.ts](#file-08c346741655) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-- [meu_frontend/src/features/agents/server/recover-delta-agent.ts](#file-681653d00ae2)
-- [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f)
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `validateCryptoStrategy` | [12](../../meu/schedulerService/src/agent/cryptoStrategyConfig.ts#L12) | `Math.abs`, `Number.isFinite`, `Number.isSafeInteger`, `Object.hasOwn`, `validateExitPolicy`, `validateStrategy` |
-
-<a id="file-4af6b185e722"></a>
-
-## meu/schedulerService/src/agent/dailyRiskUsage.ts
-
-[meu/schedulerService/src/agent/dailyRiskUsage.ts](../../meu/schedulerService/src/agent/dailyRiskUsage.ts)
+[meu/schedulerService/src/brokers/delta/deltaReconciliation.ts](../../meu/schedulerService/src/brokers/delta/deltaReconciliation.ts)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../shared/trading/marketDay` | [shared/trading/marketDay.ts](#file-79c73731e830) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-
-### Imported by
-
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `mongodb`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `reserveDailyEntry` | [16](../../meu/schedulerService/src/agent/dailyRiskUsage.ts#L16) | `Number.isSafeInteger`, `db.collection`, `marketDate`, `now.getTime`, `usage.findOne`, `usage.updateOne` |
-
-<a id="file-76fbe977857f"></a>
-
-## meu/schedulerService/src/agent/deltaReconciliation.ts
-
-[meu/schedulerService/src/agent/deltaReconciliation.ts](../../meu/schedulerService/src/agent/deltaReconciliation.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./binanceExecution` | [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011) |
-| `./cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
+| `../binance/binanceExecution` | [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed) |
+| `../crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
 
 ### Imported by
 
@@ -560,25 +804,25 @@ External or unresolved imports: `ccxt`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `inspectDeltaOwnership` | [17](../../meu/schedulerService/src/agent/deltaReconciliation.ts#L17) | `Date.now`, `Math.abs`, `Number`, `Number.isFinite`, `Promise.all`, `exchange.fetchPositions`, `fetchCryptoOpenOrders`, `fetchManagedCryptoOrder`, `issues.push`, `managed.find`, `normalizeCryptoPositions`, `observed.set`, `orderRows.push`, `owner.orderRefs.includes`, `owner.orderRefs.map`, `owners.find`, `owners.some`, `pending.filter`, `pending.map`, `positions.find`, `positions.map`, `positions.some`, `refs.reduce`, `refs.some` |
+| `inspectDeltaOwnership` | [17](../../meu/schedulerService/src/brokers/delta/deltaReconciliation.ts#L17) | `Date.now`, `Math.abs`, `Number`, `Number.isFinite`, `Promise.all`, `exchange.fetchPositions`, `fetchCryptoOpenOrders`, `fetchManagedCryptoOrder`, `issues.push`, `managed.find`, `normalizeCryptoPositions`, `observed.set`, `orderRows.push`, `owner.orderRefs.includes`, `owner.orderRefs.map`, `owners.find`, `owners.some`, `pending.filter`, `pending.map`, `positions.find`, `positions.map`, `positions.some`, `refs.reduce`, `refs.some` |
 
-<a id="file-29349fb39a30"></a>
+<a id="file-6557ced7c80f"></a>
 
-## meu/schedulerService/src/agent/deltaStart.ts
+## meu/schedulerService/src/brokers/delta/deltaStart.ts
 
-[meu/schedulerService/src/agent/deltaStart.ts](../../meu/schedulerService/src/agent/deltaStart.ts)
+[meu/schedulerService/src/brokers/delta/deltaStart.ts](../../meu/schedulerService/src/brokers/delta/deltaStart.ts)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `./cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
+| `../../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `../crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+- [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf)
 - [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
 
 External or unresolved imports: `ccxt`.
@@ -587,41 +831,15 @@ External or unresolved imports: `ccxt`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `acknowledged` | [11](../../meu/schedulerService/src/agent/deltaStart.ts#L11) | — |
-| `prepareDeltaStrategyAccount` | [18](../../meu/schedulerService/src/agent/deltaStart.ts#L18) | `Number.isInteger`, `Number.isSafeInteger`, `Promise.all`, `String`, `acknowledged`, `checkFlatAgain`, `cryptoEntryMarket`, `exchange.fetchMarginMode`, `exchange.fetchPositions`, `exchange.request`, `exchange.setLeverage`, `fetchCryptoLeverage`, `fetchCryptoOpenOrders`, `normalizeCryptoPositions`, `openPositions.some`, `options.beforeWrite`, `orders.some`, `positions.filter` |
-| `checkFlatAgain` | [46](../../meu/schedulerService/src/agent/deltaStart.ts#L46) | `Promise.all`, `exchange.fetchPositions`, `fetchCryptoOpenOrders`, `latestOrders.some`, `nonzero.some`, `normalizeCryptoPositions` |
+| `acknowledged` | [11](../../meu/schedulerService/src/brokers/delta/deltaStart.ts#L11) | — |
+| `prepareDeltaStrategyAccount` | [18](../../meu/schedulerService/src/brokers/delta/deltaStart.ts#L18) | `Number.isInteger`, `Number.isSafeInteger`, `Promise.all`, `String`, `acknowledged`, `checkFlatAgain`, `cryptoEntryMarket`, `exchange.fetchMarginMode`, `exchange.fetchPositions`, `exchange.request`, `exchange.setLeverage`, `fetchCryptoLeverage`, `fetchCryptoOpenOrders`, `normalizeCryptoPositions`, `openPositions.some`, `options.beforeWrite`, `orders.some`, `positions.filter` |
+| `checkFlatAgain` | [46](../../meu/schedulerService/src/brokers/delta/deltaStart.ts#L46) | `Promise.all`, `exchange.fetchPositions`, `fetchCryptoOpenOrders`, `latestOrders.some`, `nonzero.some`, `normalizeCryptoPositions` |
 
-<a id="file-5fb7eeb8b03a"></a>
+<a id="file-2e463653a27f"></a>
 
-## meu/schedulerService/src/agent/kiteEmaSignals.ts
+## meu/schedulerService/src/brokers/kite/kiteTokenManager.ts
 
-[meu/schedulerService/src/agent/kiteEmaSignals.ts](../../meu/schedulerService/src/agent/kiteEmaSignals.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./zerodhaAgent` | [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043) |
-| `@/strategy/emaCrossover` | [meu/schedulerService/src/strategy/emaCrossover.ts](#file-f642851e8e77) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/runKiteEmaStrategy.ts](#file-b92ffa2998cd)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `kiteconnect`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `getKiteEmaSignals` | [15](../../meu/schedulerService/src/agent/kiteEmaSignals.ts#L15) | `Number`, `evaluateEmaCrossover`, `getNseInstrumentMap`, `instruments.map`, `kc.getHistoricalData`, `kc.getPositions`, `now.getTime`, `now.toISOString`, `positions.net.find`, `raw.map`, `results.push`, `tokenBySymbol.get` |
-
-<a id="file-8bbb5e919689"></a>
-
-## meu/schedulerService/src/agent/kiteTokenManager.ts
-
-[meu/schedulerService/src/agent/kiteTokenManager.ts](../../meu/schedulerService/src/agent/kiteTokenManager.ts)
+[meu/schedulerService/src/brokers/kite/kiteTokenManager.ts](../../meu/schedulerService/src/brokers/kite/kiteTokenManager.ts)
 
 ### Internal dependencies
 
@@ -640,460 +858,10 @@ External or unresolved imports: `kiteconnect`, `mongodb`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `isTokenFresh` | [30](../../meu/schedulerService/src/agent/kiteTokenManager.ts#L30) | `ist.format` |
-| `kiteLoginUrl` | [42](../../meu/schedulerService/src/agent/kiteTokenManager.ts#L42) | — |
-| `notifyTokenNeeded` | [55](../../meu/schedulerService/src/agent/kiteTokenManager.ts#L55) | `String`, `emitNotification`, `kiteLoginUrl` |
-| `getKiteForExchange` | [74](../../meu/schedulerService/src/agent/kiteTokenManager.ts#L74) | `String`, `errMeta`, `isTokenFresh`, `kc.getProfile`, `kc.setAccessToken`, `log.info`, `notifyTokenNeeded` |
-
-<a id="file-47f54733b6b1"></a>
-
-## meu/schedulerService/src/agent/prompts/cryptoAgentPrompt.ts
-
-[meu/schedulerService/src/agent/prompts/cryptoAgentPrompt.ts](../../meu/schedulerService/src/agent/prompts/cryptoAgentPrompt.ts)
-
-No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
-
-<a id="file-868a4e1d784d"></a>
-
-## meu/schedulerService/src/agent/prompts/stockAgentPrompt.ts
-
-[meu/schedulerService/src/agent/prompts/stockAgentPrompt.ts](../../meu/schedulerService/src/agent/prompts/stockAgentPrompt.ts)
-
-No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
-
-<a id="file-3cb0b615d9c3"></a>
-
-## meu/schedulerService/src/agent/prompts/testPrompt.ts
-
-[meu/schedulerService/src/agent/prompts/testPrompt.ts](../../meu/schedulerService/src/agent/prompts/testPrompt.ts)
-
-### Imported by
-
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
-
-No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
-
-<a id="file-efcf498bd6e3"></a>
-
-## meu/schedulerService/src/agent/prompts/zerodhaAgentPrompt.ts
-
-[meu/schedulerService/src/agent/prompts/zerodhaAgentPrompt.ts](../../meu/schedulerService/src/agent/prompts/zerodhaAgentPrompt.ts)
-
-### Imported by
-
-- [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043)
-
-No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
-
-<a id="file-36c08f3ddd12"></a>
-
-## meu/schedulerService/src/agent/providers.ts
-
-[meu/schedulerService/src/agent/providers.ts](../../meu/schedulerService/src/agent/providers.ts)
-
-### Imported by
-
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
-- [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `@ai-sdk/amazon-bedrock`, `@ai-sdk/openai-compatible`, `ai`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `openAICompatibleProvider` | [36](../../meu/schedulerService/src/agent/providers.ts#L36) | — |
-| `createModel` | [41](../../meu/schedulerService/src/agent/providers.ts#L41) | `client.chatModel`, `createOpenAICompatible` |
-| `createModel` | [59](../../meu/schedulerService/src/agent/providers.ts#L59) | `apiKey.trim`, `createAmazonBedrock`, `createOpenAICompatible` |
-| `resolveLLMProvider` | [111](../../meu/schedulerService/src/agent/providers.ts#L111) | — |
-
-<a id="file-1bca7a5e1b0a"></a>
-
-## meu/schedulerService/src/agent/runCryptoStrategy.ts
-
-[meu/schedulerService/src/agent/runCryptoStrategy.ts](../../meu/schedulerService/src/agent/runCryptoStrategy.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../../../shared/trading/delta-data` | [shared/trading/delta-data.ts](#file-780ed3a879a0) |
-| `../../../../shared/trading/emaCrossover` | [shared/trading/emaCrossover.ts](#file-1d7dd8e6da1e) |
-| `../../../../shared/trading/paperTrading` | [shared/trading/paperTrading.ts](#file-39c515f77d12) |
-| `../../../../shared/trading/perpetualBacktest` | [shared/trading/perpetualBacktest.ts](#file-14821081d1df) |
-| `../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
-| `../../../../shared/trading/strategies` | [shared/trading/strategies.ts](#file-08c346741655) |
-| `../lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
-| `./cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `./cryptoStrategyConfig` | [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c) |
-| `./deltaStart` | [meu/schedulerService/src/agent/deltaStart.ts](#file-29349fb39a30) |
-| `./tools/cryptoTools/cryptoTools` | [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-
-### Imported by
-
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `ccxt`, `mongodb`, `node:crypto`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `history` | [20](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L20) | `Date.now`, `Math.floor`, `Math.max`, `loadDeltaBacktestData` |
-| `sameContract` | [27](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L27) | — |
-| `runPaperStrategy` | [30](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L30) | `advancePaperState`, `data.candles.at`, `db.collection`, `history`, `initializePaperState`, `log.info`, `records.findOne`, `records.insertOne`, `records.replaceOne`, `result.state.cash.toFixed`, `safety.assertActive`, `sameContract`, `strategyStateKey` |
-| `invoke` | [48](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L48) | `tool.execute` |
-| `ownedPosition` | [52](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L52) | `Number`, `Number.isFinite` |
-| `runLiveCryptoStrategy` | [57](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L57) | `Date.now`, `Math.abs`, `Math.min`, `Number`, `Number.isSafeInteger`, `Promise.all`, `createHash`, `cryptoEntryMarket`, `cryptoEntrySnapshot`, `data.candles.at`, `db.collection`, `entry.clientOrderId?.startsWith`, `errMeta`, `evaluateStrategy`, `exchange.fetchOrder`, `exchange.fetchPositions`, `exchange.fetchTicker`, `exchange.priceToPrecision`, `fetchCryptoLeverage`, `fetchCryptoOpenOrders`, `getCryptoTools`, `history`, `initialOrders.some`, `invoke`, `log.info`, `normalizeCryptoPositions`, `orders.some`, `ownedPosition`, `previewAutomaticCryptoLeverage`, `records.findOne`, `records.insertOne`, `records.replaceOne`, `safety.assertActive`, `safety.crypto.scopeSnapshot`, `safety.executeOrder`, `sameContract`, `strategyStateKey`, `validateQuote` |
-| `validateQuote` | [147](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L147) | `Date.now`, `Math.max`, `Number`, `Number.isFinite`, `evaluateMeanReversionEntry`, `exchange.priceToPrecision` |
-| `beforeWrite` | [187](../../meu/schedulerService/src/agent/runCryptoStrategy.ts#L187) | `safety.assertActive` |
-
-<a id="file-b92ffa2998cd"></a>
-
-## meu/schedulerService/src/agent/runKiteEmaStrategy.ts
-
-[meu/schedulerService/src/agent/runKiteEmaStrategy.ts](../../meu/schedulerService/src/agent/runKiteEmaStrategy.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./kiteEmaSignals` | [meu/schedulerService/src/agent/kiteEmaSignals.ts](#file-5fb7eeb8b03a) |
-| `./tools/zerodhaTools/stockTools` | [meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](#file-e5ec902684c5) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-| `@/strategy/emaCrossover` | [meu/schedulerService/src/strategy/emaCrossover.ts](#file-f642851e8e77) |
-
-### Imported by
-
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `kiteconnect`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `getLastPrice` | [9](../../meu/schedulerService/src/agent/runKiteEmaStrategy.ts#L9) | `Number`, `Number.isFinite` |
-| `runKiteEmaStrategy` | [16](../../meu/schedulerService/src/agent/runKiteEmaStrategy.ts#L16) | `Math.floor`, `Math.max`, `Number`, `Number.isSafeInteger`, `Promise.all`, `getKiteEmaSignals`, `getLastPrice`, `kc.getMargins`, `kc.getOrders`, `kc.getPositions`, `kc.getQuote`, `orders.filter`, `outcomes.join`, `outcomes.push`, `pending.reduce`, `positions.day.reduce`, `positions.net.reduce`, `sizeLongPosition`, `submitKiteOrder` |
-
-<a id="file-6fee954f052b"></a>
-
-## meu/schedulerService/src/agent/runMemory.ts
-
-[meu/schedulerService/src/agent/runMemory.ts](../../meu/schedulerService/src/agent/runMemory.ts)
-
-### Imported by
-
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
-- [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `node:crypto`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `operationReceipt` | [23](../../meu/schedulerService/src/agent/runMemory.ts#L23) | `intent.action.slice`, `intent.symbol.slice`, `intent.tradingsymbol.slice` |
-| `buildRunMemory` | [31](../../meu/schedulerService/src/agent/runMemory.ts#L31) | `JSON.parse`, `receipts.filter`, `receipts.slice`, `response.lastIndexOf`, `response.matchAll`, `response.slice`, `summarySchema.safeParse` |
-| `canonical` | [55](../../meu/schedulerService/src/agent/runMemory.ts#L55) | `Array.isArray`, `Object.entries`, `Object.fromEntries`, `value.map` |
-| `memoryContext` | [62](../../meu/schedulerService/src/agent/runMemory.ts#L62) | `Boolean`, `JSON.stringify`, `String`, `canonical`, `createHash` |
-| `formatRunMemory` | [74](../../meu/schedulerService/src/agent/runMemory.ts#L74) | `JSON.stringify`, `Number.isFinite`, `String`, `date.getTime`, `date.toISOString` |
-
-<a id="file-d527e5c6d3e6"></a>
-
-## meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts
-
-[meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../binanceExecution` | [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011) |
-| `../../cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `../../deltaStart` | [meu/schedulerService/src/agent/deltaStart.ts](#file-29349fb39a30) |
-| `../../tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
-| `@/lib/toolLogging` | [meu/schedulerService/src/lib/toolLogging.ts](#file-314810885502) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
-
-External or unresolved imports: `ai`, `ccxt`, `node:crypto`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `getCryptoTools` | [15](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L15) | `createHash`, `instrumentTools`, `tool`, `z.enum`, `z.number`, `z.object`, `z.string` |
-| `scopedSymbol` | [17](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L17) | `exchange.market`, `safety.policy.symbols.some` |
-| `entryQuote` | [25](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L25) | `Number`, `Number.isFinite`, `exchange.fetchTicker`, `exchange.priceToPrecision` |
-| `nativeStopPrice` | [31](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L31) | `Number`, `Number.isFinite`, `exchange.priceToPrecision` |
-| `closePosition` | [39](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L39) | `randomUUID`, `safety.assertActive`, `safety.executeOrder`, `scopedSymbol` |
-| `execute` | [76](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L76) | `Number`, `cryptoEntryMarket`, `entryQuote`, `errMeta`, `exchange.priceToPrecision`, `log.error`, `log.info`, `nativeStopPrice`, `randomUUID`, `safety.executeOrder`, `scopedSymbol`, `submitBinanceProtectedEntry` |
-| `execute` | [153](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L153) | `cryptoEntryMarket`, `cryptoEntrySnapshot`, `entryQuote`, `errMeta`, `log.warn`, `nativeStopPrice`, `safety.assertActive`, `safety.crypto.scopeSnapshot`, `scopedSymbol`, `sizeCryptoEntry` |
-| `execute` | [170](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L170) | `errMeta`, `fetchCryptoOpenOrders`, `log.warn`, `safety.policy.symbols.map` |
-| `execute` | [181](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L181) | `errMeta`, `log.warn`, `safety.executeOrder`, `scopedSymbol` |
-| `execute` | [200](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L200) | `cryptoEntryMarket`, `cryptoEntrySnapshot`, `entryQuote`, `errMeta`, `log.warn`, `nativeStopPrice`, `previewAutomaticCryptoLeverage`, `safety.assertActive`, `safety.crypto.scopeSnapshot`, `safety.executeOrder`, `scopedSymbol`, `snapshot.orders.some`, `snapshot.positions.some` |
-| `beforeWrite` | [217](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L217) | `safety.assertActive` |
-| `execute` | [233](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L233) | `errMeta`, `fetchCryptoLeverage`, `log.error`, `scopedSymbol` |
-| `execute` | [260](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L260) | `errMeta`, `exchange.fetchMyTrades`, `log.error`, `log.info` |
-| `execute` | [288](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L288) | `errMeta`, `exchange.fetchPositions`, `log.error`, `log.info`, `normalizeCryptoPositions` |
-| `execute` | [316](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L316) | `closePosition`, `errMeta`, `log.warn` |
-| `execute` | [324](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L324) | `Number`, `allowed.includes`, `closePosition`, `closed.push`, `errMeta`, `exchange.fetchPositions`, `log.warn`, `normalizeCryptoPositions`, `safety.policy.symbols.map` |
-| `execute` | [342](../../meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts#L342) | `Object.entries`, `errMeta`, `exchange.fetchBalance`, `log.error`, `log.info` |
-
-<a id="file-e5ec902684c5"></a>
-
-## meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts
-
-[meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
-| `@/lib/marketHours` | [meu/schedulerService/src/lib/marketHours.ts](#file-81bfe3a96d76) |
-| `@/lib/toolLogging` | [meu/schedulerService/src/lib/toolLogging.ts](#file-314810885502) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/runKiteEmaStrategy.ts](#file-b92ffa2998cd)
-- [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043)
-
-External or unresolved imports: `ai`, `kiteconnect`, `node:crypto`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `kiteAgentTag` | [14](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L14) | `createHash` |
-| `previewKiteOrderMargin` | [32](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L32) | `Number.isFinite`, `Number.isSafeInteger`, `kc.orderMargins` |
-| `submitKiteOrder` | [40](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L40) | `errMeta`, `kiteAgentTag`, `log.error`, `log.info`, `safety.executeOrder` |
-| `getZerodhaTools` | [142](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L142) | `instrumentTools`, `tool`, `z.array`, `z.enum`, `z.number`, `z.object`, `z.string` |
-| `execute` | [159](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L159) | `submitKiteOrder` |
-| `execute` | [167](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L167) | `errMeta`, `kiteAgentTag`, `log.error`, `safety.assertActive`, `safety.executeOrder` |
-| `execute` | [190](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L190) | `errMeta`, `kc.getOrders`, `log.warn` |
-| `execute` | [217](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L217) | `errMeta`, `kc.getPositions`, `log.warn` |
-| `execute` | [242](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L242) | `errMeta`, `holdings.map`, `kc.getHoldings`, `log.warn` |
-| `execute` | [264](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L264) | `Object.entries`, `errMeta`, `kc.getQuote`, `log.warn`, `symbols.map` |
-| `execute` | [294](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L294) | `candles.slice`, `errMeta`, `kc.getHistoricalData`, `log.warn` |
-| `execute` | [325](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L325) | `previewKiteOrderMargin`, `safety.assertActive`, `safety.policy.symbols.includes` |
-| `execute` | [336](../../meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts#L336) | `errMeta`, `kc.getMargins`, `log.warn` |
-
-<a id="file-89a7a3af8452"></a>
-
-## meu/schedulerService/src/agent/tradeGuard.ts
-
-[meu/schedulerService/src/agent/tradeGuard.ts](../../meu/schedulerService/src/agent/tradeGuard.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
-| `./cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011)
-- [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77)
-- [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2)
-- [meu/schedulerService/src/agent/dailyRiskUsage.ts](#file-4af6b185e722)
-- [meu/schedulerService/src/agent/deltaStart.ts](#file-29349fb39a30)
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/agent/runKiteEmaStrategy.ts](#file-b92ffa2998cd)
-- [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6)
-- [meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](#file-e5ec902684c5)
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
-- [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043)
-- [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-- [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3)
-- [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
-
-External or unresolved imports: `ccxt`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `formatTradingPolicy` | [57](../../meu/schedulerService/src/agent/tradeGuard.ts#L57) | `budget`, `policy.symbols.join` |
-| `budget` | [58](../../meu/schedulerService/src/agent/tradeGuard.ts#L58) | `Number` |
-| `assertOrderAllowed` | [89](../../meu/schedulerService/src/agent/tradeGuard.ts#L89) | `Math.max`, `Math.min`, `Number.isSafeInteger`, `policy.symbols.includes`, `validateSizingPolicy` |
-| `sizeLongPosition` | [118](../../meu/schedulerService/src/agent/tradeGuard.ts#L118) | `Math.floor`, `Math.max`, `Math.min`, `Number.isSafeInteger`, `sizeEntry`, `validateSizingPolicy` |
-| `roundDown` | [144](../../meu/schedulerService/src/agent/tradeGuard.ts#L144) | `Math.floor` |
-
-<a id="file-13f49104ee96"></a>
-
-## meu/schedulerService/src/agent/vercelAgent.ts
-
-[meu/schedulerService/src/agent/vercelAgent.ts](../../meu/schedulerService/src/agent/vercelAgent.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `./runMemory` | [meu/schedulerService/src/agent/runMemory.ts](#file-6fee954f052b) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-| `@/agent/prompts/testPrompt` | [meu/schedulerService/src/agent/prompts/testPrompt.ts](#file-3cb0b615d9c3) |
-| `@/agent/providers` | [meu/schedulerService/src/agent/providers.ts](#file-36c08f3ddd12) |
-| `@/agent/tools/cryptoTools/cryptoTools` | [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6) |
-| `@/agentFunctions/cmFunctions` | [meu/schedulerService/src/agentFunctions/cmFunctions.ts](#file-0c9701193f49) |
-| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
-
-### Imported by
-
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `ai`, `ccxt`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `formatRecentTrades` | [45](../../meu/schedulerService/src/agent/vercelAgent.ts#L45) | `lines.join`, `trades.slice` |
-| `tradingAgent` | [54](../../meu/schedulerService/src/agent/vercelAgent.ts#L54) | `AbortSignal.timeout`, `Coin.map`, `Date.now`, `JSON.stringify`, `Object.entries`, `TPROMPT.replace`, `analysis.push`, `coins.toString`, `exchange.fetchBalance`, `exchange.fetchMyTrades`, `exchange.fetchPositions`, `exchange.market`, `formatMarketAnalysis`, `formatRecentTrades`, `formatTradingPolicy`, `getCryptoTools`, `getIntradayIndicators`, `log.info`, `marketData.push`, `normalizeCryptoPositions`, `openPositions.map`, `provider.createModel`, `resolveLLMProvider`, `result.steps.at`, `result.steps.reduce`, `result.text.trim`, `tradingAgent.generate` |
-
-<a id="file-8b6c143fe043"></a>
-
-## meu/schedulerService/src/agent/zerodhaAgent.ts
-
-[meu/schedulerService/src/agent/zerodhaAgent.ts](../../meu/schedulerService/src/agent/zerodhaAgent.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./runMemory` | [meu/schedulerService/src/agent/runMemory.ts](#file-6fee954f052b) |
-| `./tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-| `@/agent/prompts/zerodhaAgentPrompt` | [meu/schedulerService/src/agent/prompts/zerodhaAgentPrompt.ts](#file-efcf498bd6e3) |
-| `@/agent/providers` | [meu/schedulerService/src/agent/providers.ts](#file-36c08f3ddd12) |
-| `@/agent/tools/zerodhaTools/stockTools` | [meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](#file-e5ec902684c5) |
-| `@/agentFunctions/mIndicators` | [meu/schedulerService/src/agentFunctions/mIndicators.ts](#file-0143ca2b04c3) |
-| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/kiteEmaSignals.ts](#file-5fb7eeb8b03a)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `ai`, `kiteconnect`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `getNseInstrumentMap` | [36](../../meu/schedulerService/src/agent/zerodhaAgent.ts#L36) | `Date.now`, `all.map`, `kc.getInstruments` |
-| `describeCandles` | [50](../../meu/schedulerService/src/agent/zerodhaAgent.ts#L50) | `candles.map`, `ema`, `macd`, `rsi` |
-| `zerodhaTradingAgent` | [72](../../meu/schedulerService/src/agent/zerodhaAgent.ts#L72) | `AbortSignal.timeout`, `Date.now`, `JSON.stringify`, `agent.generate`, `describeCandles`, `errMeta`, `fmt`, `formatTradingPolicy`, `getNseInstrumentMap`, `getZerodhaTools`, `instruments.map`, `kc.getHistoricalData`, `kc.getHoldings`, `kc.getMargins`, `kc.getOrders`, `kc.getPositions`, `log.info`, `log.warn`, `provider.createModel`, `recentRuns.map`, `resolveLLMProvider`, `result.steps.at`, `result.steps.reduce`, `result.text.trim`, `symbols.join`, `today.getTime`, `tokenBySymbol.get` |
-| `fmt` | [90](../../meu/schedulerService/src/agent/zerodhaAgent.ts#L90) | — |
-
-<a id="file-0c9701193f49"></a>
-
-## meu/schedulerService/src/agentFunctions/cmFunctions.ts
-
-[meu/schedulerService/src/agentFunctions/cmFunctions.ts](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./mIndicators` | [meu/schedulerService/src/agentFunctions/mIndicators.ts](#file-0143ca2b04c3) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
-- [meu/schedulerService/src/alogorithmFunctions/helperFunc/helper.ts](#file-8ce72d39ea49)
-- [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-External or unresolved imports: `ccxt`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `analysisTimeframe` | [11](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts#L11) | `ANALYSIS_TIMEFRAMES.includes` |
-| `getOHLCV` | [30](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts#L30) | `exchange.fetchOHLCV` |
-| `getCompletedHistory` | [35](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts#L35) | `Array.isArray`, `Date.now`, `Math.ceil`, `Math.floor`, `Math.max`, `Math.min`, `Number.isSafeInteger`, `Promise.race`, `clearTimeout`, `exchange.fetchOHLCV`, `history.at`, `history.push`, `rows.at` |
-| `getIntradayIndicators` | [82](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts#L82) | `Date.now`, `Number.isSafeInteger`, `getCompletedHistory`, `macd`, `ohlcv.at`, `ohlcv.slice`, `rsi` |
-| `getSwingIndicators` | [100](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts#L100) | `Date.now`, `getIntradayIndicators` |
-| `getLongTermIndicators` | [103](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts#L103) | `Date.now`, `getIntradayIndicators` |
-| `formatMarketAnalysis` | [108](../../meu/schedulerService/src/agentFunctions/cmFunctions.ts#L108) | `data.ohlcv.map` |
-
-<a id="file-0143ca2b04c3"></a>
-
-## meu/schedulerService/src/agentFunctions/mIndicators.ts
-
-[meu/schedulerService/src/agentFunctions/mIndicators.ts](../../meu/schedulerService/src/agentFunctions/mIndicators.ts)
-
-### Imported by
-
-- [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043)
-- [meu/schedulerService/src/agentFunctions/cmFunctions.ts](#file-0c9701193f49)
-- [meu/schedulerService/src/agentFunctions/smFunctions.ts](#file-dceba1bb5321)
-- [meu/schedulerService/src/alogorithmFunctions/helperFunc/helper.ts](#file-8ce72d39ea49)
-
-External or unresolved imports: `ccxt`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `ema` | [8](../../meu/schedulerService/src/agentFunctions/mIndicators.ts#L8) | — |
-| `macd` | [35](../../meu/schedulerService/src/agentFunctions/mIndicators.ts#L35) | `closes.slice`, `ema`, `emaFast.slice`, `emaSlow.slice`, `histogram.slice`, `macdLine.map`, `macdLine.slice`, `ohlcv.map`, `signal.slice` |
-| `rsi` | [78](../../meu/schedulerService/src/agentFunctions/mIndicators.ts#L78) | `Array.isArray`, `Math.max`, `result.slice` |
-
-<a id="file-dceba1bb5321"></a>
-
-## meu/schedulerService/src/agentFunctions/smFunctions.ts
-
-[meu/schedulerService/src/agentFunctions/smFunctions.ts](../../meu/schedulerService/src/agentFunctions/smFunctions.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./mIndicators` | [meu/schedulerService/src/agentFunctions/mIndicators.ts](#file-0143ca2b04c3) |
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `fetchYahooOHLCV` | [4](../../meu/schedulerService/src/agentFunctions/smFunctions.ts#L4) | `candles.push`, `fetch`, `response.json` |
-| `getStocksIntradayIndicators` | [57](../../meu/schedulerService/src/agentFunctions/smFunctions.ts#L57) | `fetchYahooOHLCV`, `macd`, `midPrices.slice`, `ohlcv.map`, `rsi` |
-| `getStocksSwingIndicators` | [73](../../meu/schedulerService/src/agentFunctions/smFunctions.ts#L73) | `fetchYahooOHLCV`, `macd`, `midPrices.slice`, `ohlcv.map`, `rsi` |
-| `getStocksLongTermIndicators` | [89](../../meu/schedulerService/src/agentFunctions/smFunctions.ts#L89) | `fetchYahooOHLCV`, `macd`, `midPrices.slice`, `ohlcv.map`, `rsi` |
-
-<a id="file-8ce72d39ea49"></a>
-
-## meu/schedulerService/src/alogorithmFunctions/helperFunc/helper.ts
-
-[meu/schedulerService/src/alogorithmFunctions/helperFunc/helper.ts](../../meu/schedulerService/src/alogorithmFunctions/helperFunc/helper.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/agentFunctions/cmFunctions` | [meu/schedulerService/src/agentFunctions/cmFunctions.ts](#file-0c9701193f49) |
-| `@/agentFunctions/mIndicators` | [meu/schedulerService/src/agentFunctions/mIndicators.ts](#file-0143ca2b04c3) |
-
-External or unresolved imports: `ccxt`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `getIndicators` | [5](../../meu/schedulerService/src/alogorithmFunctions/helperFunc/helper.ts#L5) | `Date.now`, `Math.max`, `closedOhlcv.slice`, `ema`, `emaFast.slice`, `emaSlow.slice`, `getOHLCV`, `ohlcv.map`, `ohlcv.slice` |
+| `isTokenFresh` | [30](../../meu/schedulerService/src/brokers/kite/kiteTokenManager.ts#L30) | `ist.format` |
+| `kiteLoginUrl` | [42](../../meu/schedulerService/src/brokers/kite/kiteTokenManager.ts#L42) | — |
+| `notifyTokenNeeded` | [55](../../meu/schedulerService/src/brokers/kite/kiteTokenManager.ts#L55) | `String`, `emitNotification`, `kiteLoginUrl` |
+| `getKiteForExchange` | [74](../../meu/schedulerService/src/brokers/kite/kiteTokenManager.ts#L74) | `String`, `errMeta`, `isTokenFresh`, `kc.getProfile`, `kc.setAccessToken`, `log.info`, `notifyTokenNeeded` |
 
 <a id="file-9ba5db203d2d"></a>
 
@@ -1163,6 +931,160 @@ External or unresolved imports: `mongodb`.
 | `connectDB` | [11](../../meu/schedulerService/src/db/db.ts#L11) | `client.connect`, `client.db`, `errMeta`, `log.error`, `log.info` |
 | `closeDB` | [22](../../meu/schedulerService/src/db/db.ts#L22) | `client.close`, `log.info` |
 
+<a id="file-c523be50b1bf"></a>
+
+## meu/schedulerService/src/execution/crypto/cryptoTools.ts
+
+[meu/schedulerService/src/execution/crypto/cryptoTools.ts](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../brokers/binance/binanceExecution` | [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed) |
+| `../../brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+| `../../brokers/delta/deltaStart` | [meu/schedulerService/src/brokers/delta/deltaStart.ts](#file-6557ced7c80f) |
+| `../tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
+| `@/lib/toolLogging` | [meu/schedulerService/src/lib/toolLogging.ts](#file-314810885502) |
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+
+External or unresolved imports: `ai`, `ccxt`, `node:crypto`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `getCryptoTools` | [15](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L15) | `createHash`, `instrumentTools`, `tool`, `z.enum`, `z.number`, `z.object`, `z.string` |
+| `scopedSymbol` | [17](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L17) | `exchange.market`, `safety.policy.symbols.some` |
+| `entryQuote` | [25](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L25) | `Number`, `Number.isFinite`, `exchange.fetchTicker`, `exchange.priceToPrecision` |
+| `nativeStopPrice` | [31](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L31) | `Number`, `Number.isFinite`, `exchange.priceToPrecision` |
+| `closePosition` | [39](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L39) | `randomUUID`, `safety.assertActive`, `safety.executeOrder`, `scopedSymbol` |
+| `execute` | [76](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L76) | `Number`, `cryptoEntryMarket`, `entryQuote`, `errMeta`, `exchange.priceToPrecision`, `log.error`, `log.info`, `nativeStopPrice`, `randomUUID`, `safety.executeOrder`, `scopedSymbol`, `submitBinanceProtectedEntry` |
+| `execute` | [153](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L153) | `cryptoEntryMarket`, `cryptoEntrySnapshot`, `entryQuote`, `errMeta`, `log.warn`, `nativeStopPrice`, `safety.assertActive`, `safety.crypto.scopeSnapshot`, `scopedSymbol`, `sizeCryptoEntry` |
+| `execute` | [170](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L170) | `errMeta`, `fetchCryptoOpenOrders`, `log.warn`, `safety.policy.symbols.map` |
+| `execute` | [181](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L181) | `errMeta`, `log.warn`, `safety.executeOrder`, `scopedSymbol` |
+| `execute` | [200](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L200) | `cryptoEntryMarket`, `cryptoEntrySnapshot`, `entryQuote`, `errMeta`, `log.warn`, `nativeStopPrice`, `previewAutomaticCryptoLeverage`, `safety.assertActive`, `safety.crypto.scopeSnapshot`, `safety.executeOrder`, `scopedSymbol`, `snapshot.orders.some`, `snapshot.positions.some` |
+| `beforeWrite` | [217](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L217) | `safety.assertActive` |
+| `execute` | [233](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L233) | `errMeta`, `fetchCryptoLeverage`, `log.error`, `scopedSymbol` |
+| `execute` | [260](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L260) | `errMeta`, `exchange.fetchMyTrades`, `log.error`, `log.info` |
+| `execute` | [288](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L288) | `errMeta`, `exchange.fetchPositions`, `log.error`, `log.info`, `normalizeCryptoPositions` |
+| `execute` | [316](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L316) | `closePosition`, `errMeta`, `log.warn` |
+| `execute` | [324](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L324) | `Number`, `allowed.includes`, `closePosition`, `closed.push`, `errMeta`, `exchange.fetchPositions`, `log.warn`, `normalizeCryptoPositions`, `safety.policy.symbols.map` |
+| `execute` | [342](../../meu/schedulerService/src/execution/crypto/cryptoTools.ts#L342) | `Object.entries`, `errMeta`, `exchange.fetchBalance`, `log.error`, `log.info` |
+
+<a id="file-103be3729f36"></a>
+
+## meu/schedulerService/src/execution/dailyRiskUsage.ts
+
+[meu/schedulerService/src/execution/dailyRiskUsage.ts](../../meu/schedulerService/src/execution/dailyRiskUsage.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../shared/trading/marketDay` | [shared/trading/marketDay.ts](#file-79c73731e830) |
+| `./tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+
+### Imported by
+
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `mongodb`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `reserveDailyEntry` | [16](../../meu/schedulerService/src/execution/dailyRiskUsage.ts#L16) | `Number.isSafeInteger`, `db.collection`, `marketDate`, `now.getTime`, `usage.findOne`, `usage.updateOne` |
+
+<a id="file-162fdce9c91b"></a>
+
+## meu/schedulerService/src/execution/kite/stockTools.ts
+
+[meu/schedulerService/src/execution/kite/stockTools.ts](../../meu/schedulerService/src/execution/kite/stockTools.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
+| `@/lib/marketHours` | [meu/schedulerService/src/lib/marketHours.ts](#file-81bfe3a96d76) |
+| `@/lib/toolLogging` | [meu/schedulerService/src/lib/toolLogging.ts](#file-314810885502) |
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e)
+- [meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts](#file-670f89e9ba10)
+
+External or unresolved imports: `ai`, `kiteconnect`, `node:crypto`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `kiteAgentTag` | [14](../../meu/schedulerService/src/execution/kite/stockTools.ts#L14) | `createHash` |
+| `previewKiteOrderMargin` | [32](../../meu/schedulerService/src/execution/kite/stockTools.ts#L32) | `Number.isFinite`, `Number.isSafeInteger`, `kc.orderMargins` |
+| `submitKiteOrder` | [40](../../meu/schedulerService/src/execution/kite/stockTools.ts#L40) | `errMeta`, `kiteAgentTag`, `log.error`, `log.info`, `safety.executeOrder` |
+| `getZerodhaTools` | [142](../../meu/schedulerService/src/execution/kite/stockTools.ts#L142) | `instrumentTools`, `tool`, `z.array`, `z.enum`, `z.number`, `z.object`, `z.string` |
+| `execute` | [159](../../meu/schedulerService/src/execution/kite/stockTools.ts#L159) | `submitKiteOrder` |
+| `execute` | [167](../../meu/schedulerService/src/execution/kite/stockTools.ts#L167) | `errMeta`, `kiteAgentTag`, `log.error`, `safety.assertActive`, `safety.executeOrder` |
+| `execute` | [190](../../meu/schedulerService/src/execution/kite/stockTools.ts#L190) | `errMeta`, `kc.getOrders`, `log.warn` |
+| `execute` | [217](../../meu/schedulerService/src/execution/kite/stockTools.ts#L217) | `errMeta`, `kc.getPositions`, `log.warn` |
+| `execute` | [242](../../meu/schedulerService/src/execution/kite/stockTools.ts#L242) | `errMeta`, `holdings.map`, `kc.getHoldings`, `log.warn` |
+| `execute` | [264](../../meu/schedulerService/src/execution/kite/stockTools.ts#L264) | `Object.entries`, `errMeta`, `kc.getQuote`, `log.warn`, `symbols.map` |
+| `execute` | [294](../../meu/schedulerService/src/execution/kite/stockTools.ts#L294) | `candles.slice`, `errMeta`, `kc.getHistoricalData`, `log.warn` |
+| `execute` | [325](../../meu/schedulerService/src/execution/kite/stockTools.ts#L325) | `previewKiteOrderMargin`, `safety.assertActive`, `safety.policy.symbols.includes` |
+| `execute` | [336](../../meu/schedulerService/src/execution/kite/stockTools.ts#L336) | `errMeta`, `kc.getMargins`, `log.warn` |
+
+<a id="file-d18977cdf0f6"></a>
+
+## meu/schedulerService/src/execution/tradeGuard.ts
+
+[meu/schedulerService/src/execution/tradeGuard.ts](../../meu/schedulerService/src/execution/tradeGuard.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
+| `../brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+- [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+- [meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts](#file-670f89e9ba10)
+- [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed)
+- [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886)
+- [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c)
+- [meu/schedulerService/src/brokers/delta/deltaStart.ts](#file-6557ced7c80f)
+- [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf)
+- [meu/schedulerService/src/execution/dailyRiskUsage.ts](#file-103be3729f36)
+- [meu/schedulerService/src/execution/kite/stockTools.ts](#file-162fdce9c91b)
+- [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+- [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3)
+- [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
+
+External or unresolved imports: `ccxt`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `formatTradingPolicy` | [57](../../meu/schedulerService/src/execution/tradeGuard.ts#L57) | `budget`, `policy.symbols.join` |
+| `budget` | [58](../../meu/schedulerService/src/execution/tradeGuard.ts#L58) | `Number` |
+| `assertOrderAllowed` | [89](../../meu/schedulerService/src/execution/tradeGuard.ts#L89) | `Math.max`, `Math.min`, `Number.isSafeInteger`, `policy.symbols.includes`, `validateSizingPolicy` |
+| `sizeLongPosition` | [118](../../meu/schedulerService/src/execution/tradeGuard.ts#L118) | `Math.floor`, `Math.max`, `Math.min`, `Number.isSafeInteger`, `sizeEntry`, `validateSizingPolicy` |
+| `roundDown` | [144](../../meu/schedulerService/src/execution/tradeGuard.ts#L144) | `Math.floor` |
+
 <a id="file-6660d32e3f12"></a>
 
 ## meu/schedulerService/src/lib/logger.ts
@@ -1172,13 +1094,13 @@ External or unresolved imports: `mongodb`.
 ### Imported by
 
 - [meu/schedulerService/index.ts](#file-b5c082703924)
-- [meu/schedulerService/src/agent/kiteTokenManager.ts](#file-8bbb5e919689)
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6)
-- [meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](#file-e5ec902684c5)
-- [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96)
-- [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043)
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+- [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+- [meu/schedulerService/src/brokers/kite/kiteTokenManager.ts](#file-2e463653a27f)
 - [meu/schedulerService/src/db/db.ts](#file-8327b69a7bcf)
+- [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf)
+- [meu/schedulerService/src/execution/kite/stockTools.ts](#file-162fdce9c91b)
 - [meu/schedulerService/src/lib/notifications.ts](#file-61beab0a29e6)
 - [meu/schedulerService/src/lib/redis.ts](#file-5940bbec8c7b)
 - [meu/schedulerService/src/lib/toolLogging.ts](#file-314810885502)
@@ -1212,7 +1134,7 @@ External or unresolved imports: `node:async_hooks`, `pino`.
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](#file-e5ec902684c5)
+- [meu/schedulerService/src/execution/kite/stockTools.ts](#file-162fdce9c91b)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
 
 ### Named functions and direct calls
@@ -1242,7 +1164,7 @@ External or unresolved imports: `node:async_hooks`, `pino`.
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/kiteTokenManager.ts](#file-8bbb5e919689)
+- [meu/schedulerService/src/brokers/kite/kiteTokenManager.ts](#file-2e463653a27f)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
 
 External or unresolved imports: `bullmq`, `mongodb`, `node:crypto`.
@@ -1306,8 +1228,8 @@ External or unresolved imports: `ioredis`, `mongodb`.
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/tools/cryptoTools/cryptoTools.ts](#file-d527e5c6d3e6)
-- [meu/schedulerService/src/agent/tools/zerodhaTools/stockTools.ts](#file-e5ec902684c5)
+- [meu/schedulerService/src/execution/crypto/cryptoTools.ts](#file-c523be50b1bf)
+- [meu/schedulerService/src/execution/kite/stockTools.ts](#file-162fdce9c91b)
 
 External or unresolved imports: `ai`.
 
@@ -1316,6 +1238,104 @@ External or unresolved imports: `ai`.
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
 | `instrumentTools` | [7](../../meu/schedulerService/src/lib/toolLogging.ts#L7) | `Object.entries` |
+
+<a id="file-1502d3e4c75f"></a>
+
+## meu/schedulerService/src/market-data/cryptoAnalysis.ts
+
+[meu/schedulerService/src/market-data/cryptoAnalysis.ts](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `./indicators` | [meu/schedulerService/src/market-data/indicators.ts](#file-d2e1147adc7f) |
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661)
+- [meu/schedulerService/src/market-data/emaSnapshot.ts](#file-569b06ff8f40)
+- [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f)
+- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
+
+External or unresolved imports: `ccxt`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `analysisTimeframe` | [11](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts#L11) | `ANALYSIS_TIMEFRAMES.includes` |
+| `getOHLCV` | [30](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts#L30) | `exchange.fetchOHLCV` |
+| `getCompletedHistory` | [35](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts#L35) | `Array.isArray`, `Date.now`, `Math.ceil`, `Math.floor`, `Math.max`, `Math.min`, `Number.isSafeInteger`, `Promise.race`, `clearTimeout`, `exchange.fetchOHLCV`, `history.at`, `history.push`, `rows.at` |
+| `getIntradayIndicators` | [82](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts#L82) | `Date.now`, `Number.isSafeInteger`, `getCompletedHistory`, `macd`, `ohlcv.at`, `ohlcv.slice`, `rsi` |
+| `getSwingIndicators` | [100](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts#L100) | `Date.now`, `getIntradayIndicators` |
+| `getLongTermIndicators` | [103](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts#L103) | `Date.now`, `getIntradayIndicators` |
+| `formatMarketAnalysis` | [108](../../meu/schedulerService/src/market-data/cryptoAnalysis.ts#L108) | `data.ohlcv.map` |
+
+<a id="file-569b06ff8f40"></a>
+
+## meu/schedulerService/src/market-data/emaSnapshot.ts
+
+[meu/schedulerService/src/market-data/emaSnapshot.ts](../../meu/schedulerService/src/market-data/emaSnapshot.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/market-data/cryptoAnalysis` | [meu/schedulerService/src/market-data/cryptoAnalysis.ts](#file-1502d3e4c75f) |
+| `@/market-data/indicators` | [meu/schedulerService/src/market-data/indicators.ts](#file-d2e1147adc7f) |
+
+External or unresolved imports: `ccxt`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `getIndicators` | [5](../../meu/schedulerService/src/market-data/emaSnapshot.ts#L5) | `Date.now`, `Math.max`, `closedOhlcv.slice`, `ema`, `emaFast.slice`, `emaSlow.slice`, `getOHLCV`, `ohlcv.map`, `ohlcv.slice` |
+
+<a id="file-d2e1147adc7f"></a>
+
+## meu/schedulerService/src/market-data/indicators.ts
+
+[meu/schedulerService/src/market-data/indicators.ts](../../meu/schedulerService/src/market-data/indicators.ts)
+
+### Imported by
+
+- [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e)
+- [meu/schedulerService/src/market-data/cryptoAnalysis.ts](#file-1502d3e4c75f)
+- [meu/schedulerService/src/market-data/emaSnapshot.ts](#file-569b06ff8f40)
+- [meu/schedulerService/src/market-data/stockAnalysis.ts](#file-e312506c168c)
+
+External or unresolved imports: `ccxt`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `ema` | [8](../../meu/schedulerService/src/market-data/indicators.ts#L8) | — |
+| `macd` | [35](../../meu/schedulerService/src/market-data/indicators.ts#L35) | `closes.slice`, `ema`, `emaFast.slice`, `emaSlow.slice`, `histogram.slice`, `macdLine.map`, `macdLine.slice`, `ohlcv.map`, `signal.slice` |
+| `rsi` | [78](../../meu/schedulerService/src/market-data/indicators.ts#L78) | `Array.isArray`, `Math.max`, `result.slice` |
+
+<a id="file-e312506c168c"></a>
+
+## meu/schedulerService/src/market-data/stockAnalysis.ts
+
+[meu/schedulerService/src/market-data/stockAnalysis.ts](../../meu/schedulerService/src/market-data/stockAnalysis.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `./indicators` | [meu/schedulerService/src/market-data/indicators.ts](#file-d2e1147adc7f) |
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `fetchYahooOHLCV` | [4](../../meu/schedulerService/src/market-data/stockAnalysis.ts#L4) | `candles.push`, `fetch`, `response.json` |
+| `getStocksIntradayIndicators` | [57](../../meu/schedulerService/src/market-data/stockAnalysis.ts#L57) | `fetchYahooOHLCV`, `macd`, `midPrices.slice`, `ohlcv.map`, `rsi` |
+| `getStocksSwingIndicators` | [73](../../meu/schedulerService/src/market-data/stockAnalysis.ts#L73) | `fetchYahooOHLCV`, `macd`, `midPrices.slice`, `ohlcv.map`, `rsi` |
+| `getStocksLongTermIndicators` | [89](../../meu/schedulerService/src/market-data/stockAnalysis.ts#L89) | `fetchYahooOHLCV`, `macd`, `midPrices.slice`, `ohlcv.map`, `rsi` |
 
 <a id="file-288fb59dec9a"></a>
 
@@ -1426,26 +1446,6 @@ External or unresolved imports: `mongodb`.
 
 No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
 
-<a id="file-f642851e8e77"></a>
-
-## meu/schedulerService/src/strategy/emaCrossover.ts
-
-[meu/schedulerService/src/strategy/emaCrossover.ts](../../meu/schedulerService/src/strategy/emaCrossover.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../../../shared/trading/emaCrossover` | [shared/trading/emaCrossover.ts](#file-1d7dd8e6da1e) |
-
-### Imported by
-
-- [meu/schedulerService/src/agent/kiteEmaSignals.ts](#file-5fb7eeb8b03a)
-- [meu/schedulerService/src/agent/runKiteEmaStrategy.ts](#file-b92ffa2998cd)
-- [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-
-No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
-
 <a id="file-7bd004ca62ea"></a>
 
 ## meu/schedulerService/src/watchers/exchangeWatcher.ts
@@ -1508,9 +1508,9 @@ External or unresolved imports: `mongodb`.
 | Import / re-export | Source target |
 |---|---|
 | `../../../../shared/trading/delta-data` | [shared/trading/delta-data.ts](#file-780ed3a879a0) |
-| `../agent/cryptoStrategyConfig` | [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c) |
-| `../agent/tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-| `../agentFunctions/cmFunctions` | [meu/schedulerService/src/agentFunctions/cmFunctions.ts](#file-0c9701193f49) |
+| `../algorithms/crypto/cryptoStrategyConfig` | [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f) |
+| `../execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
+| `../market-data/cryptoAnalysis` | [meu/schedulerService/src/market-data/cryptoAnalysis.ts](#file-1502d3e4c75f) |
 
 ### Imported by
 
@@ -1536,31 +1536,31 @@ External or unresolved imports: `mongodb`.
 | `../../../../shared/trading/marketDay` | [shared/trading/marketDay.ts](#file-79c73731e830) |
 | `../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
 | `./executionFailure` | [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f) |
-| `@/agent/cryptoAccount` | [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77) |
-| `@/agent/cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `@/agent/cryptoStrategyConfig` | [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c) |
-| `@/agent/dailyRiskUsage` | [meu/schedulerService/src/agent/dailyRiskUsage.ts](#file-4af6b185e722) |
-| `@/agent/kiteEmaSignals` | [meu/schedulerService/src/agent/kiteEmaSignals.ts](#file-5fb7eeb8b03a) |
-| `@/agent/kiteTokenManager` | [meu/schedulerService/src/agent/kiteTokenManager.ts](#file-8bbb5e919689) |
-| `@/agent/providers` | [meu/schedulerService/src/agent/providers.ts](#file-36c08f3ddd12) |
-| `@/agent/runCryptoStrategy` | [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a) |
-| `@/agent/runKiteEmaStrategy` | [meu/schedulerService/src/agent/runKiteEmaStrategy.ts](#file-b92ffa2998cd) |
-| `@/agent/runMemory` | [meu/schedulerService/src/agent/runMemory.ts](#file-6fee954f052b) |
-| `@/agent/tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
-| `@/agent/vercelAgent` | [meu/schedulerService/src/agent/vercelAgent.ts](#file-13f49104ee96) |
-| `@/agent/zerodhaAgent` | [meu/schedulerService/src/agent/zerodhaAgent.ts](#file-8b6c143fe043) |
-| `@/agentFunctions/cmFunctions` | [meu/schedulerService/src/agentFunctions/cmFunctions.ts](#file-0c9701193f49) |
+| `@/agents/llm/providers` | [meu/schedulerService/src/agents/llm/providers.ts](#file-52ea280ce42d) |
+| `@/agents/llm/runMemory` | [meu/schedulerService/src/agents/llm/runMemory.ts](#file-f4f060233fd7) |
+| `@/agents/llm/vercelAgent` | [meu/schedulerService/src/agents/llm/vercelAgent.ts](#file-72efcf4de661) |
+| `@/agents/llm/zerodhaAgent` | [meu/schedulerService/src/agents/llm/zerodhaAgent.ts](#file-d253cec9e69e) |
+| `@/algorithms/crypto/cryptoStrategyConfig` | [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f) |
+| `@/algorithms/crypto/runCryptoStrategy` | [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586) |
+| `@/algorithms/emaCrossover` | [meu/schedulerService/src/algorithms/emaCrossover.ts](#file-14a300d88a33) |
+| `@/algorithms/kite/kiteEmaSignals` | [meu/schedulerService/src/algorithms/kite/kiteEmaSignals.ts](#file-7d719200c45d) |
+| `@/algorithms/kite/runKiteEmaStrategy` | [meu/schedulerService/src/algorithms/kite/runKiteEmaStrategy.ts](#file-670f89e9ba10) |
+| `@/brokers/crypto/cryptoAccount` | [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886) |
+| `@/brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+| `@/brokers/kite/kiteTokenManager` | [meu/schedulerService/src/brokers/kite/kiteTokenManager.ts](#file-2e463653a27f) |
 | `@/config/config` | [meu/schedulerService/src/config/config.ts](#file-9ba5db203d2d) |
 | `@/config/encryption` | [meu/schedulerService/src/config/encryption.ts](#file-17ef44ed3ae4) |
 | `@/db/db` | [meu/schedulerService/src/db/db.ts](#file-8327b69a7bcf) |
+| `@/execution/dailyRiskUsage` | [meu/schedulerService/src/execution/dailyRiskUsage.ts](#file-103be3729f36) |
+| `@/execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
 | `@/lib/logger` | [meu/schedulerService/src/lib/logger.ts](#file-6660d32e3f12) |
 | `@/lib/marketHours` | [meu/schedulerService/src/lib/marketHours.ts](#file-81bfe3a96d76) |
 | `@/lib/notifications` | [meu/schedulerService/src/lib/notifications.ts](#file-61beab0a29e6) |
 | `@/lib/redis` | [meu/schedulerService/src/lib/redis.ts](#file-5940bbec8c7b) |
+| `@/market-data/cryptoAnalysis` | [meu/schedulerService/src/market-data/cryptoAnalysis.ts](#file-1502d3e4c75f) |
 | `@/queue/queue` | [meu/schedulerService/src/queue/queue.ts](#file-288fb59dec9a) |
 | `@/schedulers/scheduler` | [meu/schedulerService/src/schedulers/scheduler.ts](#file-7bac4a80687d) |
 | `@/state/setStates` | [meu/schedulerService/src/state/setStates.ts](#file-69401e8508aa) |
-| `@/strategy/emaCrossover` | [meu/schedulerService/src/strategy/emaCrossover.ts](#file-f642851e8e77) |
 
 External or unresolved imports: `bullmq`, `ccxt`, `mongodb`.
 
@@ -4756,7 +4756,7 @@ External or unresolved imports: `@tanstack/react-query`, `next/navigation`, `son
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
+| `../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
 | `@/features/backtests/server/delta-data` | [meu_frontend/src/features/backtests/server/delta-data.ts](#file-e9ab06d56b34) |
 | `@/features/backtests/validation` | [meu_frontend/src/features/backtests/validation.ts](#file-530f00338d26) |
 | `@/features/exchange/server/execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
@@ -4787,9 +4787,9 @@ External or unresolved imports: `@trpc/server`, `node:crypto`, `server-only`, `z
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/cryptoAccount` | [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77) |
-| `../../../../../meu/schedulerService/src/agent/cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `../../../../../meu/schedulerService/src/agent/tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
+| `../../../../../meu/schedulerService/src/brokers/crypto/cryptoAccount` | [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886) |
+| `../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+| `../../../../../meu/schedulerService/src/execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
 | `../../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
 | `@/features/backtests/validation` | [meu_frontend/src/features/backtests/validation.ts](#file-530f00338d26) |
 | `@/features/exchange/server/execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
@@ -4822,8 +4822,8 @@ External or unresolved imports: `../../../../../meu/schedulerService/node_module
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/cryptoStrategyConfig` | [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c) |
-| `../../../../../meu/schedulerService/src/agent/deltaReconciliation` | [meu/schedulerService/src/agent/deltaReconciliation.ts](#file-76fbe977857f) |
+| `../../../../../meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig` | [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f) |
+| `../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation` | [meu/schedulerService/src/brokers/delta/deltaReconciliation.ts](#file-c1cc1175ff3a) |
 | `../../../../../shared/trading/strategies` | [shared/trading/strategies.ts](#file-08c346741655) |
 | `@/features/backtests/server/delta-data` | [meu_frontend/src/features/backtests/server/delta-data.ts](#file-e9ab06d56b34) |
 | `@/features/exchange/server/execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
@@ -4892,11 +4892,11 @@ External or unresolved imports: `@trpc/server`, `node:crypto`, `zod`.
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/binanceExecution` | [meu/schedulerService/src/agent/binanceExecution.ts](#file-3d372559d011) |
-| `../../../../../meu/schedulerService/src/agent/cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `../../../../../meu/schedulerService/src/agent/deltaStart` | [meu/schedulerService/src/agent/deltaStart.ts](#file-29349fb39a30) |
-| `../../../../../meu/schedulerService/src/agent/tradeGuard` | [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452) |
+| `../../../../../meu/schedulerService/src/brokers/binance/binanceExecution` | [meu/schedulerService/src/brokers/binance/binanceExecution.ts](#file-1fc4930582ed) |
+| `../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+| `../../../../../meu/schedulerService/src/brokers/delta/deltaStart` | [meu/schedulerService/src/brokers/delta/deltaStart.ts](#file-6557ced7c80f) |
 | `../../../../../meu/schedulerService/src/config/config` | [meu/schedulerService/src/config/config.ts](#file-9ba5db203d2d) |
+| `../../../../../meu/schedulerService/src/execution/tradeGuard` | [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6) |
 | `../../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
 | `./recover-delta-agent` | [meu_frontend/src/features/agents/server/recover-delta-agent.ts](#file-681653d00ae2) |
 | `@/features/backtests/validation` | [meu_frontend/src/features/backtests/validation.ts](#file-530f00338d26) |
@@ -5932,7 +5932,7 @@ External or unresolved imports: `@tanstack/react-query`, `ccxt`, `next/navigatio
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/cryptoAccount` | [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77) |
+| `../../../../../meu/schedulerService/src/brokers/crypto/cryptoAccount` | [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886) |
 | `../../../../../meu/schedulerService/src/config/config` | [meu/schedulerService/src/config/config.ts](#file-9ba5db203d2d) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
 | `@/lib/encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
@@ -5967,7 +5967,7 @@ External or unresolved imports: `../../../../../meu/schedulerService/node_module
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/deltaReconciliation` | [meu/schedulerService/src/agent/deltaReconciliation.ts](#file-76fbe977857f) |
+| `../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation` | [meu/schedulerService/src/brokers/delta/deltaReconciliation.ts](#file-c1cc1175ff3a) |
 | `./execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
 | `@/generated/prisma/client` | [meu_frontend/src/generated/prisma/client.ts](../../meu_frontend/src/generated/prisma/client.ts) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
@@ -6002,9 +6002,9 @@ External or unresolved imports: `@trpc/server`, `server-only`.
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/cryptoRisk` | [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2) |
-| `../../../../../meu/schedulerService/src/agent/cryptoStrategyConfig` | [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c) |
-| `../../../../../meu/schedulerService/src/agent/deltaReconciliation` | [meu/schedulerService/src/agent/deltaReconciliation.ts](#file-76fbe977857f) |
+| `../../../../../meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig` | [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f) |
+| `../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk` | [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c) |
+| `../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation` | [meu/schedulerService/src/brokers/delta/deltaReconciliation.ts](#file-c1cc1175ff3a) |
 | `../../../../../meu/schedulerService/src/lib/redis` | [meu/schedulerService/src/lib/redis.ts](#file-5940bbec8c7b) |
 | `../../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
 | `../../../../../shared/trading/strategies` | [shared/trading/strategies.ts](#file-08c346741655) |
@@ -6042,7 +6042,7 @@ External or unresolved imports: `@trpc/server`, `node:crypto`, `server-only`.
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../meu/schedulerService/src/agent/cryptoAccount` | [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77) |
+| `../../../../../meu/schedulerService/src/brokers/crypto/cryptoAccount` | [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886) |
 | `./execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
 | `./reconciliation` | [meu_frontend/src/features/exchange/server/reconciliation.ts](#file-d0180098de88) |
 | `./recover-execution` | [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f) |
@@ -7043,7 +7043,7 @@ External or unresolved imports: `@tanstack/react-query`, `@trpc/tanstack-react-q
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoAccount.ts](#file-af7774ae7e77)
+- [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886)
 - [meu_frontend/src/features/exchange/components/account-execution-panel.tsx](#file-561367eaad9f)
 
 No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
@@ -7075,8 +7075,8 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c)
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
+- [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
 - [meu/schedulerService/src/workers/executionFailure.ts](#file-131187bc349f)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
 - [meu_frontend/src/features/backtests/server/delta-data.ts](#file-e9ab06d56b34)
@@ -7105,8 +7105,8 @@ External or unresolved imports: `node:crypto`.
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/strategy/emaCrossover.ts](#file-f642851e8e77)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+- [meu/schedulerService/src/algorithms/emaCrossover.ts](#file-14a300d88a33)
 - [meu_frontend/src/features/backtests/chart/analysis.ts](#file-dac1b352656a)
 - [meu_frontend/src/features/backtests/server/router.ts](#file-077c1fd7ba8c)
 - [shared/trading/paperTrading.ts](#file-39c515f77d12)
@@ -7148,7 +7148,7 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c)
+- [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f)
 - [shared/trading/paperTrading.ts](#file-39c515f77d12)
 - [shared/trading/perpetualBacktest.ts](#file-14821081d1df)
 
@@ -7167,8 +7167,8 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2)
-- [meu/schedulerService/src/agent/dailyRiskUsage.ts](#file-4af6b185e722)
+- [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c)
+- [meu/schedulerService/src/execution/dailyRiskUsage.ts](#file-103be3729f36)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
 - [shared/trading/paperTrading.ts](#file-39c515f77d12)
 - [shared/trading/perpetualBacktest.ts](#file-14821081d1df)
@@ -7202,7 +7202,7 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
 - [meu_frontend/src/features/backtests/components/paper-portfolio.tsx](#file-fc0f457d3c6a)
 
 ### Named functions and direct calls
@@ -7233,8 +7233,8 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c)
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
+- [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
 - [meu_frontend/src/features/backtests/chart/analysis.ts](#file-dac1b352656a)
 - [meu_frontend/src/features/backtests/server/router.ts](#file-077c1fd7ba8c)
 - [shared/trading/paperTrading.ts](#file-39c515f77d12)
@@ -7264,9 +7264,9 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoRisk.ts](#file-c8e8e8ba18d2)
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
-- [meu/schedulerService/src/agent/tradeGuard.ts](#file-89a7a3af8452)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
+- [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c)
+- [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
 - [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
 - [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3)
@@ -7300,8 +7300,8 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu/schedulerService/src/agent/cryptoStrategyConfig.ts](#file-717301bf538c)
-- [meu/schedulerService/src/agent/runCryptoStrategy.ts](#file-1bca7a5e1b0a)
+- [meu/schedulerService/src/algorithms/crypto/cryptoStrategyConfig.ts](#file-8a3ab198552f)
+- [meu/schedulerService/src/algorithms/crypto/runCryptoStrategy.ts](#file-75b27250a586)
 - [meu_frontend/src/features/agents/server/recover-delta-agent.ts](#file-681653d00ae2)
 - [meu_frontend/src/features/backtests/chart/analysis.ts](#file-dac1b352656a)
 - [meu_frontend/src/features/backtests/server/router.ts](#file-077c1fd7ba8c)

@@ -1,7 +1,7 @@
-import { validateExitPolicy } from '../../../../shared/trading/exitPolicy';
-import { validateStrategy, type StrategyConfig } from '../../../../shared/trading/strategies';
-import type { DeltaTimeframe } from '../../../../shared/trading/delta-data';
-import type { Contract, SimulationConfig } from '../../../../shared/trading/perpetualBacktest';
+import { validateExitPolicy } from '../../../../../shared/trading/exitPolicy';
+import { validateStrategy, type StrategyConfig } from '../../../../../shared/trading/strategies';
+import type { DeltaTimeframe } from '../../../../../shared/trading/delta-data';
+import type { Contract, SimulationConfig } from '../../../../../shared/trading/perpetualBacktest';
 
 export type CryptoStrategyConfig = StrategyConfig & { timeframe: DeltaTimeframe; simulation: SimulationConfig; contract: Contract; stateId?: string };
 export class MissedLiveCandlesError extends Error {

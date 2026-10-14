@@ -1,4 +1,4 @@
-import {prepareBinanceAccount} from '../../../../../meu/schedulerService/src/agent/binanceExecution';
+import {prepareBinanceAccount} from '../../../../../meu/schedulerService/src/brokers/binance/binanceExecution';
 import 'server-only';
 import {validateSizingPolicy} from '../../../../../shared/trading/sizing';
 import { readRows } from '@/features/exchange/server/reconciliation';
@@ -12,9 +12,9 @@ import { decryptSecret } from '@/lib/encryption';
 import { appLog } from '@/lib/app-logger';
 import { cryptoStrategySettingsSchema } from '@/features/backtests/validation';
 import { configureCryptoExchange, exchangeMap } from '../../../../../meu/schedulerService/src/config/config';
-import { prepareDeltaStrategyAccount } from '../../../../../meu/schedulerService/src/agent/deltaStart';
-import { cryptoEntryMarket, fetchCryptoLeverage } from '../../../../../meu/schedulerService/src/agent/cryptoRisk';
-import { OrderRejectedError } from '../../../../../meu/schedulerService/src/agent/tradeGuard';
+import { prepareDeltaStrategyAccount } from '../../../../../meu/schedulerService/src/brokers/delta/deltaStart';
+import { cryptoEntryMarket, fetchCryptoLeverage } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
+import { OrderRejectedError } from '../../../../../meu/schedulerService/src/execution/tradeGuard';
 
 export async function startDeltaAgent(agent: Agent, userId: string, requestId?: string) {
   const raw = agent.strategyConfig as Record<string, unknown> | null;

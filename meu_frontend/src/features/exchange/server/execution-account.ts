@@ -3,7 +3,7 @@ import prisma from '@/lib/db';
 import { decryptSecret } from '@/lib/encryption';
 import { TRPCError } from '@trpc/server';
 import { configureCryptoExchange, exchangeMap } from '../../../../../meu/schedulerService/src/config/config';
-import { identifyDeltaAccount, accountRiskSchema, defaultAccountRisk } from '../../../../../meu/schedulerService/src/agent/cryptoAccount';
+import { identifyDeltaAccount, accountRiskSchema, defaultAccountRisk } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoAccount';
 import type { Exchange } from '../../../../../meu/schedulerService/node_modules/ccxt';
 
 export async function executionConnection(exchangeId: string, userId: string) {

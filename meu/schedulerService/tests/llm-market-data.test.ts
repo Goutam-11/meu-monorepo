@@ -1,7 +1,7 @@
 import { expect, test } from 'bun:test';
 import type { Exchange, OHLCV } from 'ccxt';
-import { analysisTimeframe, formatMarketAnalysis, getCompletedHistory, getIntradayIndicators, LlmMarketDataError } from '../src/agentFunctions/cmFunctions';
-import { rsi } from '../src/agentFunctions/mIndicators';
+import { analysisTimeframe, formatMarketAnalysis, getCompletedHistory, getIntradayIndicators, LlmMarketDataError } from '../src/market-data/cryptoAnalysis';
+import { rsi } from '../src/market-data/indicators';
 
 const asOf = Date.UTC(2026, 9, 10, 12, 0, 20);
 function candles(step = 60_000, count = 250): OHLCV[] {

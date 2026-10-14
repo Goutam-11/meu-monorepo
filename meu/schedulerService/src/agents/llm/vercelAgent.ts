@@ -1,17 +1,17 @@
 import { logger, errMeta } from "@/lib/logger";
-import { formatTradingPolicy, type ExecutionSafety } from "./tradeGuard";
+import { formatTradingPolicy, type ExecutionSafety } from "../../execution/tradeGuard";
 import { Exchange } from "ccxt";
 import {
   getIntradayIndicators,
   formatMarketAnalysis,
   LlmMarketDataError,
   type AnalysisTimeframe,
-} from "@/agentFunctions/cmFunctions";
-import { TPROMPT } from "@/agent/prompts/testPrompt";
+} from "@/market-data/cryptoAnalysis";
+import { TPROMPT } from "@/agents/llm/prompts/tradingPrompt";
 import { ToolLoopAgent } from "ai";
-import { getCryptoTools } from "@/agent/tools/cryptoTools/cryptoTools";
-import { normalizeCryptoPositions } from "./cryptoRisk";
-import { resolveLLMProvider, LLM_REQUEST_TIMEOUT_MS, type LLMProviderId } from "@/agent/providers";
+import { getCryptoTools } from "@/execution/crypto/cryptoTools";
+import { normalizeCryptoPositions } from "../../brokers/crypto/cryptoRisk";
+import { resolveLLMProvider, LLM_REQUEST_TIMEOUT_MS, type LLMProviderId } from "@/agents/llm/providers";
 import { MEMORY_INSTRUCTIONS } from "./runMemory";
 
 const log = logger.child({ module: "cryptoAgent" });

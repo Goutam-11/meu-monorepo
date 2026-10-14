@@ -1,8 +1,8 @@
-import {DeltaLeverageUncertainError} from '../src/agent/tradeGuard';
+import {DeltaLeverageUncertainError} from '../src/execution/tradeGuard';
 import {test,expect} from 'bun:test';
 import {executionFailure} from '../src/workers/executionFailure';
 import {DeltaDataError,DeltaDataValidationError} from '../../../shared/trading/delta-data';
-import {OrderRejectedError} from '../src/agent/tradeGuard';
+import {OrderRejectedError} from '../src/execution/tradeGuard';
 const context={stage:'execute_strategy',runId:'run-1',scheduledAt:Date.now(),mode:'LIVE',strategy:'LLM_TRADING',symbols:['BTCUSD'],lockCount:3};
 test('SDK error text, stack, headers and signed URLs are never copied to failure records',()=>{
  const error=Object.assign(new Error('Bearer secret https://provider.example?api_key=secret'),{name:'AI_APICallError',statusCode:401,response:{headers:{authorization:'secret'}}});

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { buildRunMemory, formatRunMemory, memoryContext, operationReceipt } from "../src/agent/runMemory";
+import { buildRunMemory, formatRunMemory, memoryContext, operationReceipt } from "../src/agents/llm/runMemory";
 
 const decision = { action: "held" as const, symbols: ["XRPUSD"], rationale: "No confirmed breakout.", watchFor: "Hourly close above the channel.", nextReview: "Recheck positions on the next cycle." };
 const output = (data: unknown = decision) => `Analysis ${"x".repeat(4000)}\n<MEU_MEMORY>${JSON.stringify(data)}</MEU_MEMORY>`;

@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { validateCryptoStrategy } from '../src/agent/cryptoStrategyConfig';
+import { validateCryptoStrategy } from '../src/algorithms/crypto/cryptoStrategyConfig';
 import { marketDate, marketDayIndex, marketDayStart, exchangeMarketTimezone } from '../../../shared/trading/marketDay';
 import { advancePaperState, initializePaperState } from '../../../shared/trading/paperTrading';
 import { runPerpetualBacktest, type SimulationConfig } from '../../../shared/trading/perpetualBacktest';

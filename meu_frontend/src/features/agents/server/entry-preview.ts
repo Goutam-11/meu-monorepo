@@ -6,9 +6,9 @@ import { executionConnection, linkedExchangeIds } from '@/features/exchange/serv
 import { readRows } from '@/features/exchange/server/reconciliation';
 import { cryptoStrategySettingsSchema } from '@/features/backtests/validation';
 import { validateSizingPolicy, type AutomaticSizingDiagnostics } from '../../../../../shared/trading/sizing';
-import { identifyDeltaAccount, accountRiskSchema } from '../../../../../meu/schedulerService/src/agent/cryptoAccount';
-import { cryptoDayStart, cryptoEntryMarket, cryptoEntrySnapshot, previewAutomaticCryptoLeverage, sizeCryptoEntry } from '../../../../../meu/schedulerService/src/agent/cryptoRisk';
-import { OrderRejectedError, type TradingPolicy } from '../../../../../meu/schedulerService/src/agent/tradeGuard';
+import { identifyDeltaAccount, accountRiskSchema } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoAccount';
+import { cryptoDayStart, cryptoEntryMarket, cryptoEntrySnapshot, previewAutomaticCryptoLeverage, sizeCryptoEntry } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
+import { OrderRejectedError, type TradingPolicy } from '../../../../../meu/schedulerService/src/execution/tradeGuard';
 import type { Exchange } from '../../../../../meu/schedulerService/node_modules/ccxt';
 
 export const entryPreviewSchema = z.object({

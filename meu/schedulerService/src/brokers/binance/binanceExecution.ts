@@ -1,6 +1,6 @@
 import type {Exchange,Order} from 'ccxt';
-import {OrderRejectedError,CryptoProtectionError} from './tradeGuard';
-import {fetchCryptoLeverage,fetchCryptoOpenOrders} from './cryptoRisk';
+import {OrderRejectedError,CryptoProtectionError} from '../../execution/tradeGuard';
+import {fetchCryptoLeverage,fetchCryptoOpenOrders} from '../crypto/cryptoRisk';
 
 /** Futures settings only, with a flat ticker and a readback after each mutation. */
 export async function prepareBinanceAccount(exchange:Exchange,symbol:string,leverage:number,beforeWrite:(change:'marginMode'|'leverage')=>Promise<void>) {
@@ -51,8 +51,8 @@ export async function fetchManagedCryptoOrder(exchange:Exchange,id:string,symbol
 }
 
 import {InvalidOrder,InsufficientFunds} from 'ccxt';
-import type {ExecutionSafety} from './tradeGuard';
-import {cryptoEntryMarket,cryptoEntrySnapshot,sizeCryptoEntry} from './cryptoRisk';
+import type {ExecutionSafety} from '../../execution/tradeGuard';
+import {cryptoEntryMarket,cryptoEntrySnapshot,sizeCryptoEntry} from '../crypto/cryptoRisk';
 import {randomUUID,createHash} from 'node:crypto';
 
 /** IOC limits bound entry price; protection follows confirmed terminal fills.

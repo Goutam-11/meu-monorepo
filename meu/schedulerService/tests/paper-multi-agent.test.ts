@@ -1,8 +1,8 @@
 import {test,expect} from 'bun:test';
 import type {Db} from 'mongodb';
 import {initializePaperState,type PaperState} from '../../../shared/trading/paperTrading';
-import {runPaperStrategy} from '../src/agent/runCryptoStrategy';
-import type {ExecutionSafety} from '../src/agent/tradeGuard';
+import {runPaperStrategy} from '../src/algorithms/crypto/runCryptoStrategy';
+import type {ExecutionSafety} from '../src/execution/tradeGuard';
 const interval=3600,end=Math.floor(Date.now()/1000/interval)*interval;
 const config={id:'ema' as const,fastPeriod:2,slowPeriod:3,lookback:3,atrPeriod:2,stopAtr:2,rewardRisk:1.5,timeframe:'1h' as const,simulation:{initialCapital:1000,leverage:2,riskPerTradePct:1,maxMarginPct:25,feeBps:5,slippageBps:2,fundingRatePct8h:0,maxTradesPerDay:1,maxPositionsOpenedPerDay:1,maxDailyLossPct:5,direction:'both' as const},contract:{symbol:'BTCUSD',contractSize:1,minContracts:1,maintenanceMarginRate:0.005,settlement:'USD' as const}};
 

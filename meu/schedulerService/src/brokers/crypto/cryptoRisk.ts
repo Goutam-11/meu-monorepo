@@ -1,9 +1,9 @@
-import { marketDayStart, exchangeMarketTimezone } from '../../../../shared/trading/marketDay';
-import {loadBinanceTier} from './binanceExecution';
-import { sizeEntry, validateSizingPolicy, selectAutomaticLeverage, type AutoSizing } from "../../../../shared/trading/sizing";
+import { marketDayStart, exchangeMarketTimezone } from '../../../../../shared/trading/marketDay';
+import {loadBinanceTier} from '../binance/binanceExecution';
+import { sizeEntry, validateSizingPolicy, selectAutomaticLeverage, type AutoSizing } from "../../../../../shared/trading/sizing";
 import type { Exchange, MarketInterface, Order, Position } from "ccxt";
 import { z } from "zod";
-import { assertOrderAllowed, OrderRejectedError, type TradingPolicy } from "./tradeGuard";
+import { assertOrderAllowed, OrderRejectedError, type TradingPolicy } from "../../execution/tradeGuard";
 
 import type { AccountRiskLimits } from "./cryptoAccount";
 

@@ -9,6 +9,7 @@ Source review: **11 October 2026**. This is the maintained entry point. Historic
 | Understand what Meu currently does | [User guide and capability matrix](USER_GUIDE.md) |
 | Understand processes and execution | [Architecture and diagrams](ARCHITECTURE.md) |
 | Find a module, function or its import dependencies | [Module responsibility map](MODULES.md), [generated source/function index](reference/CODE_MAP.md) |
+| Find scheduler folders and execution boundaries | [Scheduler source structure](SCHEDULER_STRUCTURE.md) |
 | Understand persistence and identifiers | [Data model and state diagrams](DATA_MODEL.md) |
 | Change the code safely | [Development and maintenance](DEVELOPMENT.md) |
 | Start the stack, view logs or diagnose a restart | [Containers](CONTAINERS.md), [logging](LOGGING.md) |
