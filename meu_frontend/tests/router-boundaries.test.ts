@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, mock, test } from "bun:test";
-import { decryptSecret } from "../src/lib/encryption";
+import { decryptSecret } from "../src/lib/security/encryption";
 import { AgentStrategy, AgentType } from "../src/generated/prisma/enums";
 
 const rows: { credentials: Record<string, unknown>[]; exchanges: Record<string, unknown>[] } = { credentials: [], exchanges: [] };
@@ -82,7 +82,7 @@ mock.module("@/features/markets/server/catalog",()=>({
   loadMarketCatalog:async()=>({markets:[],loadedAt:"fixture"}),searchMarkets:()=>({markets:[],total:0,loadedAt:"fixture"}),
 }));
 mock.module("@/lib/db", () => ({ default: prismaStub }));
-mock.module("@/lib/auth", () => ({ auth: { api: { getSession: async () => ({ user: { id: "owner" } }) } } }));
+mock.module("@/lib/auth/server", () => ({ auth: { api: { getSession: async () => ({ user: { id: "owner" } }) } } }));
 mock.module("next/headers", () => ({ headers: async () => new Headers() }));
 mock.module("server-only", () => ({}));
 

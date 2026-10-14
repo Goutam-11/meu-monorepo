@@ -1,9 +1,9 @@
-import { validPushEndpoint, validPushKeys } from "@/lib/push-validation";
+import { validPushEndpoint, validPushKeys } from "@/features/notifications/server/push-validation";
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth/server";
 import prisma from "@/lib/db";
-import { appLog, newRequestId } from "@/lib/app-logger";
-import { readBoundedJsonBody } from "@/lib/client-error-validation";
+import { appLog, newRequestId } from "@/lib/logging/app-logger";
+import { readBoundedJsonBody } from "@/lib/logging/client-error-validation";
 
 const registrationWindows = new Map<string, { startedAt: number; count: number }>();
 const activeRegistrations = new Set<string>();

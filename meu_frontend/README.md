@@ -1,5 +1,7 @@
 # Meu frontend
 
+See [project structure and module ownership](../docs/PROJECT_STRUCTURE.md) for the current folder layout, dependencies and maintenance boundaries.
+
 Next.js 16 / React 19 dashboard and authenticated tRPC API for Meu’s trading agents, exchanges, credentials, backtests and notifications. The scheduler and worker execute strategies; opening the frontend alone does not start those services.
 
 **Creator:** Goutam Kumar Sharma
@@ -84,6 +86,7 @@ The test script runs each `.test.ts` file separately to isolate module mocks. Te
 
 ```text
 src/app/                       Next.js pages and route handlers
+src/features/auth/             Login/signup screens and auth presentation
 src/features/agents/           Configuration, status, run history and editors
 src/features/backtests/        Strategy workspace, saved runs and paper portfolios
 src/features/credentials/      Saved credentials and provider model discovery
@@ -91,7 +94,12 @@ src/features/exchange/         Connections, broker views and recovery workflow
 src/features/markets/          Market catalogs and searchable ticker selection
 src/features/notifications/    Inbox, subscription and read/delete controls
 src/features/settings/         Persisted UI settings
-src/lib/                       Auth, Prisma, encryption, logging and helpers
+src/components/layout/         Shared workspace header and sidebar
+src/components/branding/       Meu logo and icons
+src/lib/auth/                  Server auth, browser client and session helpers
+src/lib/logging/               Safe logging and client error reporting
+src/lib/security/              Credential encryption
+src/lib/                       Prisma connection and general utilities
 src/trpc/                      Authenticated tRPC setup and router aggregation
 prisma/schema.prisma           Prisma-managed Mongo models
 public/                        Static assets and browser notification resources

@@ -2,7 +2,7 @@ import 'server-only';
 import {createHash} from 'node:crypto';
 import {TRPCError} from '@trpc/server';
 import prisma from '@/lib/db';
-import {decryptSecret} from '@/lib/encryption';
+import {decryptSecret} from '@/lib/security/encryption';
 import type {CredentialType} from '@/generated/prisma/enums';
 
 export type ModelChoice={id:string;name:string;tools:'supported'|'unknown';kind:'model'|'inference-profile'};

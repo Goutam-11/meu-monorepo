@@ -6,7 +6,7 @@ const rows=new Map<string,Row>();let nextId=0;let calls:{url:string;headers:Head
 let handle:(url:URL)=>Response=()=>new Response('{}');
 const originalFetch=globalThis.fetch;
 mock.module('server-only',()=>({}));
-mock.module('@/lib/encryption',()=>({decryptSecret:(value:string)=>value}));
+mock.module('@/lib/security/encryption',()=>({decryptSecret:(value:string)=>value}));
 mock.module('@/lib/db',()=>({default:{credentials:{findFirst:async({where}:{where:{id:string;userId:string}})=>{const row=rows.get(where.id);return row?.userId===where.userId?row:null;}}}}));
 const {loadCredentialModels,searchCredentialModels,parseProviderModels}=await import('../src/features/credentials/server/models');
 const credential=(type:CredentialType,region:string|null=null)=>{const row={id:`key-${++nextId}`,userId:'owner',type,region,apiKey:'PRIVATE-KEY'};rows.set(row.id,row);return row;};

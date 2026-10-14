@@ -1,9 +1,9 @@
 import "server-only";
 import crypto from "crypto";
-import prisma from "./db";
+import prisma from "../../../lib/db";
 import type { Balances, Position, Trade } from "ccxt";
-import { decryptSecret, encryptSecret } from "./encryption";
-import { appLog } from "./app-logger";
+import { decryptSecret, encryptSecret } from "../../../lib/security/encryption";
+import { appLog } from "../../../lib/logging/app-logger";
 
 /**
  * Zerodha Kite Connect server helpers for the frontend dashboard.

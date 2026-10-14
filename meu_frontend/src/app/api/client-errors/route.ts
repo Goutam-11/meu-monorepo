@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
-import { appLog, newRequestId } from "@/lib/app-logger";
-import { parseClientReport, readBoundedJsonBody } from "@/lib/client-error-validation";
+import { auth } from "@/lib/auth/server";
+import { appLog, newRequestId } from "@/lib/logging/app-logger";
+import { parseClientReport, readBoundedJsonBody } from "@/lib/logging/client-error-validation";
 
 export const runtime = "nodejs";
 const reportWindows = new Map<string, { startedAt: number; count: number }>();

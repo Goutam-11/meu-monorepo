@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { TRPCError } from '@trpc/server';
 import type { Agent, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/db';
-import { appLog } from '@/lib/app-logger';
+import { appLog } from '@/lib/logging/app-logger';
 import { readRows } from '@/features/exchange/server/reconciliation';
 import { executionConnection, registerExecutionAccount, linkedExchangeIds } from '@/features/exchange/server/execution-account';
 import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';

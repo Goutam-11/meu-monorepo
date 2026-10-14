@@ -1,8 +1,8 @@
-import EditAgentPage from "@/features/agents/components/EditAgent";
-import { requireAuth } from "@/lib/auth-utils";
+import EditAgentPage from "@/features/agents/components/forms/EditAgent";
+import { requireAuth } from "@/lib/auth/session";
 import { HydrateClient } from "@/trpc/server";
 import { Suspense } from "react";
-import { LoggedErrorBoundary as ErrorBoundary } from "@/components/LoggedErrorBoundary";
+import { LoggedErrorBoundary as ErrorBoundary } from "@/components/errors/LoggedErrorBoundary";
 import { EntityDetailSkeleton, ErrorView } from "@/components/entityComponents";
 
 interface PageProps {

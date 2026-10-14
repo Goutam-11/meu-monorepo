@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
-import { parseClientReport, readBoundedJsonBody } from "@/lib/client-error-validation";
-import { reportClientError } from "@/lib/client-error-report";
-import { safeLogCode, safeProcedureName } from "@/lib/log-safety";
+import { parseClientReport, readBoundedJsonBody } from "@/lib/logging/client-error-validation";
+import { reportClientError } from "@/lib/logging/client-error-report";
+import { safeLogCode, safeProcedureName } from "@/lib/logging/log-safety";
 
 describe("client error report validation", () => {
   it("accepts only the fixed source and event pairs", () => {

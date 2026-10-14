@@ -22,7 +22,7 @@ const mockPush = `
 describe("notification logging", () => {
   test("logs safe error classification but excludes raw errors, nested data and child secrets", () => {
     const logs = probe(`
-      import {log,errMeta} from './src/logger';
+      import {log,errMeta} from './src/infrastructure/logger';
       const error=Object.assign(new Error('synthetic-error-secret'),{statusCode:401,body:'synthetic-response-secret',code:11000});
       log.child({deliveryId:'${deliveryId}',apiKey:'synthetic-api-secret',headers:{authorization:'synthetic-auth-secret'}})
         .child({endpoint:'https://example.invalid/synthetic-endpoint-secret',keys:{auth:'synthetic-push-secret'}})
@@ -48,7 +48,7 @@ describe("notification logging", () => {
         const statusCode=type==='retry'&&count===1?429:type==='expired'?410:type==='fail'?401:201;
         return new Response(null,{status:statusCode});
       };
-      const {sendPush}=await import('./src/index');
+      const {sendPush}=await import('./src/channels/web-push/delivery');
       const point=Buffer.alloc(65);point[0]=4;
       const subscriptions=['retry','expired','fail','invalid'].map(type=>({_id:type,endpoint:'https://fcm.googleapis.com/send/'+type,
         p256dh:point.toString('base64url'),auth:type==='invalid'?'synthetic-invalid':Buffer.alloc(16).toString('base64url')}));
@@ -75,7 +75,7 @@ describe("notification logging", () => {
   test("logs persistence, invalid payloads, legacy IDs and DB failure without exposing contents", () => {
     const logs = probe(mockPush + `
       import {strict as assert} from 'node:assert';
-      const {createNotificationProcessor}=await import('./src/index');
+      const {createNotificationProcessor}=await import('./src/workers/notification-processor');
       let persisted=0;let fail=false;
       const db={collection:()=>({updateOne:async filter=>{
         persisted++; if(fail)throw new Error('synthetic-db-credential');
@@ -108,7 +108,7 @@ describe("notification logging", () => {
       let attempts=0;
       mock.module('web-push',()=>({default:{setVapidDetails(){},generateRequestDetails(sub){return {endpoint:sub.endpoint,method:'POST',headers:{},body:null};}}}));
       globalThis.fetch=()=>{attempts++;return new Promise(()=>{});};
-      const {createNotificationProcessor}=await import('./src/index');
+      const {createNotificationProcessor}=await import('./src/workers/notification-processor');
       const point=Buffer.alloc(65);point[0]=4;
       const db={collection:()=>({updateOne:async()=>({upsertedCount:1}),find:()=>({toArray:async()=>[
         {_id:'sub',endpoint:'https://fcm.googleapis.com/send/example',p256dh:point.toString('base64url'),auth:Buffer.alloc(16).toString('base64url')}
@@ -132,7 +132,7 @@ describe("notification logging", () => {
         await new Promise(resolve=>setTimeout(resolve,5));
         active--;delivered++;return new Response(null,{status:201});
       };
-      const {sendPush}=await import('./src/index');
+      const {sendPush}=await import('./src/channels/web-push/delivery');
       const point=Buffer.alloc(65);point[0]=4;
       const subscriptions=Array.from({length:13},(_,i)=>({_id:'sub-'+i,
         endpoint:'https://fcm.googleapis.com/send/'+i,p256dh:point.toString('base64url'),auth:Buffer.alloc(16).toString('base64url')}));
@@ -146,7 +146,7 @@ describe("notification logging", () => {
   test("disabled push is logged without querying subscriptions", () => {
     const logs = probe(mockPush + `
       delete process.env.VAPID_PRIVATE_KEY;
-      const {sendPush}=await import('./src/index');
+      const {sendPush}=await import('./src/channels/web-push/delivery');
       await sendPush({collection(){throw new Error('DB should not be queried')}},'owner',{}, {deliveryId:'${deliveryId}'});
     `);
     expect(logs).toHaveLength(1);

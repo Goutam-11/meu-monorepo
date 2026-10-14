@@ -15,7 +15,7 @@ const agent = { id: 'a'.repeat(24), userId: 'owner', exchangeId: 'b'.repeat(24),
 };
 mock.module('../src/features/agents/server/recover-delta-agent', () => ({recoverDeltaAgent: async () => { recoverCalls++; if (recoverySucceeds) { lockBusy = false; return; } throw Object.assign(new Error('Unrecoverable lock'), {code:'CONFLICT'}); }}));
 mock.module('server-only', () => ({}));
-mock.module('../src/lib/encryption', () => ({ decryptSecret: () => 'fixture' }));
+mock.module('../src/lib/security/encryption', () => ({ decryptSecret: () => 'fixture' }));
 mock.module('../../meu/schedulerService/src/config/config', () => ({ exchangeMap: { DELTA: class { id = 'delta'; async loadMarkets() {} async fetchLeverage() {return {marginMode:'isolated',longLeverage:2,shortLeverage:2};} market() { return { symbol: 'XRP/USD:USD', active: true, contract: true, swap: true, linear: true, quote: 'USD', settle: 'USD', contractSize: 1, info: { maintenance_margin: '0.5' } }; } } }, configureCryptoExchange: () => {} }));
 mock.module('../../meu/schedulerService/src/brokers/delta/deltaStart', () => ({ prepareDeltaStrategyAccount: async (_exchange: unknown, _symbol: string, leverage: number, options: { beforeWrite: () => Promise<void>; allowAccountModeChange: boolean }) => { prepareCalls++; allowAccountModeChange = options.allowAccountModeChange; expect(leverage).toBe(2); await options.beforeWrite(); if (settingsFailure) throw new Error('Sensitive broker response'); return { marginMode: 'isolated', leverage }; } }));
 mock.module('../src/features/exchange/server/execution-account', () => ({ executionConnection: async () => ({}), registerExecutionAccount: async () => ({ accountKey: 'delta:fixture' }), linkedExchangeIds: async () => [agent.exchangeId, 'c'.repeat(24)] }));

@@ -36,7 +36,7 @@ import {
 import { AgentType, AgentStrategy } from "@/generated/prisma/enums";
 import { AgentBudgetFields, AgentConfigurationReview } from "./agent-budget-fields";
 import { AgentFormFeedback } from "./agent-form-feedback";
-import {brokerCapabilities} from "../../../../../shared/trading/brokerCapabilities";
+import {brokerCapabilities} from "../../../../../../shared/trading/brokerCapabilities";
 import { AgentIntelligenceFields } from "./agent-intelligence-fields";
 import { useSuspenseAgent, useUpdateAgent } from "@/features/agents/hooks/use-agent";
 import {  CandlestickChartIcon, Plus, Trash2 } from "lucide-react";

@@ -6,6 +6,7 @@ Source review: **11 October 2026**. This is the maintained entry point. Historic
 
 | Need | Guide |
 |---|---|
+| Find frontend, notification and shared source folders | [Project structure and ownership](PROJECT_STRUCTURE.md) |
 | Understand what Meu currently does | [User guide and capability matrix](USER_GUIDE.md) |
 | Understand processes and execution | [Architecture and diagrams](ARCHITECTURE.md) |
 | Find a module, function or its import dependencies | [Module responsibility map](MODULES.md), [generated source/function index](reference/CODE_MAP.md) |

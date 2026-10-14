@@ -6,8 +6,8 @@ import { executionConnection, registerExecutionAccount, linkedExchangeIds } from
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import prisma from "@/lib/db";
-import { exchangeKiteRequestToken, kiteLoginUrl } from "@/lib/kite";
-import { decryptSecret, encryptSecret } from "@/lib/encryption";
+import { exchangeKiteRequestToken, kiteLoginUrl } from "@/features/exchange/server/kite";
+import { decryptSecret, encryptSecret } from "@/lib/security/encryption";
 import { TRPCError } from "@trpc/server";
 import {loadMarketCatalog, searchMarkets} from '@/features/markets/server/catalog';
 

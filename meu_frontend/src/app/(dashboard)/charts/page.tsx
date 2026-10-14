@@ -1,4 +1,4 @@
-import { requireAuth } from '@/lib/auth-utils';
+import { requireAuth } from '@/lib/auth/session';
 import { ChartsWorkspace } from '@/features/charts/components/charts-workspace';
 
 export default async function ChartsPage({ searchParams }: { searchParams: Promise<{ agent?: string | string[] }> }) {

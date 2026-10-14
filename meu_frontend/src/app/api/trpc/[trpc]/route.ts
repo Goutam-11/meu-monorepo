@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import { createTRPCContext } from '@/trpc/init';
 import { appRouter } from '@/trpc/routers/_app';
-import { appLog, newRequestId, safeLogCode, safeProcedureName } from '@/lib/app-logger';
+import { appLog, newRequestId, safeLogCode, safeProcedureName } from '@/lib/logging/app-logger';
 
 const handler = async (req: Request) => {
   const requestId = newRequestId();

@@ -29,7 +29,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/client";
 import type { Exchange } from "@/generated/prisma/client";
 import {
   useGetExchangeData,

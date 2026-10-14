@@ -10,9 +10,14 @@ This index lists static imports, literal dynamic imports and named functions/met
 
 | Source | Named functions | Local dependency files |
 |---|---:|---:|
-| [meu/notificationService/src/index.ts](#file-a4bffa29adad) | 6 | 2 |
-| [meu/notificationService/src/logger.ts](#file-2e9c14c312be) | 3 | 0 |
-| [meu/notificationService/src/push-validation.ts](#file-f870d3f0c2aa) | 3 | 0 |
+| [meu/notificationService/src/channels/web-push/delivery.ts](#file-3edfb6be1c98) | 2 | 3 |
+| [meu/notificationService/src/channels/web-push/validation.ts](#file-dfae1c639c39) | 3 | 0 |
+| [meu/notificationService/src/contracts/notification.ts](#file-24a5b303a1c2) | 0 | 0 |
+| [meu/notificationService/src/index.ts](#file-a4bffa29adad) | 0 | 2 |
+| [meu/notificationService/src/infrastructure/logger.ts](#file-fdf126eb247b) | 3 | 0 |
+| [meu/notificationService/src/infrastructure/redis.ts](#file-553a96b91c21) | 1 | 0 |
+| [meu/notificationService/src/runtime/start-service.ts](#file-d7fb9fb175cf) | 2 | 3 |
+| [meu/notificationService/src/workers/notification-processor.ts](#file-4be45e706e87) | 1 | 3 |
 | [meu/schedulerService/index.ts](#file-b5c082703924) | 2 | 5 |
 | [meu/schedulerService/src/agents/llm/prompts/cryptoAgentPrompt.ts](#file-901becb5c0bf) | 0 | 0 |
 | [meu/schedulerService/src/agents/llm/prompts/stockAgentPrompt.ts](#file-44561f276203) | 0 | 0 |
@@ -92,10 +97,8 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d) | 3 | 5 |
 | [meu_frontend/src/app/api/trpc/[trpc]/route.ts](#file-45fb100e52b8) | 3 | 3 |
 | [meu_frontend/src/app/layout.tsx](#file-9f5b43d9b9de) | 1 | 1 |
-| [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) | 1 | 1 |
-| [meu_frontend/src/components/appHeader.tsx](#file-0f4a984bf6aa) | 2 | 5 |
-| [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a) | 5 | 6 |
-| [meu_frontend/src/components/auth-shell.tsx](#file-7cc37ddf222d) | 1 | 1 |
+| [meu_frontend/src/components/branding/meu-icons.tsx](#file-967d9798e048) | 10 | 0 |
+| [meu_frontend/src/components/branding/meu-logo.tsx](#file-2868db659617) | 1 | 1 |
 | [meu_frontend/src/components/entityComponents/Empty.tsx](#file-e1341d0db420) | 0 | 1 |
 | [meu_frontend/src/components/entityComponents/EntityAvatar.tsx](#file-d9686ce9473d) | 1 | 1 |
 | [meu_frontend/src/components/entityComponents/EntityBadge.tsx](#file-09f652494ac0) | 1 | 1 |
@@ -108,12 +111,9 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu_frontend/src/components/entityComponents/EntitySearch.tsx](#file-ea60ae8d3698) | 1 | 3 |
 | [meu_frontend/src/components/entityComponents/EntityStates.tsx](#file-d1a5439e4c25) | 3 | 2 |
 | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) | 0 | 11 |
-| [meu_frontend/src/components/login.tsx](#file-b650cf92caec) | 4 | 5 |
-| [meu_frontend/src/components/meu-icons.tsx](#file-e3bf63df54cd) | 10 | 0 |
-| [meu_frontend/src/components/meu-logo.tsx](#file-6af34cce3d3d) | 1 | 1 |
-| [meu_frontend/src/components/password-input.tsx](#file-392b4a261058) | 1 | 2 |
-| [meu_frontend/src/components/signup.tsx](#file-5cb998c8a647) | 4 | 5 |
-| [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f) | 9 | 2 |
+| [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) | 1 | 1 |
+| [meu_frontend/src/components/layout/appHeader.tsx](#file-6df673cc5ea0) | 2 | 5 |
+| [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad) | 5 | 6 |
 | [meu_frontend/src/components/ui/accordion.tsx](#file-eff37b7f84f0) | 4 | 1 |
 | [meu_frontend/src/components/ui/alert-dialog.tsx](#file-ed34d47c4dac) | 11 | 2 |
 | [meu_frontend/src/components/ui/alert.tsx](#file-4b3b987cd573) | 3 | 1 |
@@ -168,14 +168,14 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu_frontend/src/components/ui/toggle.tsx](#file-d9f27669dfb9) | 1 | 1 |
 | [meu_frontend/src/components/ui/tooltip.tsx](#file-696410254fcf) | 4 | 1 |
 | [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5) | 4 | 10 |
-| [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd) | 5 | 15 |
-| [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed) | 3 | 6 |
-| [meu_frontend/src/features/agents/components/agent-form-feedback.tsx](#file-91c03a95890b) | 2 | 0 |
-| [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22) | 1 | 7 |
-| [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98) | 1 | 8 |
 | [meu_frontend/src/features/agents/components/agent.tsx](#file-3984b831a40c) | 2 | 4 |
-| [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952) | 13 | 18 |
-| [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989) | 2 | 7 |
+| [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576) | 5 | 15 |
+| [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed) | 3 | 6 |
+| [meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx](#file-b9eb4df01afe) | 2 | 0 |
+| [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811) | 1 | 7 |
+| [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4) | 1 | 8 |
+| [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8) | 13 | 18 |
+| [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073) | 2 | 7 |
 | [meu_frontend/src/features/agents/hooks/use-agent.ts](#file-2750ed7a6002) | 16 | 1 |
 | [meu_frontend/src/features/agents/server/edit-crypto-agent.ts](#file-5129a594abff) | 3 | 6 |
 | [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3) | 5 | 8 |
@@ -183,6 +183,10 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu_frontend/src/features/agents/server/router.ts](#file-82b4c31078aa) | 2 | 9 |
 | [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4) | 5 | 14 |
 | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) | 2 | 1 |
+| [meu_frontend/src/features/auth/components/auth-shell.tsx](#file-1cf95b08b6ed) | 1 | 1 |
+| [meu_frontend/src/features/auth/components/login.tsx](#file-7dff3a2891a7) | 4 | 5 |
+| [meu_frontend/src/features/auth/components/password-input.tsx](#file-1fc0077043d5) | 1 | 2 |
+| [meu_frontend/src/features/auth/components/signup.tsx](#file-4dd230bb412b) | 4 | 5 |
 | [meu_frontend/src/features/backtests/chart/analysis.ts](#file-dac1b352656a) | 5 | 4 |
 | [meu_frontend/src/features/backtests/components/agent-launch.tsx](#file-af786abb6830) | 2 | 5 |
 | [meu_frontend/src/features/backtests/components/backtest-price-chart.tsx](#file-33ffc77904e1) | 6 | 6 |
@@ -215,7 +219,9 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu_frontend/src/features/exchange/components/portfolio-overview.tsx](#file-71c3b269af63) | 5 | 4 |
 | [meu_frontend/src/features/exchange/components/reconciliation-workspace.tsx](#file-9f41ee2d0004) | 3 | 3 |
 | [meu_frontend/src/features/exchange/hooks/use-exchange.ts](#file-40f9c8c0bd38) | 16 | 1 |
+| [meu_frontend/src/features/exchange/server/exchange-data.ts](#file-7c1e6cb6bb2a) | 1 | 4 |
 | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) | 3 | 4 |
+| [meu_frontend/src/features/exchange/server/kite.ts](#file-89509d12f443) | 7 | 3 |
 | [meu_frontend/src/features/exchange/server/reconciliation.ts](#file-d0180098de88) | 5 | 4 |
 | [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f) | 6 | 12 |
 | [meu_frontend/src/features/exchange/server/router.ts](#file-91599ec511d1) | 2 | 9 |
@@ -228,23 +234,22 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu_frontend/src/features/notifications/components/notifications.tsx](#file-7f59b6fb5baf) | 5 | 5 |
 | [meu_frontend/src/features/notifications/hooks/use-browser-notifications.ts](#file-1f343c494dac) | 11 | 1 |
 | [meu_frontend/src/features/notifications/hooks/use-notifications.ts](#file-c84e6c94eb3d) | 18 | 2 |
+| [meu_frontend/src/features/notifications/server/events.ts](#file-37d6abefa8af) | 6 | 0 |
+| [meu_frontend/src/features/notifications/server/push-validation.ts](#file-7177ab9ebe2b) | 3 | 0 |
 | [meu_frontend/src/features/notifications/server/router.ts](#file-6674456ea0f0) | 0 | 4 |
+| [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a) | 9 | 2 |
 | [meu_frontend/src/features/settings/server/router.ts](#file-2d0a959134b6) | 0 | 2 |
 | [meu_frontend/src/hooks/use-mobile.ts](#file-2ac5bd1a5826) | 2 | 0 |
 | [meu_frontend/src/instrumentation.ts](#file-c0e3f54a8a6d) | 4 | 1 |
-| [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) | 2 | 1 |
-| [meu_frontend/src/lib/auth-client.ts](#file-a6e64c486914) | 0 | 0 |
-| [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) | 2 | 1 |
-| [meu_frontend/src/lib/auth.ts](#file-88f27c02508d) | 0 | 1 |
-| [meu_frontend/src/lib/client-error-report.ts](#file-eea9cb8bcbfc) | 1 | 0 |
-| [meu_frontend/src/lib/client-error-validation.ts](#file-6d8ab70e2e1a) | 2 | 0 |
-| [meu_frontend/src/lib/config.ts](#file-217ac8c08a1d) | 1 | 4 |
+| [meu_frontend/src/lib/auth/client.ts](#file-e68f7a980b3d) | 0 | 0 |
+| [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8) | 0 | 1 |
+| [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) | 2 | 1 |
 | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) | 0 | 1 |
-| [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) | 3 | 0 |
-| [meu_frontend/src/lib/kite.ts](#file-e4ebd94e8111) | 7 | 3 |
-| [meu_frontend/src/lib/log-safety.ts](#file-8763257ce406) | 3 | 0 |
-| [meu_frontend/src/lib/notification-events.ts](#file-205cdec58c8d) | 6 | 0 |
-| [meu_frontend/src/lib/push-validation.ts](#file-c82bb8b2781e) | 3 | 0 |
+| [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) | 2 | 1 |
+| [meu_frontend/src/lib/logging/client-error-report.ts](#file-73a4ada7be53) | 1 | 0 |
+| [meu_frontend/src/lib/logging/client-error-validation.ts](#file-893a790808b5) | 2 | 0 |
+| [meu_frontend/src/lib/logging/log-safety.ts](#file-1428d8a77779) | 3 | 0 |
+| [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) | 3 | 0 |
 | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) | 3 | 0 |
 | [meu_frontend/src/trpc/client.tsx](#file-f97f83ba2e16) | 5 | 2 |
 | [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3) | 0 | 2 |
@@ -263,6 +268,66 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [shared/trading/sizing.ts](#file-864c148ae550) | 6 | 1 |
 | [shared/trading/strategies.ts](#file-08c346741655) | 8 | 1 |
 
+<a id="file-3edfb6be1c98"></a>
+
+## meu/notificationService/src/channels/web-push/delivery.ts
+
+[meu/notificationService/src/channels/web-push/delivery.ts](../../meu/notificationService/src/channels/web-push/delivery.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../contracts/notification` | [meu/notificationService/src/contracts/notification.ts](#file-24a5b303a1c2) |
+| `../../infrastructure/logger` | [meu/notificationService/src/infrastructure/logger.ts](#file-fdf126eb247b) |
+| `./validation` | [meu/notificationService/src/channels/web-push/validation.ts](#file-dfae1c639c39) |
+
+### Imported by
+
+- [meu/notificationService/src/workers/notification-processor.ts](#file-4be45e706e87)
+
+External or unresolved imports: `mongodb`, `node:crypto`, `web-push`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `configureWebPush` | [10](../../meu/notificationService/src/channels/web-push/delivery.ts#L10) | `webpush.setVapidDetails` |
+| `sendPush` | [24](../../meu/notificationService/src/channels/web-push/delivery.ts#L24) | `Date.now`, `Promise.allSettled`, `configureWebPush`, `db.collection`, `deliveryLog.info`, `deliveryLog.warn`, `log.child`, `randomUUID`, `results.filter`, `subs.slice` |
+
+<a id="file-dfae1c639c39"></a>
+
+## meu/notificationService/src/channels/web-push/validation.ts
+
+[meu/notificationService/src/channels/web-push/validation.ts](../../meu/notificationService/src/channels/web-push/validation.ts)
+
+### Imported by
+
+- [meu/notificationService/src/channels/web-push/delivery.ts](#file-3edfb6be1c98)
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `validPushEndpoint` | [1](../../meu/notificationService/src/channels/web-push/validation.ts#L1) | `host.endsWith` |
+| `validPushKeys` | [11](../../meu/notificationService/src/channels/web-push/validation.ts#L11) | `decoded` |
+| `decoded` | [12](../../meu/notificationService/src/channels/web-push/validation.ts#L12) | `Buffer.from`, `bytes.toString`, `value.replace` |
+
+<a id="file-24a5b303a1c2"></a>
+
+## meu/notificationService/src/contracts/notification.ts
+
+[meu/notificationService/src/contracts/notification.ts](../../meu/notificationService/src/contracts/notification.ts)
+
+### Imported by
+
+- [meu/notificationService/src/channels/web-push/delivery.ts](#file-3edfb6be1c98)
+- [meu/notificationService/src/workers/notification-processor.ts](#file-4be45e706e87)
+
+External or unresolved imports: `zod`.
+
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
 <a id="file-a4bffa29adad"></a>
 
 ## meu/notificationService/src/index.ts
@@ -273,31 +338,23 @@ This index lists static imports, literal dynamic imports and named functions/met
 
 | Import / re-export | Source target |
 |---|---|
-| `./logger` | [meu/notificationService/src/logger.ts](#file-2e9c14c312be) |
-| `./push-validation` | [meu/notificationService/src/push-validation.ts](#file-f870d3f0c2aa) |
+| `./infrastructure/logger` | [meu/notificationService/src/infrastructure/logger.ts](#file-fdf126eb247b) |
+| `./runtime/start-service` | [meu/notificationService/src/runtime/start-service.ts](#file-d7fb9fb175cf) |
 
-External or unresolved imports: `bullmq`, `ioredis`, `mongodb`, `node:crypto`, `web-push`, `zod`.
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
 
-### Named functions and direct calls
+<a id="file-fdf126eb247b"></a>
 
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `redisConnection` | [38](../../meu/notificationService/src/index.ts#L38) | `Number` |
-| `configureWebPush` | [45](../../meu/notificationService/src/index.ts#L45) | `webpush.setVapidDetails` |
-| `sendPush` | [61](../../meu/notificationService/src/index.ts#L61) | `Date.now`, `Promise.allSettled`, `configureWebPush`, `db.collection`, `deliveryLog.info`, `deliveryLog.warn`, `log.child`, `randomUUID`, `results.filter`, `subs.slice` |
-| `createNotificationProcessor` | [149](../../meu/notificationService/src/index.ts#L149) | — |
-| `main` | [189](../../meu/notificationService/src/index.ts#L189) | `connection.on`, `createNotificationProcessor`, `db.collection`, `log.info`, `mongo.connect`, `mongo.db`, `process.on`, `redisConnection`, `worker.on` |
-| `shutdown` | [226](../../meu/notificationService/src/index.ts#L226) | `connection.quit`, `errMeta`, `log.error`, `log.info`, `mongo.close`, `process.exit`, `worker.close` |
+## meu/notificationService/src/infrastructure/logger.ts
 
-<a id="file-2e9c14c312be"></a>
-
-## meu/notificationService/src/logger.ts
-
-[meu/notificationService/src/logger.ts](../../meu/notificationService/src/logger.ts)
+[meu/notificationService/src/infrastructure/logger.ts](../../meu/notificationService/src/infrastructure/logger.ts)
 
 ### Imported by
 
+- [meu/notificationService/src/channels/web-push/delivery.ts](#file-3edfb6be1c98)
 - [meu/notificationService/src/index.ts](#file-a4bffa29adad)
+- [meu/notificationService/src/runtime/start-service.ts](#file-d7fb9fb175cf)
+- [meu/notificationService/src/workers/notification-processor.ts](#file-4be45e706e87)
 
 External or unresolved imports: `pino`.
 
@@ -305,27 +362,80 @@ External or unresolved imports: `pino`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `errMeta` | [11](../../meu/notificationService/src/logger.ts#L11) | `Number.isInteger`, `Number.isSafeInteger`, `errorNames.has` |
-| `safeFields` | [23](../../meu/notificationService/src/logger.ts#L23) | `Number.isFinite`, `Object.assign`, `errMeta`, `events.has` |
-| `logMethod` | [54](../../meu/notificationService/src/logger.ts#L54) | `method.apply`, `safeFields` |
+| `errMeta` | [11](../../meu/notificationService/src/infrastructure/logger.ts#L11) | `Number.isInteger`, `Number.isSafeInteger`, `errorNames.has` |
+| `safeFields` | [23](../../meu/notificationService/src/infrastructure/logger.ts#L23) | `Number.isFinite`, `Object.assign`, `errMeta`, `events.has` |
+| `logMethod` | [54](../../meu/notificationService/src/infrastructure/logger.ts#L54) | `method.apply`, `safeFields` |
 
-<a id="file-f870d3f0c2aa"></a>
+<a id="file-553a96b91c21"></a>
 
-## meu/notificationService/src/push-validation.ts
+## meu/notificationService/src/infrastructure/redis.ts
 
-[meu/notificationService/src/push-validation.ts](../../meu/notificationService/src/push-validation.ts)
+[meu/notificationService/src/infrastructure/redis.ts](../../meu/notificationService/src/infrastructure/redis.ts)
 
 ### Imported by
 
-- [meu/notificationService/src/index.ts](#file-a4bffa29adad)
+- [meu/notificationService/src/runtime/start-service.ts](#file-d7fb9fb175cf)
+
+External or unresolved imports: `ioredis`.
 
 ### Named functions and direct calls
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `validPushEndpoint` | [1](../../meu/notificationService/src/push-validation.ts#L1) | `host.endsWith` |
-| `validPushKeys` | [11](../../meu/notificationService/src/push-validation.ts#L11) | `decoded` |
-| `decoded` | [12](../../meu/notificationService/src/push-validation.ts#L12) | `Buffer.from`, `bytes.toString`, `value.replace` |
+| `redisConnection` | [3](../../meu/notificationService/src/infrastructure/redis.ts#L3) | `Number` |
+
+<a id="file-d7fb9fb175cf"></a>
+
+## meu/notificationService/src/runtime/start-service.ts
+
+[meu/notificationService/src/runtime/start-service.ts](../../meu/notificationService/src/runtime/start-service.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../infrastructure/logger` | [meu/notificationService/src/infrastructure/logger.ts](#file-fdf126eb247b) |
+| `../infrastructure/redis` | [meu/notificationService/src/infrastructure/redis.ts](#file-553a96b91c21) |
+| `../workers/notification-processor` | [meu/notificationService/src/workers/notification-processor.ts](#file-4be45e706e87) |
+
+### Imported by
+
+- [meu/notificationService/src/index.ts](#file-a4bffa29adad)
+
+External or unresolved imports: `bullmq`, `mongodb`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `main` | [10](../../meu/notificationService/src/runtime/start-service.ts#L10) | `connection.on`, `createNotificationProcessor`, `db.collection`, `log.info`, `mongo.connect`, `mongo.db`, `process.on`, `redisConnection`, `worker.on` |
+| `shutdown` | [47](../../meu/notificationService/src/runtime/start-service.ts#L47) | `connection.quit`, `errMeta`, `log.error`, `log.info`, `mongo.close`, `process.exit`, `worker.close` |
+
+<a id="file-4be45e706e87"></a>
+
+## meu/notificationService/src/workers/notification-processor.ts
+
+[meu/notificationService/src/workers/notification-processor.ts](../../meu/notificationService/src/workers/notification-processor.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../channels/web-push/delivery` | [meu/notificationService/src/channels/web-push/delivery.ts](#file-3edfb6be1c98) |
+| `../contracts/notification` | [meu/notificationService/src/contracts/notification.ts](#file-24a5b303a1c2) |
+| `../infrastructure/logger` | [meu/notificationService/src/infrastructure/logger.ts](#file-fdf126eb247b) |
+
+### Imported by
+
+- [meu/notificationService/src/runtime/start-service.ts](#file-d7fb9fb175cf)
+
+External or unresolved imports: `bullmq`, `mongodb`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `createNotificationProcessor` | [7](../../meu/notificationService/src/workers/notification-processor.ts#L7) | — |
 
 <a id="file-b5c082703924"></a>
 
@@ -1588,7 +1698,7 @@ External or unresolved imports: `bullmq`, `ccxt`, `mongodb`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/auth-shell` | [meu_frontend/src/components/auth-shell.tsx](#file-7cc37ddf222d) |
+| `@/features/auth/components/auth-shell` | [meu_frontend/src/features/auth/components/auth-shell.tsx](#file-1cf95b08b6ed) |
 
 External or unresolved imports: `sonner`.
 
@@ -1608,8 +1718,8 @@ External or unresolved imports: `sonner`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/login` | [meu_frontend/src/components/login.tsx](#file-b650cf92caec) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/features/auth/components/login` | [meu_frontend/src/features/auth/components/login.tsx](#file-7dff3a2891a7) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -1627,8 +1737,8 @@ External or unresolved imports: `sonner`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/signup` | [meu_frontend/src/components/signup.tsx](#file-5cb998c8a647) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/features/auth/components/signup` | [meu_frontend/src/features/auth/components/signup.tsx](#file-4dd230bb412b) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -1646,10 +1756,10 @@ External or unresolved imports: `sonner`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
-| `@/features/agents/components/EditAgent` | [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
+| `@/features/agents/components/forms/EditAgent` | [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1670,10 +1780,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/agents/components/AgentDetailView` | [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1694,10 +1804,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
-| `@/features/agents/components/createAgent` | [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
+| `@/features/agents/components/forms/createAgent` | [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1718,10 +1828,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/agents/components/agent` | [meu_frontend/src/features/agents/components/agent.tsx](#file-3984b831a40c) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1743,7 +1853,7 @@ External or unresolved imports: `react`.
 | Import / re-export | Source target |
 |---|---|
 | `@/features/charts/components/charts-workspace` | [meu_frontend/src/features/charts/components/charts-workspace.tsx](#file-8c2aa8a37e03) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -1761,10 +1871,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/credentials/components/EditCred` | [meu_frontend/src/features/credentials/components/EditCred.tsx](#file-ad04fd87d941) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1798,7 +1908,7 @@ External or unresolved imports: `react`.
 | Import / re-export | Source target |
 |---|---|
 | `@/features/credentials/components/createCred` | [meu_frontend/src/features/credentials/components/createCred.tsx](#file-a61b47d55b05) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -1816,10 +1926,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/credentials/components/credentials` | [meu_frontend/src/features/credentials/components/credentials.tsx](#file-9f89f43602b3) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1840,10 +1950,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/exchange/components/ExchangeDashboard` | [meu_frontend/src/features/exchange/components/ExchangeDashboard.tsx](#file-020e7b2d2cba) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1866,7 +1976,7 @@ External or unresolved imports: `react`.
 |---|---|
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/lib/client-error-report` | [meu_frontend/src/lib/client-error-report.ts](#file-eea9cb8bcbfc) |
+| `@/lib/logging/client-error-report` | [meu_frontend/src/lib/logging/client-error-report.ts](#file-73a4ada7be53) |
 
 External or unresolved imports: `react`.
 
@@ -1886,10 +1996,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/exchange/components/EditExchange` | [meu_frontend/src/features/exchange/components/EditExchange.tsx](#file-c8683f166fff) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1923,7 +2033,7 @@ External or unresolved imports: `react`.
 | Import / re-export | Source target |
 |---|---|
 | `@/features/exchange/components/reconciliation-workspace` | [meu_frontend/src/features/exchange/components/reconciliation-workspace.tsx](#file-9f41ee2d0004) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -1942,7 +2052,7 @@ External or unresolved imports: `react`.
 | Import / re-export | Source target |
 |---|---|
 | `@/features/exchange/components/createEx` | [meu_frontend/src/features/exchange/components/createEx.tsx](#file-752d2ba61e29) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -1960,10 +2070,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/exchange/components/exchange` | [meu_frontend/src/features/exchange/components/exchange.tsx](#file-a53ef3559020) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -1985,7 +2095,7 @@ External or unresolved imports: `react`.
 | Import / re-export | Source target |
 |---|---|
 | `@/features/help/components/help-workspace` | [meu_frontend/src/features/help/components/help-workspace.tsx](#file-3ad2ca352d6e) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -2003,8 +2113,8 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/appHeader` | [meu_frontend/src/components/appHeader.tsx](#file-0f4a984bf6aa) |
-| `@/components/appSidebar` | [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a) |
+| `@/components/layout/appHeader` | [meu_frontend/src/components/layout/appHeader.tsx](#file-6df673cc5ea0) |
+| `@/components/layout/appSidebar` | [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad) |
 | `@/components/ui/sidebar` | [meu_frontend/src/components/ui/sidebar.tsx](#file-4ae565dd6d76) |
 | `@/features/notifications/components/notification-watcher` | [meu_frontend/src/features/notifications/components/notification-watcher.tsx](#file-11d66e1b38b9) |
 
@@ -2044,10 +2154,10 @@ External or unresolved imports: `sonner`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/notifications/components/NotificationView` | [meu_frontend/src/features/notifications/components/NotificationView.tsx](#file-69429fa545c9) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -2068,10 +2178,10 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/LoggedErrorBoundary` | [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a) |
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
+| `@/components/errors/LoggedErrorBoundary` | [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f) |
 | `@/features/notifications/components/notifications` | [meu_frontend/src/features/notifications/components/notifications.tsx](#file-7f59b6fb5baf) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 | `@/trpc/server` | [meu_frontend/src/trpc/server.tsx](#file-01d2fd7b8a5d) |
 
 External or unresolved imports: `react`.
@@ -2092,11 +2202,11 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/ui-settings` | [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
 | `@/components/ui/card` | [meu_frontend/src/components/ui/card.tsx](#file-a6e3af238d91) |
 | `@/components/ui/separator` | [meu_frontend/src/components/ui/separator.tsx](#file-53a723ab88ef) |
 | `@/features/notifications/hooks/use-browser-notifications` | [meu_frontend/src/features/notifications/hooks/use-browser-notifications.ts](#file-1f343c494dac) |
+| `@/features/settings/components/ui-settings` | [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a) |
 | `@/lib/utils` | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) |
 
 External or unresolved imports: `lucide-react`.
@@ -2122,7 +2232,7 @@ External or unresolved imports: `lucide-react`.
 | Import / re-export | Source target |
 |---|---|
 | `@/features/backtests/components/backtest-workspace` | [meu_frontend/src/features/backtests/components/backtest-workspace.tsx](#file-47c93f33e5a4) |
-| `@/lib/auth-utils` | [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb) |
+| `@/lib/auth/session` | [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d) |
 
 ### Named functions and direct calls
 
@@ -2140,7 +2250,7 @@ External or unresolved imports: `lucide-react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/auth` | [meu_frontend/src/lib/auth.ts](#file-88f27c02508d) |
+| `@/lib/auth/server` | [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8) |
 
 External or unresolved imports: `better-auth/next-js`.
 
@@ -2156,9 +2266,9 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
-| `@/lib/auth` | [meu_frontend/src/lib/auth.ts](#file-88f27c02508d) |
-| `@/lib/client-error-validation` | [meu_frontend/src/lib/client-error-validation.ts](#file-6d8ab70e2e1a) |
+| `@/lib/auth/server` | [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
+| `@/lib/logging/client-error-validation` | [meu_frontend/src/lib/logging/client-error-validation.ts](#file-893a790808b5) |
 
 ### Named functions and direct calls
 
@@ -2177,9 +2287,9 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
-| `@/lib/auth` | [meu_frontend/src/lib/auth.ts](#file-88f27c02508d) |
-| `@/lib/config` | [meu_frontend/src/lib/config.ts](#file-217ac8c08a1d) |
+| `@/features/exchange/server/exchange-data` | [meu_frontend/src/features/exchange/server/exchange-data.ts](#file-7c1e6cb6bb2a) |
+| `@/lib/auth/server` | [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
 
 External or unresolved imports: `@trpc/server`, `next/server`.
 
@@ -2211,11 +2321,11 @@ External or unresolved imports: `@trpc/server`, `next/server`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
-| `@/lib/auth` | [meu_frontend/src/lib/auth.ts](#file-88f27c02508d) |
-| `@/lib/client-error-validation` | [meu_frontend/src/lib/client-error-validation.ts](#file-6d8ab70e2e1a) |
+| `@/features/notifications/server/push-validation` | [meu_frontend/src/features/notifications/server/push-validation.ts](#file-7177ab9ebe2b) |
+| `@/lib/auth/server` | [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/push-validation` | [meu_frontend/src/lib/push-validation.ts](#file-c82bb8b2781e) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
+| `@/lib/logging/client-error-validation` | [meu_frontend/src/lib/logging/client-error-validation.ts](#file-893a790808b5) |
 
 External or unresolved imports: `next/server`.
 
@@ -2237,7 +2347,7 @@ External or unresolved imports: `next/server`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
 | `@/trpc/init` | [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3) |
 | `@/trpc/routers/_app` | [meu_frontend/src/trpc/routers/_app.ts](#file-1a19320ef195) |
 
@@ -2271,125 +2381,55 @@ External or unresolved imports: `./globals.css`, `next`, `next/font/local`.
 |---|---|---|
 | `RootLayout` | [26](../../meu_frontend/src/app/layout.tsx#L26) | — |
 
-<a id="file-f8a6e3de084a"></a>
+<a id="file-967d9798e048"></a>
 
-## meu_frontend/src/components/LoggedErrorBoundary.tsx
+## meu_frontend/src/components/branding/meu-icons.tsx
 
-[meu_frontend/src/components/LoggedErrorBoundary.tsx](../../meu_frontend/src/components/LoggedErrorBoundary.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/lib/client-error-report` | [meu_frontend/src/lib/client-error-report.ts](#file-eea9cb8bcbfc) |
+[meu_frontend/src/components/branding/meu-icons.tsx](../../meu_frontend/src/components/branding/meu-icons.tsx)
 
 ### Imported by
 
-- [meu_frontend/src/app/(dashboard)/agents/[agentId]/edit/page.tsx](#file-313c27dc4df3)
-- [meu_frontend/src/app/(dashboard)/agents/[agentId]/page.tsx](#file-6903106b05fd)
-- [meu_frontend/src/app/(dashboard)/agents/create/page.tsx](#file-5b7fe1f94a73)
-- [meu_frontend/src/app/(dashboard)/agents/page.tsx](#file-968870bfc4bb)
-- [meu_frontend/src/app/(dashboard)/credentials/[credentialId]/edit/page.tsx](#file-052bcf1e24b9)
-- [meu_frontend/src/app/(dashboard)/credentials/page.tsx](#file-a7babf3707cc)
-- [meu_frontend/src/app/(dashboard)/dashboard/page.tsx](#file-eff5f999ef04)
-- [meu_frontend/src/app/(dashboard)/exchanges/[exchangeId]/edit/page.tsx](#file-713bcbfecf18)
-- [meu_frontend/src/app/(dashboard)/exchanges/page.tsx](#file-dbb98e596cb7)
-- [meu_frontend/src/app/(dashboard)/notifications/[notificationId]/page.tsx](#file-5150ab73d730)
-- [meu_frontend/src/app/(dashboard)/notifications/page.tsx](#file-af888a812245)
+- [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad)
 
-External or unresolved imports: `react-error-boundary`.
+External or unresolved imports: `react`.
 
 ### Named functions and direct calls
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `LoggedErrorBoundary` | [6](../../meu_frontend/src/components/LoggedErrorBoundary.tsx#L6) | — |
+| `Base` | [5](../../meu_frontend/src/components/branding/meu-icons.tsx#L5) | — |
+| `DashboardIcon` | [24](../../meu_frontend/src/components/branding/meu-icons.tsx#L24) | — |
+| `AgentIcon` | [35](../../meu_frontend/src/components/branding/meu-icons.tsx#L35) | — |
+| `CandlesIcon` | [46](../../meu_frontend/src/components/branding/meu-icons.tsx#L46) | — |
+| `PulseIcon` | [59](../../meu_frontend/src/components/branding/meu-icons.tsx#L59) | — |
+| `VaultIcon` | [67](../../meu_frontend/src/components/branding/meu-icons.tsx#L67) | — |
+| `BellIcon` | [78](../../meu_frontend/src/components/branding/meu-icons.tsx#L78) | — |
+| `TuneIcon` | [87](../../meu_frontend/src/components/branding/meu-icons.tsx#L87) | — |
+| `BoltIcon` | [97](../../meu_frontend/src/components/branding/meu-icons.tsx#L97) | — |
+| `ShieldCheckIcon` | [105](../../meu_frontend/src/components/branding/meu-icons.tsx#L105) | — |
 
-<a id="file-0f4a984bf6aa"></a>
+<a id="file-2868db659617"></a>
 
-## meu_frontend/src/components/appHeader.tsx
+## meu_frontend/src/components/branding/meu-logo.tsx
 
-[meu_frontend/src/components/appHeader.tsx](../../meu_frontend/src/components/appHeader.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./ui/sidebar` | [meu_frontend/src/components/ui/sidebar.tsx](#file-4ae565dd6d76) |
-| `@/components/ui-settings` | [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f) |
-| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/features/notifications/components/notification-bell` | [meu_frontend/src/features/notifications/components/notification-bell.tsx](#file-660ac2be4da1) |
-| `@/lib/auth-client` | [meu_frontend/src/lib/auth-client.ts](#file-a6e64c486914) |
-
-### Imported by
-
-- [meu_frontend/src/app/(dashboard)/layout.tsx](#file-dcdce6cb6d1f)
-
-External or unresolved imports: `lucide-react`, `next/link`, `next/navigation`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `BreadcrumbSite` | [22](../../meu_frontend/src/components/appHeader.tsx#L22) | `segments.slice` |
-| `Header` | [51](../../meu_frontend/src/components/appHeader.tsx#L51) | `authClient.useSession`, `name.slice`, `pathname.split`, `usePathname`, `useUISettings` |
-
-<a id="file-60b41959bf0a"></a>
-
-## meu_frontend/src/components/appSidebar.tsx
-
-[meu_frontend/src/components/appSidebar.tsx](../../meu_frontend/src/components/appSidebar.tsx)
+[meu_frontend/src/components/branding/meu-logo.tsx](../../meu_frontend/src/components/branding/meu-logo.tsx)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `./ui/sidebar` | [meu_frontend/src/components/ui/sidebar.tsx](#file-4ae565dd6d76) |
-| `@/components/meu-icons` | [meu_frontend/src/components/meu-icons.tsx](#file-e3bf63df54cd) |
-| `@/components/meu-logo` | [meu_frontend/src/components/meu-logo.tsx](#file-6af34cce3d3d) |
-| `@/features/notifications/hooks/use-browser-notifications` | [meu_frontend/src/features/notifications/hooks/use-browser-notifications.ts](#file-1f343c494dac) |
-| `@/features/notifications/hooks/use-notifications` | [meu_frontend/src/features/notifications/hooks/use-notifications.ts](#file-c84e6c94eb3d) |
-| `@/lib/auth-client` | [meu_frontend/src/lib/auth-client.ts](#file-a6e64c486914) |
+| `@/lib/utils` | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) |
 
 ### Imported by
 
-- [meu_frontend/src/app/(dashboard)/layout.tsx](#file-dcdce6cb6d1f)
-
-External or unresolved imports: `lucide-react`, `next/link`, `next/navigation`, `react`, `sonner`.
+- [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad)
+- [meu_frontend/src/features/auth/components/auth-shell.tsx](#file-1cf95b08b6ed)
 
 ### Named functions and direct calls
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `SidebarStatus` | [34](../../meu_frontend/src/components/appSidebar.tsx#L34) | `useEffect`, `useState`, `useUnreadNotifications` |
-| `tick` | [39](../../meu_frontend/src/components/appSidebar.tsx#L39) | `setTime` |
-| `AppSidebar` | [73](../../meu_frontend/src/components/appSidebar.tsx#L73) | `sidebarItems.map`, `useBrowserNotificationPermission`, `usePathname`, `useRouter`, `useUnreadNotifications` |
-| `onSuccess` | [183](../../meu_frontend/src/components/appSidebar.tsx#L183) | `router.push` |
-| `onError` | [186](../../meu_frontend/src/components/appSidebar.tsx#L186) | `toast.error` |
-
-<a id="file-7cc37ddf222d"></a>
-
-## meu_frontend/src/components/auth-shell.tsx
-
-[meu_frontend/src/components/auth-shell.tsx](../../meu_frontend/src/components/auth-shell.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/components/meu-logo` | [meu_frontend/src/components/meu-logo.tsx](#file-6af34cce3d3d) |
-
-### Imported by
-
-- [meu_frontend/src/app/(auth)/layout.tsx](#file-bcfd1ec380c1)
-
-External or unresolved imports: `lucide-react`, `next/link`, `next/navigation`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `AuthShell` | [8](../../meu_frontend/src/components/auth-shell.tsx#L8) | `usePathname` |
+| `MeuMark` | [3](../../meu_frontend/src/components/branding/meu-logo.tsx#L3) | `cn` |
 
 <a id="file-e1341d0db420"></a>
 
@@ -2702,180 +2742,101 @@ External or unresolved imports: `lucide-react`.
 
 No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
 
-<a id="file-b650cf92caec"></a>
+<a id="file-d9883da1b70f"></a>
 
-## meu_frontend/src/components/login.tsx
+## meu_frontend/src/components/errors/LoggedErrorBoundary.tsx
 
-[meu_frontend/src/components/login.tsx](../../meu_frontend/src/components/login.tsx)
+[meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](../../meu_frontend/src/components/errors/LoggedErrorBoundary.tsx)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `@/components/password-input` | [meu_frontend/src/components/password-input.tsx](#file-392b4a261058) |
+| `@/lib/logging/client-error-report` | [meu_frontend/src/lib/logging/client-error-report.ts](#file-73a4ada7be53) |
+
+### Imported by
+
+- [meu_frontend/src/app/(dashboard)/agents/[agentId]/edit/page.tsx](#file-313c27dc4df3)
+- [meu_frontend/src/app/(dashboard)/agents/[agentId]/page.tsx](#file-6903106b05fd)
+- [meu_frontend/src/app/(dashboard)/agents/create/page.tsx](#file-5b7fe1f94a73)
+- [meu_frontend/src/app/(dashboard)/agents/page.tsx](#file-968870bfc4bb)
+- [meu_frontend/src/app/(dashboard)/credentials/[credentialId]/edit/page.tsx](#file-052bcf1e24b9)
+- [meu_frontend/src/app/(dashboard)/credentials/page.tsx](#file-a7babf3707cc)
+- [meu_frontend/src/app/(dashboard)/dashboard/page.tsx](#file-eff5f999ef04)
+- [meu_frontend/src/app/(dashboard)/exchanges/[exchangeId]/edit/page.tsx](#file-713bcbfecf18)
+- [meu_frontend/src/app/(dashboard)/exchanges/page.tsx](#file-dbb98e596cb7)
+- [meu_frontend/src/app/(dashboard)/notifications/[notificationId]/page.tsx](#file-5150ab73d730)
+- [meu_frontend/src/app/(dashboard)/notifications/page.tsx](#file-af888a812245)
+
+External or unresolved imports: `react-error-boundary`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `LoggedErrorBoundary` | [6](../../meu_frontend/src/components/errors/LoggedErrorBoundary.tsx#L6) | — |
+
+<a id="file-6df673cc5ea0"></a>
+
+## meu_frontend/src/components/layout/appHeader.tsx
+
+[meu_frontend/src/components/layout/appHeader.tsx](../../meu_frontend/src/components/layout/appHeader.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../ui/sidebar` | [meu_frontend/src/components/ui/sidebar.tsx](#file-4ae565dd6d76) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
-| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
-| `@/lib/auth-client` | [meu_frontend/src/lib/auth-client.ts](#file-a6e64c486914) |
+| `@/features/notifications/components/notification-bell` | [meu_frontend/src/features/notifications/components/notification-bell.tsx](#file-660ac2be4da1) |
+| `@/features/settings/components/ui-settings` | [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a) |
+| `@/lib/auth/client` | [meu_frontend/src/lib/auth/client.ts](#file-e68f7a980b3d) |
 
 ### Imported by
 
-- [meu_frontend/src/app/(auth)/login/page.tsx](#file-8418dee91050)
+- [meu_frontend/src/app/(dashboard)/layout.tsx](#file-dcdce6cb6d1f)
 
-External or unresolved imports: `@hookform/resolvers/zod`, `lucide-react`, `next/link`, `next/navigation`, `react-hook-form`, `sonner`, `zod`.
+External or unresolved imports: `lucide-react`, `next/link`, `next/navigation`.
 
 ### Named functions and direct calls
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `LoginForm` | [32](../../meu_frontend/src/components/login.tsx#L32) | `form.handleSubmit`, `useForm`, `useRouter`, `zodResolver` |
-| `onSubmit` | [43](../../meu_frontend/src/components/login.tsx#L43) | `authClient.signIn.email`, `form.clearErrors`, `form.setError`, `toast.error` |
-| `onSuccess` | [50](../../meu_frontend/src/components/login.tsx#L50) | `router.push` |
-| `onError` | [53](../../meu_frontend/src/components/login.tsx#L53) | `form.setError`, `toast.error` |
+| `BreadcrumbSite` | [22](../../meu_frontend/src/components/layout/appHeader.tsx#L22) | `segments.slice` |
+| `Header` | [51](../../meu_frontend/src/components/layout/appHeader.tsx#L51) | `authClient.useSession`, `name.slice`, `pathname.split`, `usePathname`, `useUISettings` |
 
-<a id="file-e3bf63df54cd"></a>
+<a id="file-b27277a748ad"></a>
 
-## meu_frontend/src/components/meu-icons.tsx
+## meu_frontend/src/components/layout/appSidebar.tsx
 
-[meu_frontend/src/components/meu-icons.tsx](../../meu_frontend/src/components/meu-icons.tsx)
-
-### Imported by
-
-- [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a)
-
-External or unresolved imports: `react`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `Base` | [5](../../meu_frontend/src/components/meu-icons.tsx#L5) | — |
-| `DashboardIcon` | [24](../../meu_frontend/src/components/meu-icons.tsx#L24) | — |
-| `AgentIcon` | [35](../../meu_frontend/src/components/meu-icons.tsx#L35) | — |
-| `CandlesIcon` | [46](../../meu_frontend/src/components/meu-icons.tsx#L46) | — |
-| `PulseIcon` | [59](../../meu_frontend/src/components/meu-icons.tsx#L59) | — |
-| `VaultIcon` | [67](../../meu_frontend/src/components/meu-icons.tsx#L67) | — |
-| `BellIcon` | [78](../../meu_frontend/src/components/meu-icons.tsx#L78) | — |
-| `TuneIcon` | [87](../../meu_frontend/src/components/meu-icons.tsx#L87) | — |
-| `BoltIcon` | [97](../../meu_frontend/src/components/meu-icons.tsx#L97) | — |
-| `ShieldCheckIcon` | [105](../../meu_frontend/src/components/meu-icons.tsx#L105) | — |
-
-<a id="file-6af34cce3d3d"></a>
-
-## meu_frontend/src/components/meu-logo.tsx
-
-[meu_frontend/src/components/meu-logo.tsx](../../meu_frontend/src/components/meu-logo.tsx)
+[meu_frontend/src/components/layout/appSidebar.tsx](../../meu_frontend/src/components/layout/appSidebar.tsx)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/utils` | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) |
+| `../ui/sidebar` | [meu_frontend/src/components/ui/sidebar.tsx](#file-4ae565dd6d76) |
+| `@/components/branding/meu-icons` | [meu_frontend/src/components/branding/meu-icons.tsx](#file-967d9798e048) |
+| `@/components/branding/meu-logo` | [meu_frontend/src/components/branding/meu-logo.tsx](#file-2868db659617) |
+| `@/features/notifications/hooks/use-browser-notifications` | [meu_frontend/src/features/notifications/hooks/use-browser-notifications.ts](#file-1f343c494dac) |
+| `@/features/notifications/hooks/use-notifications` | [meu_frontend/src/features/notifications/hooks/use-notifications.ts](#file-c84e6c94eb3d) |
+| `@/lib/auth/client` | [meu_frontend/src/lib/auth/client.ts](#file-e68f7a980b3d) |
 
 ### Imported by
 
-- [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a)
-- [meu_frontend/src/components/auth-shell.tsx](#file-7cc37ddf222d)
+- [meu_frontend/src/app/(dashboard)/layout.tsx](#file-dcdce6cb6d1f)
+
+External or unresolved imports: `lucide-react`, `next/link`, `next/navigation`, `react`, `sonner`.
 
 ### Named functions and direct calls
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `MeuMark` | [3](../../meu_frontend/src/components/meu-logo.tsx#L3) | `cn` |
-
-<a id="file-392b4a261058"></a>
-
-## meu_frontend/src/components/password-input.tsx
-
-[meu_frontend/src/components/password-input.tsx](../../meu_frontend/src/components/password-input.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
-| `@/lib/utils` | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) |
-
-### Imported by
-
-- [meu_frontend/src/components/login.tsx](#file-b650cf92caec)
-- [meu_frontend/src/components/signup.tsx](#file-5cb998c8a647)
-
-External or unresolved imports: `lucide-react`, `react`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `PasswordInput` | [8](../../meu_frontend/src/components/password-input.tsx#L8) | `cn`, `useState` |
-
-<a id="file-5cb998c8a647"></a>
-
-## meu_frontend/src/components/signup.tsx
-
-[meu_frontend/src/components/signup.tsx](../../meu_frontend/src/components/signup.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/components/password-input` | [meu_frontend/src/components/password-input.tsx](#file-392b4a261058) |
-| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
-| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
-| `@/lib/auth-client` | [meu_frontend/src/lib/auth-client.ts](#file-a6e64c486914) |
-
-### Imported by
-
-- [meu_frontend/src/app/(auth)/signup/page.tsx](#file-d7cb34fa9ca0)
-
-External or unresolved imports: `@hookform/resolvers/zod`, `lucide-react`, `next/link`, `next/navigation`, `react-hook-form`, `sonner`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `SignupForm` | [37](../../meu_frontend/src/components/signup.tsx#L37) | `form.handleSubmit`, `useForm`, `useRouter`, `zodResolver` |
-| `onSubmit` | [49](../../meu_frontend/src/components/signup.tsx#L49) | `authClient.signUp.email`, `form.clearErrors`, `form.setError`, `toast.error` |
-| `onSuccess` | [57](../../meu_frontend/src/components/signup.tsx#L57) | `router.push` |
-| `onError` | [60](../../meu_frontend/src/components/signup.tsx#L60) | `form.setError`, `toast.error` |
-
-<a id="file-10bad29dc90f"></a>
-
-## meu_frontend/src/components/ui-settings.tsx
-
-[meu_frontend/src/components/ui-settings.tsx](../../meu_frontend/src/components/ui-settings.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/lib/client-error-report` | [meu_frontend/src/lib/client-error-report.ts](#file-eea9cb8bcbfc) |
-| `@/trpc/client` | [meu_frontend/src/trpc/client.tsx](#file-f97f83ba2e16) |
-
-### Imported by
-
-- [meu_frontend/src/app/(dashboard)/settings/page.tsx](#file-c6b71346cae2)
-- [meu_frontend/src/components/appHeader.tsx](#file-0f4a984bf6aa)
-- [meu_frontend/src/features/backtests/components/backtest-price-chart.tsx](#file-33ffc77904e1)
-- [meu_frontend/src/features/charts/components/candle-chart.tsx](#file-c9aab20b58a0)
-- [meu_frontend/src/features/charts/components/charts-workspace.tsx](#file-8c2aa8a37e03)
-
-External or unresolved imports: `react`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `reportSettingsFailure` | [7](../../meu_frontend/src/components/ui-settings.tsx#L7) | `reportClientError` |
-| `normalizeLook` | [55](../../meu_frontend/src/components/ui-settings.tsx#L55) | `LOOK_THEMES.find` |
-| `getSnapshot` | [80](../../meu_frontend/src/components/ui-settings.tsx#L80) | `JSON.parse`, `normalizeLook`, `window.localStorage.getItem` |
-| `getServerSnapshot` | [96](../../meu_frontend/src/components/ui-settings.tsx#L96) | — |
-| `subscribe` | [100](../../meu_frontend/src/components/ui-settings.tsx#L100) | `listeners.add` |
-| `update` | [105](../../meu_frontend/src/components/ui-settings.tsx#L105) | `JSON.stringify`, `applySettings`, `getSnapshot`, `listeners.forEach`, `window.localStorage.setItem` |
-| `syncToServer` | [117](../../meu_frontend/src/components/ui-settings.tsx#L117) | `api.settings.updateUi.mutate` |
-| `applySettings` | [122](../../meu_frontend/src/components/ui-settings.tsx#L122) | `LOOK_THEMES.find`, `root.classList.add`, `root.classList.remove`, `root.style.setProperty` |
-| `useUISettings` | [137](../../meu_frontend/src/components/ui-settings.tsx#L137) | `useCallback`, `useEffect`, `useSyncExternalStore` |
+| `SidebarStatus` | [34](../../meu_frontend/src/components/layout/appSidebar.tsx#L34) | `useEffect`, `useState`, `useUnreadNotifications` |
+| `tick` | [39](../../meu_frontend/src/components/layout/appSidebar.tsx#L39) | `setTime` |
+| `AppSidebar` | [73](../../meu_frontend/src/components/layout/appSidebar.tsx#L73) | `sidebarItems.map`, `useBrowserNotificationPermission`, `usePathname`, `useRouter`, `useUnreadNotifications` |
+| `onSuccess` | [183](../../meu_frontend/src/components/layout/appSidebar.tsx#L183) | `router.push` |
+| `onError` | [186](../../meu_frontend/src/components/layout/appSidebar.tsx#L186) | `toast.error` |
 
 <a id="file-eff37b7f84f0"></a>
 
@@ -3083,14 +3044,12 @@ External or unresolved imports: `@radix-ui/react-slot`, `class-variance-authorit
 
 - [meu_frontend/src/app/(dashboard)/error.tsx](#file-590cbaa3d7b3)
 - [meu_frontend/src/app/(dashboard)/settings/page.tsx](#file-c6b71346cae2)
-- [meu_frontend/src/components/appHeader.tsx](#file-0f4a984bf6aa)
 - [meu_frontend/src/components/entityComponents/EntityHeader.tsx](#file-abbdd2d5aa24)
 - [meu_frontend/src/components/entityComponents/EntityItem.tsx](#file-ab7840c4ffc7)
 - [meu_frontend/src/components/entityComponents/EntityPagination.tsx](#file-4998906ae439)
 - [meu_frontend/src/components/entityComponents/EntitySearch.tsx](#file-ea60ae8d3698)
 - [meu_frontend/src/components/entityComponents/EntityStates.tsx](#file-d1a5439e4c25)
-- [meu_frontend/src/components/login.tsx](#file-b650cf92caec)
-- [meu_frontend/src/components/signup.tsx](#file-5cb998c8a647)
+- [meu_frontend/src/components/layout/appHeader.tsx](#file-6df673cc5ea0)
 - [meu_frontend/src/components/ui/alert-dialog.tsx](#file-ed34d47c4dac)
 - [meu_frontend/src/components/ui/calendar.tsx](#file-5f2a05aae429)
 - [meu_frontend/src/components/ui/carousel.tsx](#file-5cbde50d17bf)
@@ -3098,11 +3057,13 @@ External or unresolved imports: `@radix-ui/react-slot`, `class-variance-authorit
 - [meu_frontend/src/components/ui/pagination.tsx](#file-56f81f70501f)
 - [meu_frontend/src/components/ui/sidebar.tsx](#file-4ae565dd6d76)
 - [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-- [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+- [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073)
+- [meu_frontend/src/features/auth/components/login.tsx](#file-7dff3a2891a7)
+- [meu_frontend/src/features/auth/components/signup.tsx](#file-4dd230bb412b)
 - [meu_frontend/src/features/backtests/components/agent-launch.tsx](#file-af786abb6830)
 - [meu_frontend/src/features/backtests/components/backtest-price-chart.tsx](#file-33ffc77904e1)
 - [meu_frontend/src/features/backtests/components/backtest-workspace.tsx](#file-47c93f33e5a4)
@@ -3178,9 +3139,9 @@ External or unresolved imports: `lucide-react`, `react`, `react-day-picker`.
 - [meu_frontend/src/app/(dashboard)/settings/page.tsx](#file-c6b71346cae2)
 - [meu_frontend/src/components/entityComponents/EntityItem.tsx](#file-ab7840c4ffc7)
 - [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-- [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+- [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073)
 - [meu_frontend/src/features/credentials/components/EditCred.tsx](#file-ad04fd87d941)
 - [meu_frontend/src/features/credentials/components/createCred.tsx](#file-a61b47d55b05)
 - [meu_frontend/src/features/exchange/components/EditExchange.tsx](#file-c8683f166fff)
@@ -3534,13 +3495,13 @@ External or unresolved imports: `class-variance-authority`, `react`.
 
 ### Imported by
 
-- [meu_frontend/src/components/login.tsx](#file-b650cf92caec)
-- [meu_frontend/src/components/signup.tsx](#file-5cb998c8a647)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed)
-- [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed)
+- [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+- [meu_frontend/src/features/auth/components/login.tsx](#file-7dff3a2891a7)
+- [meu_frontend/src/features/auth/components/signup.tsx](#file-4dd230bb412b)
 - [meu_frontend/src/features/credentials/components/EditCred.tsx](#file-ad04fd87d941)
 - [meu_frontend/src/features/credentials/components/createCred.tsx](#file-a61b47d55b05)
 - [meu_frontend/src/features/exchange/components/EditExchange.tsx](#file-c8683f166fff)
@@ -3648,16 +3609,16 @@ External or unresolved imports: `input-otp`, `lucide-react`, `react`.
 ### Imported by
 
 - [meu_frontend/src/components/entityComponents/EntitySearch.tsx](#file-ea60ae8d3698)
-- [meu_frontend/src/components/login.tsx](#file-b650cf92caec)
-- [meu_frontend/src/components/password-input.tsx](#file-392b4a261058)
-- [meu_frontend/src/components/signup.tsx](#file-5cb998c8a647)
 - [meu_frontend/src/components/ui/input-group.tsx](#file-527fa4f479a7)
 - [meu_frontend/src/components/ui/sidebar.tsx](#file-4ae565dd6d76)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-- [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+- [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073)
+- [meu_frontend/src/features/auth/components/login.tsx](#file-7dff3a2891a7)
+- [meu_frontend/src/features/auth/components/password-input.tsx](#file-1fc0077043d5)
+- [meu_frontend/src/features/auth/components/signup.tsx](#file-4dd230bb412b)
 - [meu_frontend/src/features/backtests/components/agent-launch.tsx](#file-af786abb6830)
 - [meu_frontend/src/features/backtests/components/backtest-workspace.tsx](#file-47c93f33e5a4)
 - [meu_frontend/src/features/credentials/components/EditCred.tsx](#file-ad04fd87d941)
@@ -3742,7 +3703,7 @@ External or unresolved imports: `@radix-ui/react-slot`, `class-variance-authorit
 
 - [meu_frontend/src/components/ui/field.tsx](#file-f4505bee987d)
 - [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932)
-- [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989)
+- [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073)
 
 External or unresolved imports: `@radix-ui/react-label`, `react`.
 
@@ -3974,11 +3935,11 @@ External or unresolved imports: `@radix-ui/react-scroll-area`, `react`.
 
 ### Imported by
 
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-- [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+- [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073)
 - [meu_frontend/src/features/backtests/components/agent-launch.tsx](#file-af786abb6830)
 - [meu_frontend/src/features/backtests/components/backtest-price-chart.tsx](#file-33ffc77904e1)
 - [meu_frontend/src/features/backtests/components/backtest-workspace.tsx](#file-47c93f33e5a4)
@@ -4091,8 +4052,8 @@ External or unresolved imports: `@radix-ui/react-dialog`, `lucide-react`, `react
 ### Imported by
 
 - [meu_frontend/src/app/(dashboard)/layout.tsx](#file-dcdce6cb6d1f)
-- [meu_frontend/src/components/appHeader.tsx](#file-0f4a984bf6aa)
-- [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a)
+- [meu_frontend/src/components/layout/appHeader.tsx](#file-6df673cc5ea0)
+- [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad)
 
 External or unresolved imports: `@radix-ui/react-slot`, `class-variance-authority`, `lucide-react`, `react`.
 
@@ -4173,7 +4134,7 @@ External or unresolved imports: `@radix-ui/react-slot`, `class-variance-authorit
 
 ### Imported by
 
-- [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22)
+- [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811)
 
 External or unresolved imports: `@radix-ui/react-slider`, `react`.
 
@@ -4411,7 +4372,7 @@ External or unresolved imports: `@radix-ui/react-tooltip`, `react`.
 |---|---|
 | `../hooks/use-agent` | [meu_frontend/src/features/agents/hooks/use-agent.ts](#file-2750ed7a6002) |
 | `../validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
-| `./entry-preview` | [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989) |
+| `./forms/entry-preview` | [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073) |
 | `@/components/ui/badge` | [meu_frontend/src/components/ui/badge.tsx](#file-96008f791b5c) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
 | `@/components/ui/card` | [meu_frontend/src/components/ui/card.tsx](#file-a6e3af238d91) |
@@ -4434,162 +4395,6 @@ External or unresolved imports: `date-fns`, `framer-motion`, `lucide-react`, `ne
 | `AgentDetailView` | [48](../../meu_frontend/src/features/agents/components/AgentDetailView.tsx#L48) | `Number`, `String`, `agent.name.split`, `agent.strategy.replace`, `agent?.capital.allocated.toLocaleString`, `agent?.market.symbols.map`, `displaySetting`, `exchange?.name.toUpperCase`, `format`, `runs.map`, `sizingPolicySchema.safeParse`, `useCredential`, `useStatusChangeAgent`, `useSuspenseAgent`, `useSuspenseExchange`, `useSuspenseRuns` |
 | `displaySetting` | [64](../../meu_frontend/src/features/agents/components/AgentDetailView.tsx#L64) | `Number.isFinite`, `String` |
 | `handleStatusChange` | [67](../../meu_frontend/src/features/agents/components/AgentDetailView.tsx#L67) | `statusChange.mutate` |
-
-<a id="file-e3f55dd74ffd"></a>
-
-## meu_frontend/src/features/agents/components/EditAgent.tsx
-
-[meu_frontend/src/features/agents/components/EditAgent.tsx](../../meu_frontend/src/features/agents/components/EditAgent.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
-| `./agent-budget-fields` | [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed) |
-| `./agent-form-feedback` | [meu_frontend/src/features/agents/components/agent-form-feedback.tsx](#file-91c03a95890b) |
-| `./agent-intelligence-fields` | [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22) |
-| `./createAgent` | [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952) |
-| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/components/ui/card` | [meu_frontend/src/components/ui/card.tsx](#file-a6e3af238d91) |
-| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
-| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
-| `@/components/ui/select` | [meu_frontend/src/components/ui/select.tsx](#file-f8f0016aa124) |
-| `@/features/agents/hooks/use-agent` | [meu_frontend/src/features/agents/hooks/use-agent.ts](#file-2750ed7a6002) |
-| `@/features/agents/validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
-| `@/features/exchange/hooks/use-exchange` | [meu_frontend/src/features/exchange/hooks/use-exchange.ts](#file-40f9c8c0bd38) |
-| `@/features/markets/components/ticker-picker` | [meu_frontend/src/features/markets/components/ticker-picker.tsx](#file-1ecde0d5ac74) |
-| `@/generated/prisma/enums` | [meu_frontend/src/generated/prisma/enums.ts](../../meu_frontend/src/generated/prisma/enums.ts) |
-
-### Imported by
-
-- [meu_frontend/src/app/(dashboard)/agents/[agentId]/edit/page.tsx](#file-313c27dc4df3)
-
-External or unresolved imports: `@hookform/resolvers/zod`, `lucide-react`, `next/link`, `react`, `react-hook-form`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `EditAgentPage` | [58](../../meu_frontend/src/features/agents/components/EditAgent.tsx#L58) | `agent.updatedAt.toISOString`, `useSuspenseAgent` |
-| `LegacyEditAgentPage` | [65](../../meu_frontend/src/features/agents/components/EditAgent.tsx#L65) | `agent?.market?.symbols.map`, `analysisTimeframeSchema.safeParse`, `exchanges?.filter`, `exchanges?.find`, `fields.map`, `form.handleSubmit`, `formatSecondsToCycle`, `sizingPolicySchema.safeParse`, `useEffect`, `useFieldArray`, `useForm`, `useSuspenseAgent`, `useSuspenseExchanges`, `useUpdateAgent`, `useWatch`, `zodResolver` |
-| `formatSecondsToCycle` | [116](../../meu_frontend/src/features/agents/components/EditAgent.tsx#L116) | — |
-| `parseCycleToSeconds` | [137](../../meu_frontend/src/features/agents/components/EditAgent.tsx#L137) | `Number`, `input.trim` |
-| `onSubmit` | [161](../../meu_frontend/src/features/agents/components/EditAgent.tsx#L161) | `form.setError`, `parseCycleToSeconds`, `updateAgent.mutate`, `values.market.symbols.map` |
-
-<a id="file-4c202d5fe0ed"></a>
-
-## meu_frontend/src/features/agents/components/agent-budget-fields.tsx
-
-[meu_frontend/src/features/agents/components/agent-budget-fields.tsx](../../meu_frontend/src/features/agents/components/agent-budget-fields.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
-| `../validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
-| `./agent-sizing-fields` | [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98) |
-| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
-| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
-
-### Imported by
-
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-
-External or unresolved imports: `react`, `react-hook-form`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `AgentBudgetFields` | [13](../../meu_frontend/src/features/agents/components/agent-budget-fields.tsx#L13) | `brokerCapabilities`, `useFormContext`, `useWatch` |
-| `AgentConfigurationReview` | [43](../../meu_frontend/src/features/agents/components/agent-budget-fields.tsx#L43) | `Boolean`, `Number.isFinite`, `Number.isInteger`, `amount`, `market.symbols.map`, `useFormContext`, `useWatch` |
-| `amount` | [52](../../meu_frontend/src/features/agents/components/agent-budget-fields.tsx#L52) | — |
-
-<a id="file-91c03a95890b"></a>
-
-## meu_frontend/src/features/agents/components/agent-form-feedback.tsx
-
-[meu_frontend/src/features/agents/components/agent-form-feedback.tsx](../../meu_frontend/src/features/agents/components/agent-form-feedback.tsx)
-
-### Imported by
-
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-
-External or unresolved imports: `react`, `react-hook-form`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `errorMessages` | [6](../../meu_frontend/src/features/agents/components/agent-form-feedback.tsx#L6) | `Object.entries` |
-| `AgentFormFeedback` | [13](../../meu_frontend/src/features/agents/components/agent-form-feedback.tsx#L13) | `errorMessages`, `messages.join`, `messages.map`, `useEffect`, `useFormContext`, `useRef` |
-
-<a id="file-00d290523c22"></a>
-
-## meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx
-
-[meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](../../meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
-| `@/components/ui/select` | [meu_frontend/src/components/ui/select.tsx](#file-f8f0016aa124) |
-| `@/components/ui/slider` | [meu_frontend/src/components/ui/slider.tsx](#file-0cba7d7b0991) |
-| `@/features/agents/validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
-| `@/features/credentials/components/model-picker` | [meu_frontend/src/features/credentials/components/model-picker.tsx](#file-00eb873b472a) |
-| `@/features/credentials/hooks/use-credentials` | [meu_frontend/src/features/credentials/hooks/use-credentials.ts](#file-1382f3bd3f99) |
-| `@/generated/prisma/enums` | [meu_frontend/src/generated/prisma/enums.ts](../../meu_frontend/src/generated/prisma/enums.ts) |
-
-### Imported by
-
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-
-External or unresolved imports: `next/link`, `react`, `react-hook-form`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `AgentIntelligenceFields` | [17](../../meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx#L17) | `Object.values`, `credentials?.filter`, `credentials?.find`, `useAllCredentials`, `useFormContext`, `useState`, `useWatch` |
-
-<a id="file-f282a54dea98"></a>
-
-## meu_frontend/src/features/agents/components/agent-sizing-fields.tsx
-
-[meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](../../meu_frontend/src/features/agents/components/agent-sizing-fields.tsx)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
-| `../../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
-| `../validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
-| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
-| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
-| `@/components/ui/select` | [meu_frontend/src/components/ui/select.tsx](#file-f8f0016aa124) |
-| `@/trpc/client` | [meu_frontend/src/trpc/client.tsx](#file-f97f83ba2e16) |
-
-### Imported by
-
-- [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed)
-
-External or unresolved imports: `@tanstack/react-query`, `next/link`, `react-hook-form`, `zod`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `AgentSizingFields` | [16](../../meu_frontend/src/features/agents/components/agent-sizing-fields.tsx#L16) | `Boolean`, `brokerCapabilities`, `trpc.exchange.executionState.queryOptions`, `useFormContext`, `useQuery`, `useTRPC`, `useWatch` |
 
 <a id="file-3984b831a40c"></a>
 
@@ -4619,21 +4424,177 @@ External or unresolved imports: `date-fns`, `lucide-react`, `next/link`, `next/n
 | `StatusPill` | [18](../../meu_frontend/src/features/agents/components/agent.tsx#L18) | `cn` |
 | `AgentsPage` | [40](../../meu_frontend/src/features/agents/components/agent.tsx#L40) | `agents.map`, `useAgents`, `useCallback`, `useDeleteAgent`, `useRouter`, `useState` |
 
-<a id="file-849ce7f84952"></a>
+<a id="file-7d3ca4f66576"></a>
 
-## meu_frontend/src/features/agents/components/createAgent.tsx
+## meu_frontend/src/features/agents/components/forms/EditAgent.tsx
 
-[meu_frontend/src/features/agents/components/createAgent.tsx](../../meu_frontend/src/features/agents/components/createAgent.tsx)
+[meu_frontend/src/features/agents/components/forms/EditAgent.tsx](../../meu_frontend/src/features/agents/components/forms/EditAgent.tsx)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
-| `../../../../../shared/trading/executionCosts` | [shared/trading/executionCosts.ts](#file-a7506f843f73) |
-| `./agent-budget-fields` | [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed) |
-| `./agent-form-feedback` | [meu_frontend/src/features/agents/components/agent-form-feedback.tsx](#file-91c03a95890b) |
-| `./agent-intelligence-fields` | [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22) |
+| `../../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
+| `./agent-budget-fields` | [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed) |
+| `./agent-form-feedback` | [meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx](#file-b9eb4df01afe) |
+| `./agent-intelligence-fields` | [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811) |
+| `./createAgent` | [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8) |
+| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
+| `@/components/ui/card` | [meu_frontend/src/components/ui/card.tsx](#file-a6e3af238d91) |
+| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
+| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
+| `@/components/ui/select` | [meu_frontend/src/components/ui/select.tsx](#file-f8f0016aa124) |
+| `@/features/agents/hooks/use-agent` | [meu_frontend/src/features/agents/hooks/use-agent.ts](#file-2750ed7a6002) |
+| `@/features/agents/validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
+| `@/features/exchange/hooks/use-exchange` | [meu_frontend/src/features/exchange/hooks/use-exchange.ts](#file-40f9c8c0bd38) |
+| `@/features/markets/components/ticker-picker` | [meu_frontend/src/features/markets/components/ticker-picker.tsx](#file-1ecde0d5ac74) |
+| `@/generated/prisma/enums` | [meu_frontend/src/generated/prisma/enums.ts](../../meu_frontend/src/generated/prisma/enums.ts) |
+
+### Imported by
+
+- [meu_frontend/src/app/(dashboard)/agents/[agentId]/edit/page.tsx](#file-313c27dc4df3)
+
+External or unresolved imports: `@hookform/resolvers/zod`, `lucide-react`, `next/link`, `react`, `react-hook-form`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `EditAgentPage` | [58](../../meu_frontend/src/features/agents/components/forms/EditAgent.tsx#L58) | `agent.updatedAt.toISOString`, `useSuspenseAgent` |
+| `LegacyEditAgentPage` | [65](../../meu_frontend/src/features/agents/components/forms/EditAgent.tsx#L65) | `agent?.market?.symbols.map`, `analysisTimeframeSchema.safeParse`, `exchanges?.filter`, `exchanges?.find`, `fields.map`, `form.handleSubmit`, `formatSecondsToCycle`, `sizingPolicySchema.safeParse`, `useEffect`, `useFieldArray`, `useForm`, `useSuspenseAgent`, `useSuspenseExchanges`, `useUpdateAgent`, `useWatch`, `zodResolver` |
+| `formatSecondsToCycle` | [116](../../meu_frontend/src/features/agents/components/forms/EditAgent.tsx#L116) | — |
+| `parseCycleToSeconds` | [137](../../meu_frontend/src/features/agents/components/forms/EditAgent.tsx#L137) | `Number`, `input.trim` |
+| `onSubmit` | [161](../../meu_frontend/src/features/agents/components/forms/EditAgent.tsx#L161) | `form.setError`, `parseCycleToSeconds`, `updateAgent.mutate`, `values.market.symbols.map` |
+
+<a id="file-de464605e4ed"></a>
+
+## meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx
+
+[meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](../../meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
+| `../../validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
+| `./agent-sizing-fields` | [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4) |
+| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
+| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
+| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
+
+### Imported by
+
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+
+External or unresolved imports: `react`, `react-hook-form`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `AgentBudgetFields` | [13](../../meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx#L13) | `brokerCapabilities`, `useFormContext`, `useWatch` |
+| `AgentConfigurationReview` | [43](../../meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx#L43) | `Boolean`, `Number.isFinite`, `Number.isInteger`, `amount`, `market.symbols.map`, `useFormContext`, `useWatch` |
+| `amount` | [52](../../meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx#L52) | — |
+
+<a id="file-b9eb4df01afe"></a>
+
+## meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx
+
+[meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx](../../meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx)
+
+### Imported by
+
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+
+External or unresolved imports: `react`, `react-hook-form`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `errorMessages` | [6](../../meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx#L6) | `Object.entries` |
+| `AgentFormFeedback` | [13](../../meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx#L13) | `errorMessages`, `messages.join`, `messages.map`, `useEffect`, `useFormContext`, `useRef` |
+
+<a id="file-36e6f11bd811"></a>
+
+## meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx
+
+[meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](../../meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
+| `@/components/ui/select` | [meu_frontend/src/components/ui/select.tsx](#file-f8f0016aa124) |
+| `@/components/ui/slider` | [meu_frontend/src/components/ui/slider.tsx](#file-0cba7d7b0991) |
+| `@/features/agents/validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
+| `@/features/credentials/components/model-picker` | [meu_frontend/src/features/credentials/components/model-picker.tsx](#file-00eb873b472a) |
+| `@/features/credentials/hooks/use-credentials` | [meu_frontend/src/features/credentials/hooks/use-credentials.ts](#file-1382f3bd3f99) |
+| `@/generated/prisma/enums` | [meu_frontend/src/generated/prisma/enums.ts](../../meu_frontend/src/generated/prisma/enums.ts) |
+
+### Imported by
+
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+
+External or unresolved imports: `next/link`, `react`, `react-hook-form`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `AgentIntelligenceFields` | [17](../../meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx#L17) | `Object.values`, `credentials?.filter`, `credentials?.find`, `useAllCredentials`, `useFormContext`, `useState`, `useWatch` |
+
+<a id="file-b7f7572f3cc4"></a>
+
+## meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx
+
+[meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](../../meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
+| `../../../../../../shared/trading/sizing` | [shared/trading/sizing.ts](#file-864c148ae550) |
+| `../../validation` | [meu_frontend/src/features/agents/validation.ts](#file-c2df22aab9af) |
+| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
+| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
+| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
+| `@/components/ui/select` | [meu_frontend/src/components/ui/select.tsx](#file-f8f0016aa124) |
+| `@/trpc/client` | [meu_frontend/src/trpc/client.tsx](#file-f97f83ba2e16) |
+
+### Imported by
+
+- [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed)
+
+External or unresolved imports: `@tanstack/react-query`, `next/link`, `react-hook-form`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `AgentSizingFields` | [16](../../meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx#L16) | `Boolean`, `brokerCapabilities`, `trpc.exchange.executionState.queryOptions`, `useFormContext`, `useQuery`, `useTRPC`, `useWatch` |
+
+<a id="file-38fc781b50a8"></a>
+
+## meu_frontend/src/features/agents/components/forms/createAgent.tsx
+
+[meu_frontend/src/features/agents/components/forms/createAgent.tsx](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../../../../shared/trading/brokerCapabilities` | [shared/trading/brokerCapabilities.ts](#file-a654820bbc46) |
+| `../../../../../../shared/trading/executionCosts` | [shared/trading/executionCosts.ts](#file-a7506f843f73) |
+| `./agent-budget-fields` | [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed) |
+| `./agent-form-feedback` | [meu_frontend/src/features/agents/components/forms/agent-form-feedback.tsx](#file-b9eb4df01afe) |
+| `./agent-intelligence-fields` | [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
 | `@/components/ui/card` | [meu_frontend/src/components/ui/card.tsx](#file-a6e3af238d91) |
 | `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
@@ -4651,7 +4612,7 @@ External or unresolved imports: `date-fns`, `lucide-react`, `next/link`, `next/n
 ### Imported by
 
 - [meu_frontend/src/app/(dashboard)/agents/create/page.tsx](#file-5b7fe1f94a73)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
 
 External or unresolved imports: `@hookform/resolvers/zod`, `@tanstack/react-query`, `lucide-react`, `next/link`, `next/navigation`, `react`, `react-hook-form`, `sonner`, `zod`.
 
@@ -4659,25 +4620,25 @@ External or unresolved imports: `@hookform/resolvers/zod`, `@tanstack/react-quer
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `parseCycleToSeconds` | [76](../../meu_frontend/src/features/agents/components/createAgent.tsx#L76) | `Number` |
-| `CreateAgentPage` | [103](../../meu_frontend/src/features/agents/components/createAgent.tsx#L103) | `Boolean`, `CYCLE_OPTIONS.find`, `cryptoStrategySettingsSchema.safeParse`, `exchanges?.filter`, `exchanges?.find`, `fields.map`, `form.handleSubmit`, `savedAgent.market.symbols.map`, `trpc.agents.updateCryptoAlgorithm.mutationOptions`, `trpc.backtests.createConfiguredAgent.mutationOptions`, `trpc.backtests.run.mutationOptions`, `useCreateAgent`, `useFieldArray`, `useForm`, `useMutation`, `useQueryClient`, `useRouter`, `useState`, `useSuspenseExchanges`, `useTRPC`, `useWatch`, `zodResolver` |
-| `onSuccess` | [118](../../meu_frontend/src/features/agents/components/createAgent.tsx#L118) | `queryClient.invalidateQueries`, `router.push`, `toast.success`, `trpc.agents.getAll.queryKey` |
-| `onError` | [119](../../meu_frontend/src/features/agents/components/createAgent.tsx#L119) | `toast.error` |
-| `onSuccess` | [122](../../meu_frontend/src/features/agents/components/createAgent.tsx#L122) | `queryClient.invalidateQueries`, `router.push`, `toast.success`, `trpc.agents.getAll.queryKey`, `trpc.agents.getOne.queryKey`, `trpc.backtests.paperSessions.queryKey`, `trpc.backtests.paperState.queryKey` |
-| `onError` | [130](../../meu_frontend/src/features/agents/components/createAgent.tsx#L130) | `toast.error` |
-| `onSuccess` | [133](../../meu_frontend/src/features/agents/components/createAgent.tsx#L133) | `router.push` |
-| `onError` | [134](../../meu_frontend/src/features/agents/components/createAgent.tsx#L134) | `toast.error` |
-| `enterCryptoAlgorithm` | [193](../../meu_frontend/src/features/agents/components/createAgent.tsx#L193) | `Math.max`, `Math.min`, `form.clearErrors`, `form.getValues`, `form.setValue`, `setCryptoMode` |
-| `cryptoPayload` | [209](../../meu_frontend/src/features/agents/components/createAgent.tsx#L209) | `parseCycleToSeconds` |
-| `validateCryptoPayload` | [217](../../meu_frontend/src/features/agents/components/createAgent.tsx#L217) | `Object.values`, `String`, `configuredCryptoAgentSchema.safeParse`, `cryptoPayload`, `issue.path.at`, `setConfigurationError`, `setConfigurationErrors` |
-| `backtestCurrent` | [232](../../meu_frontend/src/features/agents/components/createAgent.tsx#L232) | `Date.now`, `Math.floor`, `backtest.mutate`, `validateCryptoPayload` |
-| `onSubmit` | [238](../../meu_frontend/src/features/agents/components/createAgent.tsx#L238) | `createAgent.mutate`, `createCrypto.mutate`, `editCrypto.mutate`, `form.setError`, `parseCycleToSeconds`, `savedAgent.updatedAt.toISOString`, `setConfigurationError`, `validateCryptoPayload`, `values.market.symbols.map` |
+| `parseCycleToSeconds` | [76](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L76) | `Number` |
+| `CreateAgentPage` | [103](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L103) | `Boolean`, `CYCLE_OPTIONS.find`, `cryptoStrategySettingsSchema.safeParse`, `exchanges?.filter`, `exchanges?.find`, `fields.map`, `form.handleSubmit`, `savedAgent.market.symbols.map`, `trpc.agents.updateCryptoAlgorithm.mutationOptions`, `trpc.backtests.createConfiguredAgent.mutationOptions`, `trpc.backtests.run.mutationOptions`, `useCreateAgent`, `useFieldArray`, `useForm`, `useMutation`, `useQueryClient`, `useRouter`, `useState`, `useSuspenseExchanges`, `useTRPC`, `useWatch`, `zodResolver` |
+| `onSuccess` | [118](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L118) | `queryClient.invalidateQueries`, `router.push`, `toast.success`, `trpc.agents.getAll.queryKey` |
+| `onError` | [119](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L119) | `toast.error` |
+| `onSuccess` | [122](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L122) | `queryClient.invalidateQueries`, `router.push`, `toast.success`, `trpc.agents.getAll.queryKey`, `trpc.agents.getOne.queryKey`, `trpc.backtests.paperSessions.queryKey`, `trpc.backtests.paperState.queryKey` |
+| `onError` | [130](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L130) | `toast.error` |
+| `onSuccess` | [133](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L133) | `router.push` |
+| `onError` | [134](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L134) | `toast.error` |
+| `enterCryptoAlgorithm` | [193](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L193) | `Math.max`, `Math.min`, `form.clearErrors`, `form.getValues`, `form.setValue`, `setCryptoMode` |
+| `cryptoPayload` | [209](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L209) | `parseCycleToSeconds` |
+| `validateCryptoPayload` | [217](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L217) | `Object.values`, `String`, `configuredCryptoAgentSchema.safeParse`, `cryptoPayload`, `issue.path.at`, `setConfigurationError`, `setConfigurationErrors` |
+| `backtestCurrent` | [232](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L232) | `Date.now`, `Math.floor`, `backtest.mutate`, `validateCryptoPayload` |
+| `onSubmit` | [238](../../meu_frontend/src/features/agents/components/forms/createAgent.tsx#L238) | `createAgent.mutate`, `createCrypto.mutate`, `editCrypto.mutate`, `form.setError`, `parseCycleToSeconds`, `savedAgent.updatedAt.toISOString`, `setConfigurationError`, `validateCryptoPayload`, `values.market.symbols.map` |
 
-<a id="file-568e139a6989"></a>
+<a id="file-e6e498821073"></a>
 
-## meu_frontend/src/features/agents/components/entry-preview.tsx
+## meu_frontend/src/features/agents/components/forms/entry-preview.tsx
 
-[meu_frontend/src/features/agents/components/entry-preview.tsx](../../meu_frontend/src/features/agents/components/entry-preview.tsx)
+[meu_frontend/src/features/agents/components/forms/entry-preview.tsx](../../meu_frontend/src/features/agents/components/forms/entry-preview.tsx)
 
 ### Internal dependencies
 
@@ -4701,8 +4662,8 @@ External or unresolved imports: `@tanstack/react-query`, `react`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `EntryPreview` | [13](../../meu_frontend/src/features/agents/components/entry-preview.tsx#L13) | `Number`, `Object.entries`, `agent.market.symbols.map`, `number`, `result.notes.map`, `trpc.agents.entryPreview.queryOptions`, `useQuery`, `useState`, `useTRPC` |
-| `number` | [26](../../meu_frontend/src/features/agents/components/entry-preview.tsx#L26) | `value.toLocaleString` |
+| `EntryPreview` | [13](../../meu_frontend/src/features/agents/components/forms/entry-preview.tsx#L13) | `Number`, `Object.entries`, `agent.market.symbols.map`, `number`, `result.notes.map`, `trpc.agents.entryPreview.queryOptions`, `useQuery`, `useState`, `useTRPC` |
+| `number` | [26](../../meu_frontend/src/features/agents/components/forms/entry-preview.tsx#L26) | `value.toLocaleString` |
 
 <a id="file-2750ed7a6002"></a>
 
@@ -4719,9 +4680,9 @@ External or unresolved imports: `@tanstack/react-query`, `react`.
 ### Imported by
 
 - [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
 - [meu_frontend/src/features/agents/components/agent.tsx](#file-3984b831a40c)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
 
 External or unresolved imports: `@tanstack/react-query`, `next/navigation`, `sonner`.
 
@@ -4829,8 +4790,8 @@ External or unresolved imports: `../../../../../meu/schedulerService/node_module
 | `@/features/exchange/server/execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
 | `@/features/exchange/server/reconciliation` | [meu_frontend/src/features/exchange/server/reconciliation.ts](#file-d0180098de88) |
 | `@/generated/prisma/client` | [meu_frontend/src/generated/prisma/client.ts](../../meu_frontend/src/generated/prisma/client.ts) |
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
 
 ### Imported by
 
@@ -4903,9 +4864,9 @@ External or unresolved imports: `@trpc/server`, `node:crypto`, `zod`.
 | `@/features/exchange/server/execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
 | `@/features/exchange/server/reconciliation` | [meu_frontend/src/features/exchange/server/reconciliation.ts](#file-d0180098de88) |
 | `@/generated/prisma/client` | [meu_frontend/src/generated/prisma/client.ts](../../meu_frontend/src/generated/prisma/client.ts) |
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
+| `@/lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
 
 ### Imported by
 
@@ -4938,11 +4899,11 @@ External or unresolved imports: `@trpc/server`, `node:crypto`, `server-only`.
 ### Imported by
 
 - [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed)
-- [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed)
+- [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
 - [meu_frontend/src/features/agents/server/router.ts](#file-82b4c31078aa)
 
 External or unresolved imports: `zod`.
@@ -4953,6 +4914,118 @@ External or unresolved imports: `zod`.
 |---|---|---|
 | `addStrategyIssues` | [29](../../meu_frontend/src/features/agents/validation.ts#L29) | `config.credentialId.trim`, `config.llmModel.trim`, `ctx.addIssue` |
 | `requireOwnedReferences` | [111](../../meu_frontend/src/features/agents/validation.ts#L111) | `lookup` |
+
+<a id="file-1cf95b08b6ed"></a>
+
+## meu_frontend/src/features/auth/components/auth-shell.tsx
+
+[meu_frontend/src/features/auth/components/auth-shell.tsx](../../meu_frontend/src/features/auth/components/auth-shell.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/components/branding/meu-logo` | [meu_frontend/src/components/branding/meu-logo.tsx](#file-2868db659617) |
+
+### Imported by
+
+- [meu_frontend/src/app/(auth)/layout.tsx](#file-bcfd1ec380c1)
+
+External or unresolved imports: `lucide-react`, `next/link`, `next/navigation`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `AuthShell` | [8](../../meu_frontend/src/features/auth/components/auth-shell.tsx#L8) | `usePathname` |
+
+<a id="file-7dff3a2891a7"></a>
+
+## meu_frontend/src/features/auth/components/login.tsx
+
+[meu_frontend/src/features/auth/components/login.tsx](../../meu_frontend/src/features/auth/components/login.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
+| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
+| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
+| `@/features/auth/components/password-input` | [meu_frontend/src/features/auth/components/password-input.tsx](#file-1fc0077043d5) |
+| `@/lib/auth/client` | [meu_frontend/src/lib/auth/client.ts](#file-e68f7a980b3d) |
+
+### Imported by
+
+- [meu_frontend/src/app/(auth)/login/page.tsx](#file-8418dee91050)
+
+External or unresolved imports: `@hookform/resolvers/zod`, `lucide-react`, `next/link`, `next/navigation`, `react-hook-form`, `sonner`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `LoginForm` | [32](../../meu_frontend/src/features/auth/components/login.tsx#L32) | `form.handleSubmit`, `useForm`, `useRouter`, `zodResolver` |
+| `onSubmit` | [43](../../meu_frontend/src/features/auth/components/login.tsx#L43) | `authClient.signIn.email`, `form.clearErrors`, `form.setError`, `toast.error` |
+| `onSuccess` | [50](../../meu_frontend/src/features/auth/components/login.tsx#L50) | `router.push` |
+| `onError` | [53](../../meu_frontend/src/features/auth/components/login.tsx#L53) | `form.setError`, `toast.error` |
+
+<a id="file-1fc0077043d5"></a>
+
+## meu_frontend/src/features/auth/components/password-input.tsx
+
+[meu_frontend/src/features/auth/components/password-input.tsx](../../meu_frontend/src/features/auth/components/password-input.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
+| `@/lib/utils` | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) |
+
+### Imported by
+
+- [meu_frontend/src/features/auth/components/login.tsx](#file-7dff3a2891a7)
+- [meu_frontend/src/features/auth/components/signup.tsx](#file-4dd230bb412b)
+
+External or unresolved imports: `lucide-react`, `react`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `PasswordInput` | [8](../../meu_frontend/src/features/auth/components/password-input.tsx#L8) | `cn`, `useState` |
+
+<a id="file-4dd230bb412b"></a>
+
+## meu_frontend/src/features/auth/components/signup.tsx
+
+[meu_frontend/src/features/auth/components/signup.tsx](../../meu_frontend/src/features/auth/components/signup.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
+| `@/components/ui/form` | [meu_frontend/src/components/ui/form.tsx](#file-2cb2dc7aa932) |
+| `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
+| `@/features/auth/components/password-input` | [meu_frontend/src/features/auth/components/password-input.tsx](#file-1fc0077043d5) |
+| `@/lib/auth/client` | [meu_frontend/src/lib/auth/client.ts](#file-e68f7a980b3d) |
+
+### Imported by
+
+- [meu_frontend/src/app/(auth)/signup/page.tsx](#file-d7cb34fa9ca0)
+
+External or unresolved imports: `@hookform/resolvers/zod`, `lucide-react`, `next/link`, `next/navigation`, `react-hook-form`, `sonner`, `zod`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `SignupForm` | [37](../../meu_frontend/src/features/auth/components/signup.tsx#L37) | `form.handleSubmit`, `useForm`, `useRouter`, `zodResolver` |
+| `onSubmit` | [49](../../meu_frontend/src/features/auth/components/signup.tsx#L49) | `authClient.signUp.email`, `form.clearErrors`, `form.setError`, `toast.error` |
+| `onSuccess` | [57](../../meu_frontend/src/features/auth/components/signup.tsx#L57) | `router.push` |
+| `onError` | [60](../../meu_frontend/src/features/auth/components/signup.tsx#L60) | `form.setError`, `toast.error` |
 
 <a id="file-dac1b352656a"></a>
 
@@ -5023,10 +5096,10 @@ External or unresolved imports: `@tanstack/react-query`, `next/link`, `react`.
 | Import / re-export | Source target |
 |---|---|
 | `../chart/analysis` | [meu_frontend/src/features/backtests/chart/analysis.ts](#file-dac1b352656a) |
-| `@/components/ui-settings` | [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
 | `@/components/ui/select` | [meu_frontend/src/components/ui/select.tsx](#file-f8f0016aa124) |
 | `@/components/ui/skeleton` | [meu_frontend/src/components/ui/skeleton.tsx](#file-8fad368dc2d5) |
+| `@/features/settings/components/ui-settings` | [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a) |
 | `@/trpc/client` | [meu_frontend/src/trpc/client.tsx](#file-f97f83ba2e16) |
 
 ### Imported by
@@ -5203,7 +5276,7 @@ External or unresolved imports: `@trpc/server`, `zod`.
 
 ### Imported by
 
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
 - [meu_frontend/src/features/agents/server/edit-crypto-agent.ts](#file-5129a594abff)
 - [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3)
 - [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
@@ -5226,8 +5299,8 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 |---|---|
 | `../indicators` | [meu_frontend/src/features/charts/indicators.ts](#file-1ea0270f41af) |
 | `../types` | [meu_frontend/src/features/charts/types.ts](#file-3149635beb0a) |
-| `@/components/ui-settings` | [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
+| `@/features/settings/components/ui-settings` | [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a) |
 
 ### Imported by
 
@@ -5257,10 +5330,10 @@ External or unresolved imports: `lightweight-charts`, `react`.
 | Import / re-export | Source target |
 |---|---|
 | `./meu-chart-workspace` | [meu_frontend/src/features/charts/components/meu-chart-workspace.tsx](#file-b3914f0d1ad2) |
-| `@/components/ui-settings` | [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
 | `@/components/ui/skeleton` | [meu_frontend/src/components/ui/skeleton.tsx](#file-8fad368dc2d5) |
 | `@/components/ui/tabs` | [meu_frontend/src/components/ui/tabs.tsx](#file-2a712ece64d3) |
+| `@/features/settings/components/ui-settings` | [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a) |
 
 ### Imported by
 
@@ -5526,7 +5599,7 @@ External or unresolved imports: `date-fns`, `lucide-react`, `next/navigation`, `
 
 ### Imported by
 
-- [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22)
+- [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811)
 
 External or unresolved imports: `@tanstack/react-query`, `lucide-react`, `react`.
 
@@ -5548,7 +5621,7 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 ### Imported by
 
 - [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5)
-- [meu_frontend/src/features/agents/components/agent-intelligence-fields.tsx](#file-00d290523c22)
+- [meu_frontend/src/features/agents/components/forms/agent-intelligence-fields.tsx](#file-36e6f11bd811)
 - [meu_frontend/src/features/credentials/components/EditCred.tsx](#file-ad04fd87d941)
 - [meu_frontend/src/features/credentials/components/createCred.tsx](#file-a61b47d55b05)
 - [meu_frontend/src/features/credentials/components/credentials.tsx](#file-9f89f43602b3)
@@ -5586,7 +5659,7 @@ External or unresolved imports: `@tanstack/react-query`, `next/navigation`, `son
 |---|---|
 | `@/generated/prisma/enums` | [meu_frontend/src/generated/prisma/enums.ts](../../meu_frontend/src/generated/prisma/enums.ts) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
+| `@/lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
 
 ### Imported by
 
@@ -5624,7 +5697,7 @@ External or unresolved imports: `@trpc/server`, `node:crypto`, `server-only`.
 | `./models` | [meu_frontend/src/features/credentials/server/models.ts](#file-2d782da7bfbc) |
 | `@/generated/prisma/enums` | [meu_frontend/src/generated/prisma/enums.ts](../../meu_frontend/src/generated/prisma/enums.ts) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
+| `@/lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
 | `@/trpc/init` | [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3) |
 
 ### Imported by
@@ -5711,7 +5784,7 @@ External or unresolved imports: `@hookform/resolvers/zod`, `lucide-react`, `reac
 | `@/components/ui/input` | [meu_frontend/src/components/ui/input.tsx](#file-763a125345f3) |
 | `@/components/ui/popover` | [meu_frontend/src/components/ui/popover.tsx](#file-ee0b115629d8) |
 | `@/generated/prisma/client` | [meu_frontend/src/generated/prisma/client.ts](../../meu_frontend/src/generated/prisma/client.ts) |
-| `@/lib/auth-client` | [meu_frontend/src/lib/auth-client.ts](#file-a6e64c486914) |
+| `@/lib/auth/client` | [meu_frontend/src/lib/auth/client.ts](#file-e68f7a980b3d) |
 | `@/lib/utils` | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) |
 
 ### Imported by
@@ -5892,8 +5965,8 @@ External or unresolved imports: `@tanstack/react-query`, `lucide-react`, `next/l
 ### Imported by
 
 - [meu_frontend/src/features/agents/components/AgentDetailView.tsx](#file-2d6ca63749e5)
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
 - [meu_frontend/src/features/exchange/components/EditExchange.tsx](#file-c8683f166fff)
 - [meu_frontend/src/features/exchange/components/ExchangeDashboard.tsx](#file-020e7b2d2cba)
 - [meu_frontend/src/features/exchange/components/createEx.tsx](#file-752d2ba61e29)
@@ -5922,6 +5995,34 @@ External or unresolved imports: `@tanstack/react-query`, `ccxt`, `next/navigatio
 | `onSuccess` | [166](../../meu_frontend/src/features/exchange/hooks/use-exchange.ts#L166) | `queryClient.invalidateQueries`, `toast.error`, `toast.success`, `trpc.exData.getById.queryKey` |
 | `onError` | [176](../../meu_frontend/src/features/exchange/hooks/use-exchange.ts#L176) | `toast.error` |
 
+<a id="file-7c1e6cb6bb2a"></a>
+
+## meu_frontend/src/features/exchange/server/exchange-data.ts
+
+[meu_frontend/src/features/exchange/server/exchange-data.ts](../../meu_frontend/src/features/exchange/server/exchange-data.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
+| `../../../lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
+| `../../../lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
+| `./kite` | [meu_frontend/src/features/exchange/server/kite.ts](#file-89509d12f443) |
+
+### Imported by
+
+- [meu_frontend/src/app/api/exchange/[id]/route.ts](#file-8c016e19d984)
+- [meu_frontend/src/trpc/routers/_app.ts](#file-1a19320ef195)
+
+External or unresolved imports: `@trpc/server`, `ccxt`, `server-only`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `getExchangeData` | [21](../../meu_frontend/src/features/exchange/server/exchange-data.ts#L21) | `appLog`, `decryptSecret`, `exchange.fetchBalance`, `exchange.fetchMyTrades`, `exchange.fetchPositions`, `exchange.setSandboxMode`, `exchangeData.name.toUpperCase`, `getKiteDashboardData`, `isZerodhaExchange`, `positions.map`, `prisma.exchange.findUnique` |
+
 <a id="file-3b174aa1243a"></a>
 
 ## meu_frontend/src/features/exchange/server/execution-account.ts
@@ -5935,7 +6036,7 @@ External or unresolved imports: `@tanstack/react-query`, `ccxt`, `next/navigatio
 | `../../../../../meu/schedulerService/src/brokers/crypto/cryptoAccount` | [meu/schedulerService/src/brokers/crypto/cryptoAccount.ts](#file-8c5d1a686886) |
 | `../../../../../meu/schedulerService/src/config/config` | [meu/schedulerService/src/config/config.ts](#file-9ba5db203d2d) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
+| `@/lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
 
 ### Imported by
 
@@ -5956,6 +6057,40 @@ External or unresolved imports: `../../../../../meu/schedulerService/node_module
 | `executionConnection` | [9](../../meu_frontend/src/features/exchange/server/execution-account.ts#L9) | `configureCryptoExchange`, `connection.name.toUpperCase`, `decryptSecret`, `prisma.exchange.findFirst` |
 | `registerExecutionAccount` | [17](../../meu_frontend/src/features/exchange/server/execution-account.ts#L17) | `Array.isArray`, `accountRiskSchema.parse`, `identifyDeltaAccount`, `prisma.$runCommandRaw` |
 | `linkedExchangeIds` | [33](../../meu_frontend/src/features/exchange/server/execution-account.ts#L33) | `Array.isArray`, `String`, `links.map`, `prisma.$runCommandRaw` |
+
+<a id="file-89509d12f443"></a>
+
+## meu_frontend/src/features/exchange/server/kite.ts
+
+[meu_frontend/src/features/exchange/server/kite.ts](../../meu_frontend/src/features/exchange/server/kite.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `../../../lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
+| `../../../lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
+| `../../../lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
+
+### Imported by
+
+- [meu_frontend/src/features/exchange/server/exchange-data.ts](#file-7c1e6cb6bb2a)
+- [meu_frontend/src/features/exchange/server/router.ts](#file-91599ec511d1)
+- [meu_frontend/src/features/markets/server/catalog.ts](#file-caa7eb406200)
+
+External or unresolved imports: `ccxt`, `crypto`, `server-only`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `isZerodhaExchange` | [20](../../meu_frontend/src/features/exchange/server/kite.ts#L20) | — |
+| `istDateKey` | [25](../../meu_frontend/src/features/exchange/server/kite.ts#L25) | — |
+| `isKiteTokenFresh` | [35](../../meu_frontend/src/features/exchange/server/kite.ts#L35) | `istDateKey` |
+| `kiteLoginUrl` | [43](../../meu_frontend/src/features/exchange/server/kite.ts#L43) | — |
+| `kiteGet` | [57](../../meu_frontend/src/features/exchange/server/kite.ts#L57) | `AbortSignal.timeout`, `decryptSecret`, `fetch`, `res.json` |
+| `exchangeKiteRequestToken` | [76](../../meu_frontend/src/features/exchange/server/kite.ts#L76) | `AbortSignal.timeout`, `decryptSecret`, `encryptSecret`, `fetch`, `isZerodhaExchange`, `prisma.exchange.findFirst`, `prisma.exchange.update`, `res.json` |
+| `getKiteDashboardData` | [152](../../meu_frontend/src/features/exchange/server/kite.ts#L152) | `appLog`, `decryptSecret`, `isKiteTokenFresh`, `kiteGet`, `kiteLoginUrl`, `prisma.exchange.findFirst` |
 
 <a id="file-d0180098de88"></a>
 
@@ -6012,8 +6147,8 @@ External or unresolved imports: `@trpc/server`, `server-only`.
 | `./reconciliation` | [meu_frontend/src/features/exchange/server/reconciliation.ts](#file-d0180098de88) |
 | `@/features/backtests/server/delta-data` | [meu_frontend/src/features/backtests/server/delta-data.ts](#file-e9ab06d56b34) |
 | `@/generated/prisma/client` | [meu_frontend/src/generated/prisma/client.ts](../../meu_frontend/src/generated/prisma/client.ts) |
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
 
 ### Imported by
 
@@ -6046,10 +6181,10 @@ External or unresolved imports: `@trpc/server`, `node:crypto`, `server-only`.
 | `./execution-account` | [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a) |
 | `./reconciliation` | [meu_frontend/src/features/exchange/server/reconciliation.ts](#file-d0180098de88) |
 | `./recover-execution` | [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f) |
+| `@/features/exchange/server/kite` | [meu_frontend/src/features/exchange/server/kite.ts](#file-89509d12f443) |
 | `@/features/markets/server/catalog` | [meu_frontend/src/features/markets/server/catalog.ts](#file-caa7eb406200) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
-| `@/lib/kite` | [meu_frontend/src/lib/kite.ts](#file-e4ebd94e8111) |
+| `@/lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
 | `@/trpc/init` | [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3) |
 
 ### Imported by
@@ -6110,8 +6245,8 @@ External or unresolved imports: `lucide-react`, `next/link`, `react`.
 
 ### Imported by
 
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
 - [meu_frontend/src/features/backtests/components/backtest-workspace.tsx](#file-47c93f33e5a4)
 
 External or unresolved imports: `@tanstack/react-query`, `lucide-react`, `react`.
@@ -6128,9 +6263,9 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 | Import / re-export | Source target |
 |---|---|
+| `@/features/exchange/server/kite` | [meu_frontend/src/features/exchange/server/kite.ts](#file-89509d12f443) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
-| `@/lib/kite` | [meu_frontend/src/lib/kite.ts](#file-e4ebd94e8111) |
+| `@/lib/security/encryption` | [meu_frontend/src/lib/security/encryption.ts](#file-d9c42a9d0fc0) |
 
 ### Imported by
 
@@ -6201,7 +6336,7 @@ External or unresolved imports: `date-fns`, `framer-motion`, `lucide-react`, `re
 
 ### Imported by
 
-- [meu_frontend/src/components/appHeader.tsx](#file-0f4a984bf6aa)
+- [meu_frontend/src/components/layout/appHeader.tsx](#file-6df673cc5ea0)
 
 External or unresolved imports: `date-fns`, `lucide-react`, `next/link`, `next/navigation`.
 
@@ -6278,12 +6413,12 @@ External or unresolved imports: `date-fns`, `lucide-react`, `next/navigation`, `
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/client-error-report` | [meu_frontend/src/lib/client-error-report.ts](#file-eea9cb8bcbfc) |
+| `@/lib/logging/client-error-report` | [meu_frontend/src/lib/logging/client-error-report.ts](#file-73a4ada7be53) |
 
 ### Imported by
 
 - [meu_frontend/src/app/(dashboard)/settings/page.tsx](#file-c6b71346cae2)
-- [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a)
+- [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad)
 - [meu_frontend/src/features/notifications/components/notification-watcher.tsx](#file-11d66e1b38b9)
 
 External or unresolved imports: `react`.
@@ -6314,12 +6449,12 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/client-error-report` | [meu_frontend/src/lib/client-error-report.ts](#file-eea9cb8bcbfc) |
+| `@/lib/logging/client-error-report` | [meu_frontend/src/lib/logging/client-error-report.ts](#file-73a4ada7be53) |
 | `@/trpc/client` | [meu_frontend/src/trpc/client.tsx](#file-f97f83ba2e16) |
 
 ### Imported by
 
-- [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a)
+- [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad)
 - [meu_frontend/src/features/notifications/components/NotificationView.tsx](#file-69429fa545c9)
 - [meu_frontend/src/features/notifications/components/notification-bell.tsx](#file-660ac2be4da1)
 - [meu_frontend/src/features/notifications/components/notification-watcher.tsx](#file-11d66e1b38b9)
@@ -6350,6 +6485,48 @@ External or unresolved imports: `@tanstack/react-query`, `@trpc/tanstack-react-q
 | `onSuccess` | [136](../../meu_frontend/src/features/notifications/hooks/use-notifications.ts#L136) | `Promise.all`, `queryClient.invalidateQueries`, `toast.success`, `trpc.notifications.getAll.queryKey`, `trpc.notifications.getOne.queryKey`, `trpc.notifications.getUnread.queryKey` |
 | `onError` | [144](../../meu_frontend/src/features/notifications/hooks/use-notifications.ts#L144) | `toast.error` |
 
+<a id="file-37d6abefa8af"></a>
+
+## meu_frontend/src/features/notifications/server/events.ts
+
+[meu_frontend/src/features/notifications/server/events.ts](../../meu_frontend/src/features/notifications/server/events.ts)
+
+### Imported by
+
+- [meu_frontend/src/features/notifications/server/router.ts](#file-6674456ea0f0)
+- [meu_frontend/src/instrumentation.ts](#file-c0e3f54a8a6d)
+
+External or unresolved imports: `events`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `emitter` | [3](../../meu_frontend/src/features/notifications/server/events.ts#L3) | — |
+| `emitNotificationChange` | [7](../../meu_frontend/src/features/notifications/server/events.ts#L7) | `emitter` |
+| `getNotificationVersion` | [11](../../meu_frontend/src/features/notifications/server/events.ts#L11) | — |
+| `notificationIterator` | [12](../../meu_frontend/src/features/notifications/server/events.ts#L12) | `emitter`, `signal?.addEventListener`, `signal?.removeEventListener` |
+| `onChange` | [16](../../meu_frontend/src/features/notifications/server/events.ts#L16) | `wake` |
+| `onAbort` | [21](../../meu_frontend/src/features/notifications/server/events.ts#L21) | `wake` |
+
+<a id="file-7177ab9ebe2b"></a>
+
+## meu_frontend/src/features/notifications/server/push-validation.ts
+
+[meu_frontend/src/features/notifications/server/push-validation.ts](../../meu_frontend/src/features/notifications/server/push-validation.ts)
+
+### Imported by
+
+- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `validPushEndpoint` | [1](../../meu_frontend/src/features/notifications/server/push-validation.ts#L1) | `host.endsWith` |
+| `validPushKeys` | [11](../../meu_frontend/src/features/notifications/server/push-validation.ts#L11) | `decoded` |
+| `decoded` | [12](../../meu_frontend/src/features/notifications/server/push-validation.ts#L12) | `Buffer.from`, `bytes.toString`, `value.replace` |
+
 <a id="file-6674456ea0f0"></a>
 
 ## meu_frontend/src/features/notifications/server/router.ts
@@ -6360,9 +6537,9 @@ External or unresolved imports: `@tanstack/react-query`, `@trpc/tanstack-react-q
 
 | Import / re-export | Source target |
 |---|---|
+| `@/features/notifications/server/events` | [meu_frontend/src/features/notifications/server/events.ts](#file-37d6abefa8af) |
 | `@/generated/prisma/enums` | [meu_frontend/src/generated/prisma/enums.ts](../../meu_frontend/src/generated/prisma/enums.ts) |
 | `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `@/lib/notification-events` | [meu_frontend/src/lib/notification-events.ts](#file-205cdec58c8d) |
 | `@/trpc/init` | [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3) |
 
 ### Imported by
@@ -6372,6 +6549,43 @@ External or unresolved imports: `@tanstack/react-query`, `@trpc/tanstack-react-q
 External or unresolved imports: `zod`.
 
 No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
+<a id="file-f9fb3c54325a"></a>
+
+## meu_frontend/src/features/settings/components/ui-settings.tsx
+
+[meu_frontend/src/features/settings/components/ui-settings.tsx](../../meu_frontend/src/features/settings/components/ui-settings.tsx)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/lib/logging/client-error-report` | [meu_frontend/src/lib/logging/client-error-report.ts](#file-73a4ada7be53) |
+| `@/trpc/client` | [meu_frontend/src/trpc/client.tsx](#file-f97f83ba2e16) |
+
+### Imported by
+
+- [meu_frontend/src/app/(dashboard)/settings/page.tsx](#file-c6b71346cae2)
+- [meu_frontend/src/components/layout/appHeader.tsx](#file-6df673cc5ea0)
+- [meu_frontend/src/features/backtests/components/backtest-price-chart.tsx](#file-33ffc77904e1)
+- [meu_frontend/src/features/charts/components/candle-chart.tsx](#file-c9aab20b58a0)
+- [meu_frontend/src/features/charts/components/charts-workspace.tsx](#file-8c2aa8a37e03)
+
+External or unresolved imports: `react`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `reportSettingsFailure` | [7](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L7) | `reportClientError` |
+| `normalizeLook` | [55](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L55) | `LOOK_THEMES.find` |
+| `getSnapshot` | [80](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L80) | `JSON.parse`, `normalizeLook`, `window.localStorage.getItem` |
+| `getServerSnapshot` | [96](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L96) | — |
+| `subscribe` | [100](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L100) | `listeners.add` |
+| `update` | [105](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L105) | `JSON.stringify`, `applySettings`, `getSnapshot`, `listeners.forEach`, `window.localStorage.setItem` |
+| `syncToServer` | [117](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L117) | `api.settings.updateUi.mutate` |
+| `applySettings` | [122](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L122) | `LOOK_THEMES.find`, `root.classList.add`, `root.classList.remove`, `root.style.setProperty` |
+| `useUISettings` | [137](../../meu_frontend/src/features/settings/components/ui-settings.tsx#L137) | `useCallback`, `useEffect`, `useSyncExternalStore` |
 
 <a id="file-2d0a959134b6"></a>
 
@@ -6423,7 +6637,7 @@ External or unresolved imports: `react`.
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/notification-events` | [meu_frontend/src/lib/notification-events.ts](#file-205cdec58c8d) |
+| `@/features/notifications/server/events` | [meu_frontend/src/features/notifications/server/events.ts](#file-37d6abefa8af) |
 
 External or unresolved imports: `mongodb`.
 
@@ -6436,69 +6650,60 @@ External or unresolved imports: `mongodb`.
 | `reconnect` | [22](../../meu_frontend/src/instrumentation.ts#L22) | `Math.min`, `retry.unref`, `setTimeout`, `stream.close` |
 | `register` | [40](../../meu_frontend/src/instrumentation.ts#L40) | `startNotificationWatcher` |
 
-<a id="file-cf2ad0523213"></a>
+<a id="file-e68f7a980b3d"></a>
 
-## meu_frontend/src/lib/app-logger.ts
+## meu_frontend/src/lib/auth/client.ts
 
-[meu_frontend/src/lib/app-logger.ts](../../meu_frontend/src/lib/app-logger.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/lib/log-safety` | [meu_frontend/src/lib/log-safety.ts](#file-8763257ce406) |
+[meu_frontend/src/lib/auth/client.ts](../../meu_frontend/src/lib/auth/client.ts)
 
 ### Imported by
 
-- [meu_frontend/src/app/api/client-errors/route.ts](#file-996af6889829)
-- [meu_frontend/src/app/api/exchange/[id]/route.ts](#file-8c016e19d984)
-- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
-- [meu_frontend/src/app/api/trpc/[trpc]/route.ts](#file-45fb100e52b8)
-- [meu_frontend/src/features/agents/server/recover-delta-agent.ts](#file-681653d00ae2)
-- [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
-- [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f)
-- [meu_frontend/src/lib/config.ts](#file-217ac8c08a1d)
-- [meu_frontend/src/lib/kite.ts](#file-e4ebd94e8111)
-- [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3)
-
-External or unresolved imports: `node:crypto`, `server-only`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `newRequestId` | [7](../../meu_frontend/src/lib/app-logger.ts#L7) | `randomUUID` |
-| `appLog` | [11](../../meu_frontend/src/lib/app-logger.ts#L11) | `JSON.stringify`, `Math.max`, `Math.round`, `Number.isFinite`, `Number.isInteger`, `console.error`, `console.info`, `console.warn`, `isRequestId` |
-
-<a id="file-a6e64c486914"></a>
-
-## meu_frontend/src/lib/auth-client.ts
-
-[meu_frontend/src/lib/auth-client.ts](../../meu_frontend/src/lib/auth-client.ts)
-
-### Imported by
-
-- [meu_frontend/src/components/appHeader.tsx](#file-0f4a984bf6aa)
-- [meu_frontend/src/components/appSidebar.tsx](#file-60b41959bf0a)
-- [meu_frontend/src/components/login.tsx](#file-b650cf92caec)
-- [meu_frontend/src/components/signup.tsx](#file-5cb998c8a647)
+- [meu_frontend/src/components/layout/appHeader.tsx](#file-6df673cc5ea0)
+- [meu_frontend/src/components/layout/appSidebar.tsx](#file-b27277a748ad)
+- [meu_frontend/src/features/auth/components/login.tsx](#file-7dff3a2891a7)
+- [meu_frontend/src/features/auth/components/signup.tsx](#file-4dd230bb412b)
 - [meu_frontend/src/features/exchange/components/ExchangeDashboard.tsx](#file-020e7b2d2cba)
 
 External or unresolved imports: `better-auth/react`.
 
 No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
 
-<a id="file-efa6d7b5ecdb"></a>
+<a id="file-53ec593b4fd8"></a>
 
-## meu_frontend/src/lib/auth-utils.ts
+## meu_frontend/src/lib/auth/server.ts
 
-[meu_frontend/src/lib/auth-utils.ts](../../meu_frontend/src/lib/auth-utils.ts)
+[meu_frontend/src/lib/auth/server.ts](../../meu_frontend/src/lib/auth/server.ts)
 
 ### Internal dependencies
 
 | Import / re-export | Source target |
 |---|---|
-| `./auth` | [meu_frontend/src/lib/auth.ts](#file-88f27c02508d) |
+| `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
+
+### Imported by
+
+- [meu_frontend/src/app/api/auth/[...all]/route.ts](#file-77ec7a0ab574)
+- [meu_frontend/src/app/api/client-errors/route.ts](#file-996af6889829)
+- [meu_frontend/src/app/api/exchange/[id]/route.ts](#file-8c016e19d984)
+- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
+- [meu_frontend/src/lib/auth/session.ts](#file-50e8df74af1d)
+- [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3)
+
+External or unresolved imports: `better-auth`, `better-auth/adapters/prisma`.
+
+No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
+
+<a id="file-50e8df74af1d"></a>
+
+## meu_frontend/src/lib/auth/session.ts
+
+[meu_frontend/src/lib/auth/session.ts](../../meu_frontend/src/lib/auth/session.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `./server` | [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8) |
 
 ### Imported by
 
@@ -6528,100 +6733,8 @@ External or unresolved imports: `next/headers`, `next/navigation`, `react`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `requireAuth` | [14](../../meu_frontend/src/lib/auth-utils.ts#L14) | `getSession`, `redirect` |
-| `requireNoAuth` | [24](../../meu_frontend/src/lib/auth-utils.ts#L24) | `getSession`, `redirect` |
-
-<a id="file-88f27c02508d"></a>
-
-## meu_frontend/src/lib/auth.ts
-
-[meu_frontend/src/lib/auth.ts](../../meu_frontend/src/lib/auth.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `@/lib/db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-
-### Imported by
-
-- [meu_frontend/src/app/api/auth/[...all]/route.ts](#file-77ec7a0ab574)
-- [meu_frontend/src/app/api/client-errors/route.ts](#file-996af6889829)
-- [meu_frontend/src/app/api/exchange/[id]/route.ts](#file-8c016e19d984)
-- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
-- [meu_frontend/src/lib/auth-utils.ts](#file-efa6d7b5ecdb)
-- [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3)
-
-External or unresolved imports: `better-auth`, `better-auth/adapters/prisma`.
-
-No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
-
-<a id="file-eea9cb8bcbfc"></a>
-
-## meu_frontend/src/lib/client-error-report.ts
-
-[meu_frontend/src/lib/client-error-report.ts](../../meu_frontend/src/lib/client-error-report.ts)
-
-### Imported by
-
-- [meu_frontend/src/app/(dashboard)/error.tsx](#file-590cbaa3d7b3)
-- [meu_frontend/src/components/LoggedErrorBoundary.tsx](#file-f8a6e3de084a)
-- [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f)
-- [meu_frontend/src/features/notifications/hooks/use-browser-notifications.ts](#file-1f343c494dac)
-- [meu_frontend/src/features/notifications/hooks/use-notifications.ts](#file-c84e6c94eb3d)
-- [meu_frontend/src/trpc/query-client.ts](#file-f3f53cdac28e)
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `reportClientError` | [9](../../meu_frontend/src/lib/client-error-report.ts#L9) | `Date.now`, `JSON.stringify`, `fetch`, `recentReports.delete`, `recentReports.get`, `recentReports.set` |
-
-<a id="file-6d8ab70e2e1a"></a>
-
-## meu_frontend/src/lib/client-error-validation.ts
-
-[meu_frontend/src/lib/client-error-validation.ts](../../meu_frontend/src/lib/client-error-validation.ts)
-
-### Imported by
-
-- [meu_frontend/src/app/api/client-errors/route.ts](#file-996af6889829)
-- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `parseClientReport` | [12](../../meu_frontend/src/lib/client-error-validation.ts#L12) | `Array.isArray`, `Object.hasOwn` |
-| `readBoundedJsonBody` | [22](../../meu_frontend/src/lib/client-error-validation.ts#L22) | `JSON.parse`, `decoder.decode`, `reader.cancel`, `reader.read`, `reader.releaseLock`, `req.body?.getReader` |
-
-<a id="file-217ac8c08a1d"></a>
-
-## meu_frontend/src/lib/config.ts
-
-[meu_frontend/src/lib/config.ts](../../meu_frontend/src/lib/config.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
-| `./db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `./encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
-| `./kite` | [meu_frontend/src/lib/kite.ts](#file-e4ebd94e8111) |
-
-### Imported by
-
-- [meu_frontend/src/app/api/exchange/[id]/route.ts](#file-8c016e19d984)
-- [meu_frontend/src/trpc/routers/_app.ts](#file-1a19320ef195)
-
-External or unresolved imports: `@trpc/server`, `ccxt`, `server-only`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `getExchangeData` | [21](../../meu_frontend/src/lib/config.ts#L21) | `appLog`, `decryptSecret`, `exchange.fetchBalance`, `exchange.fetchMyTrades`, `exchange.fetchPositions`, `exchange.setSandboxMode`, `exchangeData.name.toUpperCase`, `getKiteDashboardData`, `isZerodhaExchange`, `positions.map`, `prisma.exchange.findUnique` |
+| `requireAuth` | [14](../../meu_frontend/src/lib/auth/session.ts#L14) | `getSession`, `redirect` |
+| `requireNoAuth` | [24](../../meu_frontend/src/lib/auth/session.ts#L24) | `getSession`, `redirect` |
 
 <a id="file-79fe743e2bb6"></a>
 
@@ -6647,35 +6760,126 @@ External or unresolved imports: `@trpc/server`, `ccxt`, `server-only`.
 - [meu_frontend/src/features/charts/server/router.ts](#file-f9d982eae1de)
 - [meu_frontend/src/features/credentials/server/models.ts](#file-2d782da7bfbc)
 - [meu_frontend/src/features/credentials/server/router.ts](#file-5813a830e726)
+- [meu_frontend/src/features/exchange/server/exchange-data.ts](#file-7c1e6cb6bb2a)
 - [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a)
+- [meu_frontend/src/features/exchange/server/kite.ts](#file-89509d12f443)
 - [meu_frontend/src/features/exchange/server/reconciliation.ts](#file-d0180098de88)
 - [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f)
 - [meu_frontend/src/features/exchange/server/router.ts](#file-91599ec511d1)
 - [meu_frontend/src/features/markets/server/catalog.ts](#file-caa7eb406200)
 - [meu_frontend/src/features/notifications/server/router.ts](#file-6674456ea0f0)
 - [meu_frontend/src/features/settings/server/router.ts](#file-2d0a959134b6)
-- [meu_frontend/src/lib/auth.ts](#file-88f27c02508d)
-- [meu_frontend/src/lib/config.ts](#file-217ac8c08a1d)
-- [meu_frontend/src/lib/kite.ts](#file-e4ebd94e8111)
+- [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8)
 
 No named function bodies in this file. Constants, schemas, types or framework-created handlers may still define its behavior.
 
-<a id="file-fadfe6773757"></a>
+<a id="file-9a4d6870b450"></a>
 
-## meu_frontend/src/lib/encryption.ts
+## meu_frontend/src/lib/logging/app-logger.ts
 
-[meu_frontend/src/lib/encryption.ts](../../meu_frontend/src/lib/encryption.ts)
+[meu_frontend/src/lib/logging/app-logger.ts](../../meu_frontend/src/lib/logging/app-logger.ts)
+
+### Internal dependencies
+
+| Import / re-export | Source target |
+|---|---|
+| `@/lib/logging/log-safety` | [meu_frontend/src/lib/logging/log-safety.ts](#file-1428d8a77779) |
+
+### Imported by
+
+- [meu_frontend/src/app/api/client-errors/route.ts](#file-996af6889829)
+- [meu_frontend/src/app/api/exchange/[id]/route.ts](#file-8c016e19d984)
+- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
+- [meu_frontend/src/app/api/trpc/[trpc]/route.ts](#file-45fb100e52b8)
+- [meu_frontend/src/features/agents/server/recover-delta-agent.ts](#file-681653d00ae2)
+- [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
+- [meu_frontend/src/features/exchange/server/exchange-data.ts](#file-7c1e6cb6bb2a)
+- [meu_frontend/src/features/exchange/server/kite.ts](#file-89509d12f443)
+- [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f)
+- [meu_frontend/src/trpc/init.ts](#file-7c41dca4d8b3)
+
+External or unresolved imports: `node:crypto`, `server-only`.
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `newRequestId` | [7](../../meu_frontend/src/lib/logging/app-logger.ts#L7) | `randomUUID` |
+| `appLog` | [11](../../meu_frontend/src/lib/logging/app-logger.ts#L11) | `JSON.stringify`, `Math.max`, `Math.round`, `Number.isFinite`, `Number.isInteger`, `console.error`, `console.info`, `console.warn`, `isRequestId` |
+
+<a id="file-73a4ada7be53"></a>
+
+## meu_frontend/src/lib/logging/client-error-report.ts
+
+[meu_frontend/src/lib/logging/client-error-report.ts](../../meu_frontend/src/lib/logging/client-error-report.ts)
+
+### Imported by
+
+- [meu_frontend/src/app/(dashboard)/error.tsx](#file-590cbaa3d7b3)
+- [meu_frontend/src/components/errors/LoggedErrorBoundary.tsx](#file-d9883da1b70f)
+- [meu_frontend/src/features/notifications/hooks/use-browser-notifications.ts](#file-1f343c494dac)
+- [meu_frontend/src/features/notifications/hooks/use-notifications.ts](#file-c84e6c94eb3d)
+- [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a)
+- [meu_frontend/src/trpc/query-client.ts](#file-f3f53cdac28e)
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `reportClientError` | [9](../../meu_frontend/src/lib/logging/client-error-report.ts#L9) | `Date.now`, `JSON.stringify`, `fetch`, `recentReports.delete`, `recentReports.get`, `recentReports.set` |
+
+<a id="file-893a790808b5"></a>
+
+## meu_frontend/src/lib/logging/client-error-validation.ts
+
+[meu_frontend/src/lib/logging/client-error-validation.ts](../../meu_frontend/src/lib/logging/client-error-validation.ts)
+
+### Imported by
+
+- [meu_frontend/src/app/api/client-errors/route.ts](#file-996af6889829)
+- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `parseClientReport` | [12](../../meu_frontend/src/lib/logging/client-error-validation.ts#L12) | `Array.isArray`, `Object.hasOwn` |
+| `readBoundedJsonBody` | [22](../../meu_frontend/src/lib/logging/client-error-validation.ts#L22) | `JSON.parse`, `decoder.decode`, `reader.cancel`, `reader.read`, `reader.releaseLock`, `req.body?.getReader` |
+
+<a id="file-1428d8a77779"></a>
+
+## meu_frontend/src/lib/logging/log-safety.ts
+
+[meu_frontend/src/lib/logging/log-safety.ts](../../meu_frontend/src/lib/logging/log-safety.ts)
+
+### Imported by
+
+- [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450)
+
+### Named functions and direct calls
+
+| Function / method | Source line | Direct calls (syntax only) |
+|---|---|---|
+| `isRequestId` | [57](../../meu_frontend/src/lib/logging/log-safety.ts#L57) | `Boolean` |
+| `safeLogCode` | [61](../../meu_frontend/src/lib/logging/log-safety.ts#L61) | `logCodes.has` |
+| `safeProcedureName` | [65](../../meu_frontend/src/lib/logging/log-safety.ts#L65) | `procedureNames.has` |
+
+<a id="file-d9c42a9d0fc0"></a>
+
+## meu_frontend/src/lib/security/encryption.ts
+
+[meu_frontend/src/lib/security/encryption.ts](../../meu_frontend/src/lib/security/encryption.ts)
 
 ### Imported by
 
 - [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
 - [meu_frontend/src/features/credentials/server/models.ts](#file-2d782da7bfbc)
 - [meu_frontend/src/features/credentials/server/router.ts](#file-5813a830e726)
+- [meu_frontend/src/features/exchange/server/exchange-data.ts](#file-7c1e6cb6bb2a)
 - [meu_frontend/src/features/exchange/server/execution-account.ts](#file-3b174aa1243a)
+- [meu_frontend/src/features/exchange/server/kite.ts](#file-89509d12f443)
 - [meu_frontend/src/features/exchange/server/router.ts](#file-91599ec511d1)
 - [meu_frontend/src/features/markets/server/catalog.ts](#file-caa7eb406200)
-- [meu_frontend/src/lib/config.ts](#file-217ac8c08a1d)
-- [meu_frontend/src/lib/kite.ts](#file-e4ebd94e8111)
 
 External or unresolved imports: `node:crypto`.
 
@@ -6683,103 +6887,9 @@ External or unresolved imports: `node:crypto`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `key` | [4](../../meu_frontend/src/lib/encryption.ts#L4) | `Buffer.from` |
-| `encryptSecret` | [11](../../meu_frontend/src/lib/encryption.ts#L11) | `Buffer.concat`, `cipher.final`, `cipher.getAuthTag`, `cipher.update`, `createCipheriv`, `key`, `randomBytes` |
-| `decryptSecret` | [17](../../meu_frontend/src/lib/encryption.ts#L17) | `Buffer.concat`, `createDecipheriv`, `decipher.final`, `decipher.setAuthTag`, `decipher.update`, `key`, `parts.map`, `value.slice`, `value.startsWith` |
-
-<a id="file-e4ebd94e8111"></a>
-
-## meu_frontend/src/lib/kite.ts
-
-[meu_frontend/src/lib/kite.ts](../../meu_frontend/src/lib/kite.ts)
-
-### Internal dependencies
-
-| Import / re-export | Source target |
-|---|---|
-| `./app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
-| `./db` | [meu_frontend/src/lib/db.ts](#file-79fe743e2bb6) |
-| `./encryption` | [meu_frontend/src/lib/encryption.ts](#file-fadfe6773757) |
-
-### Imported by
-
-- [meu_frontend/src/features/exchange/server/router.ts](#file-91599ec511d1)
-- [meu_frontend/src/features/markets/server/catalog.ts](#file-caa7eb406200)
-- [meu_frontend/src/lib/config.ts](#file-217ac8c08a1d)
-
-External or unresolved imports: `ccxt`, `crypto`, `server-only`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `isZerodhaExchange` | [20](../../meu_frontend/src/lib/kite.ts#L20) | — |
-| `istDateKey` | [25](../../meu_frontend/src/lib/kite.ts#L25) | — |
-| `isKiteTokenFresh` | [35](../../meu_frontend/src/lib/kite.ts#L35) | `istDateKey` |
-| `kiteLoginUrl` | [43](../../meu_frontend/src/lib/kite.ts#L43) | — |
-| `kiteGet` | [57](../../meu_frontend/src/lib/kite.ts#L57) | `AbortSignal.timeout`, `decryptSecret`, `fetch`, `res.json` |
-| `exchangeKiteRequestToken` | [76](../../meu_frontend/src/lib/kite.ts#L76) | `AbortSignal.timeout`, `decryptSecret`, `encryptSecret`, `fetch`, `isZerodhaExchange`, `prisma.exchange.findFirst`, `prisma.exchange.update`, `res.json` |
-| `getKiteDashboardData` | [152](../../meu_frontend/src/lib/kite.ts#L152) | `appLog`, `decryptSecret`, `isKiteTokenFresh`, `kiteGet`, `kiteLoginUrl`, `prisma.exchange.findFirst` |
-
-<a id="file-8763257ce406"></a>
-
-## meu_frontend/src/lib/log-safety.ts
-
-[meu_frontend/src/lib/log-safety.ts](../../meu_frontend/src/lib/log-safety.ts)
-
-### Imported by
-
-- [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213)
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `isRequestId` | [57](../../meu_frontend/src/lib/log-safety.ts#L57) | `Boolean` |
-| `safeLogCode` | [61](../../meu_frontend/src/lib/log-safety.ts#L61) | `logCodes.has` |
-| `safeProcedureName` | [65](../../meu_frontend/src/lib/log-safety.ts#L65) | `procedureNames.has` |
-
-<a id="file-205cdec58c8d"></a>
-
-## meu_frontend/src/lib/notification-events.ts
-
-[meu_frontend/src/lib/notification-events.ts](../../meu_frontend/src/lib/notification-events.ts)
-
-### Imported by
-
-- [meu_frontend/src/features/notifications/server/router.ts](#file-6674456ea0f0)
-- [meu_frontend/src/instrumentation.ts](#file-c0e3f54a8a6d)
-
-External or unresolved imports: `events`.
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `emitter` | [3](../../meu_frontend/src/lib/notification-events.ts#L3) | — |
-| `emitNotificationChange` | [7](../../meu_frontend/src/lib/notification-events.ts#L7) | `emitter` |
-| `getNotificationVersion` | [11](../../meu_frontend/src/lib/notification-events.ts#L11) | — |
-| `notificationIterator` | [12](../../meu_frontend/src/lib/notification-events.ts#L12) | `emitter`, `signal?.addEventListener`, `signal?.removeEventListener` |
-| `onChange` | [16](../../meu_frontend/src/lib/notification-events.ts#L16) | `wake` |
-| `onAbort` | [21](../../meu_frontend/src/lib/notification-events.ts#L21) | `wake` |
-
-<a id="file-c82bb8b2781e"></a>
-
-## meu_frontend/src/lib/push-validation.ts
-
-[meu_frontend/src/lib/push-validation.ts](../../meu_frontend/src/lib/push-validation.ts)
-
-### Imported by
-
-- [meu_frontend/src/app/api/push/subscribe/route.ts](#file-9b8b767a7f1d)
-
-### Named functions and direct calls
-
-| Function / method | Source line | Direct calls (syntax only) |
-|---|---|---|
-| `validPushEndpoint` | [1](../../meu_frontend/src/lib/push-validation.ts#L1) | `host.endsWith` |
-| `validPushKeys` | [11](../../meu_frontend/src/lib/push-validation.ts#L11) | `decoded` |
-| `decoded` | [12](../../meu_frontend/src/lib/push-validation.ts#L12) | `Buffer.from`, `bytes.toString`, `value.replace` |
+| `key` | [4](../../meu_frontend/src/lib/security/encryption.ts#L4) | `Buffer.from` |
+| `encryptSecret` | [11](../../meu_frontend/src/lib/security/encryption.ts#L11) | `Buffer.concat`, `cipher.final`, `cipher.getAuthTag`, `cipher.update`, `createCipheriv`, `key`, `randomBytes` |
+| `decryptSecret` | [17](../../meu_frontend/src/lib/security/encryption.ts#L17) | `Buffer.concat`, `createDecipheriv`, `decipher.final`, `decipher.setAuthTag`, `decipher.update`, `key`, `parts.map`, `value.slice`, `value.startsWith` |
 
 <a id="file-130a50dc24d7"></a>
 
@@ -6790,6 +6900,7 @@ External or unresolved imports: `events`.
 ### Imported by
 
 - [meu_frontend/src/app/(dashboard)/settings/page.tsx](#file-c6b71346cae2)
+- [meu_frontend/src/components/branding/meu-logo.tsx](#file-2868db659617)
 - [meu_frontend/src/components/entityComponents/Empty.tsx](#file-e1341d0db420)
 - [meu_frontend/src/components/entityComponents/EntityAvatar.tsx](#file-d9686ce9473d)
 - [meu_frontend/src/components/entityComponents/EntityBadge.tsx](#file-09f652494ac0)
@@ -6797,8 +6908,6 @@ External or unresolved imports: `events`.
 - [meu_frontend/src/components/entityComponents/EntityItem.tsx](#file-ab7840c4ffc7)
 - [meu_frontend/src/components/entityComponents/EntityList.tsx](#file-51b6547cb94e)
 - [meu_frontend/src/components/entityComponents/EntitySearch.tsx](#file-ea60ae8d3698)
-- [meu_frontend/src/components/meu-logo.tsx](#file-6af34cce3d3d)
-- [meu_frontend/src/components/password-input.tsx](#file-392b4a261058)
 - [meu_frontend/src/components/ui/accordion.tsx](#file-eff37b7f84f0)
 - [meu_frontend/src/components/ui/alert-dialog.tsx](#file-ed34d47c4dac)
 - [meu_frontend/src/components/ui/alert.tsx](#file-4b3b987cd573)
@@ -6850,6 +6959,7 @@ External or unresolved imports: `events`.
 - [meu_frontend/src/components/ui/toggle.tsx](#file-d9f27669dfb9)
 - [meu_frontend/src/components/ui/tooltip.tsx](#file-696410254fcf)
 - [meu_frontend/src/features/agents/components/agent.tsx](#file-3984b831a40c)
+- [meu_frontend/src/features/auth/components/password-input.tsx](#file-1fc0077043d5)
 - [meu_frontend/src/features/exchange/components/ExchangeDashboard.tsx](#file-020e7b2d2cba)
 - [meu_frontend/src/features/exchange/components/portfolio-overview.tsx](#file-71c3b269af63)
 - [meu_frontend/src/features/notifications/components/notifications.tsx](#file-7f59b6fb5baf)
@@ -6880,10 +6990,9 @@ External or unresolved imports: `ccxt`, `clsx`, `tailwind-merge`.
 ### Imported by
 
 - [meu_frontend/src/app/layout.tsx](#file-9f5b43d9b9de)
-- [meu_frontend/src/components/ui-settings.tsx](#file-10bad29dc90f)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
-- [meu_frontend/src/features/agents/components/entry-preview.tsx](#file-568e139a6989)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
+- [meu_frontend/src/features/agents/components/forms/entry-preview.tsx](#file-e6e498821073)
 - [meu_frontend/src/features/agents/hooks/use-agent.ts](#file-2750ed7a6002)
 - [meu_frontend/src/features/backtests/components/agent-launch.tsx](#file-af786abb6830)
 - [meu_frontend/src/features/backtests/components/backtest-price-chart.tsx](#file-33ffc77904e1)
@@ -6897,6 +7006,7 @@ External or unresolved imports: `ccxt`, `clsx`, `tailwind-merge`.
 - [meu_frontend/src/features/exchange/hooks/use-exchange.ts](#file-40f9c8c0bd38)
 - [meu_frontend/src/features/markets/components/ticker-picker.tsx](#file-1ecde0d5ac74)
 - [meu_frontend/src/features/notifications/hooks/use-notifications.ts](#file-c84e6c94eb3d)
+- [meu_frontend/src/features/settings/components/ui-settings.tsx](#file-f9fb3c54325a)
 
 External or unresolved imports: `@tanstack/react-query`, `@trpc/client`, `@trpc/tanstack-react-query`, `react`, `superjson`.
 
@@ -6920,8 +7030,8 @@ External or unresolved imports: `@tanstack/react-query`, `@trpc/client`, `@trpc/
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/app-logger` | [meu_frontend/src/lib/app-logger.ts](#file-cf2ad0523213) |
-| `@/lib/auth` | [meu_frontend/src/lib/auth.ts](#file-88f27c02508d) |
+| `@/lib/auth/server` | [meu_frontend/src/lib/auth/server.ts](#file-53ec593b4fd8) |
+| `@/lib/logging/app-logger` | [meu_frontend/src/lib/logging/app-logger.ts](#file-9a4d6870b450) |
 
 ### Imported by
 
@@ -6950,7 +7060,7 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 | Import / re-export | Source target |
 |---|---|
-| `@/lib/client-error-report` | [meu_frontend/src/lib/client-error-report.ts](#file-eea9cb8bcbfc) |
+| `@/lib/logging/client-error-report` | [meu_frontend/src/lib/logging/client-error-report.ts](#file-73a4ada7be53) |
 
 ### Imported by
 
@@ -6983,10 +7093,10 @@ External or unresolved imports: `@tanstack/react-query`, `superjson`.
 | `@/features/backtests/server/router` | [meu_frontend/src/features/backtests/server/router.ts](#file-077c1fd7ba8c) |
 | `@/features/charts/server/router` | [meu_frontend/src/features/charts/server/router.ts](#file-f9d982eae1de) |
 | `@/features/credentials/server/router` | [meu_frontend/src/features/credentials/server/router.ts](#file-5813a830e726) |
+| `@/features/exchange/server/exchange-data` | [meu_frontend/src/features/exchange/server/exchange-data.ts](#file-7c1e6cb6bb2a) |
 | `@/features/exchange/server/router` | [meu_frontend/src/features/exchange/server/router.ts](#file-91599ec511d1) |
 | `@/features/notifications/server/router` | [meu_frontend/src/features/notifications/server/router.ts](#file-6674456ea0f0) |
 | `@/features/settings/server/router` | [meu_frontend/src/features/settings/server/router.ts](#file-2d0a959134b6) |
-| `@/lib/config` | [meu_frontend/src/lib/config.ts](#file-217ac8c08a1d) |
 
 ### Imported by
 
@@ -7056,10 +7166,10 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 
 ### Imported by
 
-- [meu_frontend/src/features/agents/components/EditAgent.tsx](#file-e3f55dd74ffd)
-- [meu_frontend/src/features/agents/components/agent-budget-fields.tsx](#file-4c202d5fe0ed)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/EditAgent.tsx](#file-7d3ca4f66576)
+- [meu_frontend/src/features/agents/components/forms/agent-budget-fields.tsx](#file-de464605e4ed)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
 
 ### Named functions and direct calls
 
@@ -7134,7 +7244,7 @@ External or unresolved imports: `node:crypto`.
 
 ### Imported by
 
-- [meu_frontend/src/features/agents/components/createAgent.tsx](#file-849ce7f84952)
+- [meu_frontend/src/features/agents/components/forms/createAgent.tsx](#file-38fc781b50a8)
 - [meu_frontend/src/features/backtests/components/backtest-workspace.tsx](#file-47c93f33e5a4)
 - [shared/trading/sizing.ts](#file-864c148ae550)
 
@@ -7268,7 +7378,7 @@ No named function bodies in this file. Constants, schemas, types or framework-cr
 - [meu/schedulerService/src/brokers/crypto/cryptoRisk.ts](#file-6357ab2b453c)
 - [meu/schedulerService/src/execution/tradeGuard.ts](#file-d18977cdf0f6)
 - [meu/schedulerService/src/workers/worker.ts](#file-a0f114ee53de)
-- [meu_frontend/src/features/agents/components/agent-sizing-fields.tsx](#file-f282a54dea98)
+- [meu_frontend/src/features/agents/components/forms/agent-sizing-fields.tsx](#file-b7f7572f3cc4)
 - [meu_frontend/src/features/agents/server/entry-preview.ts](#file-03bf55708ad3)
 - [meu_frontend/src/features/agents/server/start-delta-agent.ts](#file-e4e52a8102c4)
 - [meu_frontend/src/features/exchange/server/recover-execution.ts](#file-05b3fc29b44f)

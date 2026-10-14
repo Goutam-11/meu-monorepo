@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { TRPCError } from "@trpc/server";
-import { getExchangeData } from "@/lib/config";
-import { auth } from "@/lib/auth";
-import { appLog, newRequestId } from "@/lib/app-logger";
+import { getExchangeData } from "@/features/exchange/server/exchange-data";
+import { auth } from "@/lib/auth/server";
+import { appLog, newRequestId } from "@/lib/logging/app-logger";
 export const runtime = "nodejs";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {

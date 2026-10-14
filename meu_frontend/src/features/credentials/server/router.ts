@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import prisma from "@/lib/db";
 import { CredentialType } from "@/generated/prisma/enums";
-import { encryptSecret } from "@/lib/encryption";
+import { encryptSecret } from "@/lib/security/encryption";
 import { TRPCError } from "@trpc/server";
 
 import { credentialCreateSchema, credentialUpdateSchema } from "../validation";

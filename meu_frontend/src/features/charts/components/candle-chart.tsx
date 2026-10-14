@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { CandlestickSeries, ColorType, createChart, HistogramSeries, LineSeries, type IChartApi, type ISeriesApi, type UTCTimestamp, type Time, type TickMarkType } from 'lightweight-charts';
-import { useUISettings } from '@/components/ui-settings';
+import { useUISettings } from '@/features/settings/components/ui-settings';
 import { Button } from '@/components/ui/button';
 import { chartBollinger, chartEma, chartRsi } from '../indicators';
 import type { ChartCandle } from '../types';

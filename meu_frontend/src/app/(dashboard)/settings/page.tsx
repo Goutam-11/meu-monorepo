@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   LOOK_THEMES,
   useUISettings,
-} from "@/components/ui-settings";
+} from "@/features/settings/components/ui-settings";
 import { useBrowserNotificationPermission } from "@/features/notifications/hooks/use-browser-notifications";
 
 function AppearanceCard() {

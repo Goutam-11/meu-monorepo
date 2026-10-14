@@ -1,5 +1,5 @@
-import Header from "@/components/appHeader";
-import { AppSidebar } from "@/components/appSidebar";
+import Header from "@/components/layout/appHeader";
+import { AppSidebar } from "@/components/layout/appSidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "sonner";
 import { NotificationWatcher } from "@/features/notifications/components/notification-watcher";

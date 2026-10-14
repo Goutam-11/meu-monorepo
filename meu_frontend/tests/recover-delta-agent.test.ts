@@ -22,7 +22,7 @@ function matches(row:Row,q:Row):boolean {
  });
 }
 mock.module('server-only',()=>({}));
-mock.module('../src/lib/app-logger',()=>({appLog:()=>{}}));
+mock.module('../src/lib/logging/app-logger',()=>({appLog:()=>{}}));
 mock.module('../src/features/exchange/server/execution-account',()=>({executionConnection:async()=>({exchange:{loadMarkets:async()=>{}}}),registerExecutionAccount:async()=>({accountKey}),linkedExchangeIds:async()=>[exchangeId]}));
 mock.module('../../meu/schedulerService/src/brokers/delta/deltaReconciliation',()=>({inspectDeltaOwnership:async()=>{brokerReads++;if(pauseScan)await pauseScan();if(brokerFailure)throw new Error('Sensitive upstream details');return {issues:[],positions:brokerPositions,pending:brokerOrders};}}));
 mock.module('../src/features/backtests/server/delta-data',()=>({loadDeltaBacktestData:async()=>({contract:config.contract,dataHash:'public-history-hash',candles:[{timestamp:end-2*interval},{timestamp:end-interval}]})}));

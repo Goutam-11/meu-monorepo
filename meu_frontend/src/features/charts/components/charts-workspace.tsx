@@ -6,7 +6,7 @@ import { ExternalLink, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useUISettings } from '@/components/ui-settings';
+import { useUISettings } from '@/features/settings/components/ui-settings';
 import { MeuChartWorkspace } from './meu-chart-workspace';
 
 const quickCharts = [

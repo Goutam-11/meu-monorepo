@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
-import { SidebarTrigger } from "./ui/sidebar";
-import { authClient } from "@/lib/auth-client";
+import { SidebarTrigger } from "../ui/sidebar";
+import { authClient } from "@/lib/auth/client";
 import { NotificationBell } from "@/features/notifications/components/notification-bell";
 import { Button } from "@/components/ui/button";
-import { useUISettings } from "@/components/ui-settings";
+import { useUISettings } from "@/features/settings/components/ui-settings";
 
 const TITLES: Record<string, string> = {
   dashboard: "Overview",

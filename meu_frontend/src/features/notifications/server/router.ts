@@ -6,7 +6,7 @@ import {
   emitNotificationChange,
   getNotificationVersion,
   notificationIterator,
-} from "@/lib/notification-events";
+} from "@/features/notifications/server/events";
 
 const ITEMS_PER_PAGE = 5;
 

@@ -9,7 +9,7 @@ mock.module("web-push", () => ({ default: {
 } }));
 const originalFetch = globalThis.fetch;
 globalThis.fetch = (async () => { attempts++; return new Response(null, {status: failures.shift() ?? 201}); }) as unknown as typeof fetch;
-const { sendPush } = await import("../src/index");
+const { sendPush } = await import("../src/channels/web-push/delivery");
 
 test("transient push delivery retries only the subscription; expired subscriptions are deleted", async () => {
   const previousPublic = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;

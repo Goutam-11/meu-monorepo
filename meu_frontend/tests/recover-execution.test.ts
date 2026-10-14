@@ -13,7 +13,7 @@ function matches(row:Row,filter:Row):boolean{return Object.entries(filter).every
  return JSON.stringify(row[key])===JSON.stringify(v);
 });}
 mock.module('server-only',()=>({}));
-mock.module('@/lib/app-logger',()=>({appLog:()=>{}}));
+mock.module('@/lib/logging/app-logger',()=>({appLog:()=>{}}));
 mock.module('../../meu/schedulerService/src/lib/redis',()=>({redis:{exists:async()=>active?1:0,lpos:async()=>active?0:null,zscore:async()=>queueEvidence?"1":null,hget:async()=>queueEvidence?JSON.stringify({agentId:agent.id,userId:"owner",recoveryFailure:queueEvidence}):null}}));
 mock.module('../src/features/exchange/server/execution-account',()=>({executionConnection:async()=>({exchange:{id:'delta',loadMarkets:async()=>{},market:()=>({symbol:'BTCUSD',active:true,contract:true,swap:true,linear:true,quote:'USD',settle:'USD',contractSize:0.001}),fetchMarginMode:async()=>({marginMode:'isolated'}),fetchLeverage:async()=>{leverageReads++;return {marginMode:'isolated',longLeverage:verifiedLeverage,shortLeverage:verifiedLeverage};}},connection:{name:'DELTA',sandbox:false}}),registerExecutionAccount:async()=>({accountKey}),linkedExchangeIds:async()=>[agent.exchangeId]}));
 mock.module('../src/features/exchange/server/reconciliation',()=>({readRows:async(command:Row,max:number)=>{const result=(rows[command.find]??[]).filter(r=>matches(r,command.filter??{}));if(result.length>max)throw Error('too many');return structuredClone(result);}}));

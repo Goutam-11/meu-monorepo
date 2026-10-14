@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SlidersHorizontal, Workflow } from "lucide-react";
-import { MeuMark } from "@/components/meu-logo";
+import { MeuMark } from "@/components/branding/meu-logo";
 
 export function AuthShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

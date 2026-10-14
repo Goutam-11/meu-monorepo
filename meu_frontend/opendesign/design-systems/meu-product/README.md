@@ -2,7 +2,7 @@
 
 The current system keeps Graphite neutral canvas/cards at #303438 and popovers at #34393e, with visible #24272a/#3c4146 paired shadows while restoring forest green actions and balance panels, golden snapshot/secondary actions, and red errors. Pearl retains warm stone forest/apricot. Both share matte geometry.
 
-Canonical design documentation: [`../../../DESIGN.md`](../../../DESIGN.md). Application token authority: [`../../../src/app/globals.css`](../../../src/app/globals.css). Mode behavior: [`../../../src/components/ui-settings.tsx`](../../../src/components/ui-settings.tsx).
+Canonical design documentation: [`../../../DESIGN.md`](../../../DESIGN.md). Application token authority: [`../../../src/app/globals.css`](../../../src/app/globals.css). Mode behavior: [`../../../src/features/settings/components/ui-settings.tsx`](../../../src/features/settings/components/ui-settings.tsx).
 
 - `SKILL.md` — rules for future in-app design work.
 - `tokens/colors_and_type.css` — exact palette/depth snapshot with Graphite default for standalone previews; application CSS stays authoritative.

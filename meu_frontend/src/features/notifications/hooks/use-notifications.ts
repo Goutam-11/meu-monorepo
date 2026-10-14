@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { useSubscription } from "@trpc/tanstack-react-query";
 import { toast } from "sonner";
-import { reportClientError } from "@/lib/client-error-report";
+import { reportClientError } from "@/lib/logging/client-error-report";
 
 export const useNotifications = ({
   page,

@@ -4,7 +4,7 @@ const agentId='a'.repeat(24),currentId=`${agentId}:12345678-1234-1234-1234-12345
 let owner='alice';const reads:any[]=[];
 mock.module('server-only',()=>({}));
 mock.module('next/headers',()=>({headers:async()=>new Headers()}));
-mock.module('@/lib/auth',()=>({auth:{api:{getSession:async()=>({user:{id:owner}})}}}));
+mock.module('@/lib/auth/server',()=>({auth:{api:{getSession:async()=>({user:{id:owner}})}}}));
 mock.module('@/lib/db',()=>({default:{
  agent:{findFirst:async({where}:any)=>where.userId==='alice'?{id:agentId,executionMode:'PAPER',strategyConfig:{stateId:currentId}}:null},
  $runCommandRaw:async(command:any)=>{

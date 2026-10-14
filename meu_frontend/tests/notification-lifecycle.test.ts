@@ -1,6 +1,6 @@
 import { test, expect } from "bun:test";
-import { notificationIterator, emitNotificationChange } from "../src/lib/notification-events";
-import { validPushEndpoint, validPushKeys } from "../src/lib/push-validation";
+import { notificationIterator, emitNotificationChange } from "../src/features/notifications/server/events";
+import { validPushEndpoint, validPushKeys } from "../src/features/notifications/server/push-validation";
 
 test("abort settles a blocked subscriber and subsequent events remain usable", async () => {
   const controller = new AbortController();

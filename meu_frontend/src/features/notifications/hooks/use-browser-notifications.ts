@@ -2,7 +2,7 @@ import {
   useCallback,
   useSyncExternalStore,
 } from "react";
-import { reportClientError } from "@/lib/client-error-report";
+import { reportClientError } from "@/lib/logging/client-error-report";
 
 const STORAGE_KEY = "meu:browser-notifications-enabled";
 

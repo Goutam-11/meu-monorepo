@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { api } from "@/trpc/client";
-import { reportClientError } from "@/lib/client-error-report";
+import { reportClientError } from "@/lib/logging/client-error-report";
 
 function reportSettingsFailure(error: unknown, event: "settings_load_failed" | "settings_save_failed") {
   const code = (error as { data?: { code?: unknown } } | null)?.data?.code;

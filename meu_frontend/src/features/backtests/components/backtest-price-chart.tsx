@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { CandlestickSeries, ColorType, LineSeries, LineType, createChart, createSeriesMarkers, type IChartApi, type ISeriesApi, type UTCTimestamp } from 'lightweight-charts';
 import { useTRPC } from '@/trpc/client';
-import { useUISettings } from '@/components/ui-settings';
+import { useUISettings } from '@/features/settings/components/ui-settings';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';

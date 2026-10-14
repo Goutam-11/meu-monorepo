@@ -1,8 +1,8 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import type { LogCode, LogEvent, LogLevel, LogOperation, LogSource } from "@/lib/log-safety";
-import { isRequestId } from "@/lib/log-safety";
-export { safeLogCode, safeProcedureName } from "@/lib/log-safety";
+import type { LogCode, LogEvent, LogLevel, LogOperation, LogSource } from "@/lib/logging/log-safety";
+import { isRequestId } from "@/lib/logging/log-safety";
+export { safeLogCode, safeProcedureName } from "@/lib/logging/log-safety";
 
 export function newRequestId() {
   return randomUUID();

@@ -1,4 +1,4 @@
-import { requireAuth } from '@/lib/auth-utils';
+import { requireAuth } from '@/lib/auth/session';
 import { BacktestWorkspace } from '@/features/backtests/components/backtest-workspace';
 export default async function StrategiesPage({ searchParams }: {
   searchParams: Promise<{ strategy?: string | string[]; run?: string | string[] }>;

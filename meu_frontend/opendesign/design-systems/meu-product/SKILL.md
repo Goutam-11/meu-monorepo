@@ -5,7 +5,7 @@ description: Current matte Meu product UI rules for dashboard, agents, exchanges
 
 Design Meu with **charcoal Graphite neutral surfaces, solid green/gold actions and panels, red errors, and unchanged forest/apricot Pearl**. Share matte raised/inset geometry.
 
-Read `../../../DESIGN.md` for normative tokens and component rules, then `tokens/colors_and_type.css` for a standalone preview snapshot. Actual application authority is `src/app/globals.css` and `src/components/ui-settings.tsx`.
+Read `../../../DESIGN.md` for normative tokens and component rules, then `tokens/colors_and_type.css` for a standalone preview snapshot. Actual application authority is `src/app/globals.css` and `src/features/settings/components/ui-settings.tsx`.
 
 1. Use dark background/card #303438, popover #34393e, secondary #383d42, muted #2b2f33, border/input #535a61. Paired #24272a/#3c4146 shadows make depth visible. Use forest #205a46 buttons with white text, forest balance and golden #e9c46a snapshot/secondary actions. Errors are #f3939f with semantic dark-red foreground. Remove the prior monochrome rule; stock status/link utility hues are restored. Dark text-primary/links/active navigation use lighter success green, and focus uses --focus-ring #88ceb0. Pearl is unchanged.
 2. Geist Sans for interface text; Geist Mono for precise supporting numeric data. Large totals use Geist Sans with tabular numerals. Use sentence case.

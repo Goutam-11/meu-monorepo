@@ -11,7 +11,7 @@ const saved: {
 }[] = [];
 mock.module('server-only', () => ({}));
 mock.module('next/headers', () => ({ headers: async () => new Headers() }));
-mock.module('../src/lib/auth', () => ({ auth: { api: { getSession: async () => ({ user: { id: owner } }) } } }));
+mock.module('../src/lib/auth/server', () => ({ auth: { api: { getSession: async () => ({ user: { id: owner } }) } } }));
 mock.module('../src/lib/db', () => ({ default: { agent:{count:async()=>0,create:async({data}:{data:Record<string,unknown>})=>{createdAgent=data;return {id:'c'.repeat(24),name:data.name,executionMode:data.executionMode,status:data.status};},findFirst:async({where}:{where:{userId:string}})=>where.userId==='alice'?{id:'c'.repeat(24),executionMode:'PAPER'}:null},exchange:{findFirst:async({where}:{where:{id:string;userId:string}})=>where.userId==='alice'&&where.id==='d'.repeat(24)?{id:where.id,name:'DELTA',sandbox:false,apiKey:'encrypted-not-used',secret:'encrypted-not-used'}:null},$runCommandRaw:async()=>({cursor:{firstBatch:[]}}),backtestRun: {
             count: async () => saved.length,
             create: async ({ data }: {

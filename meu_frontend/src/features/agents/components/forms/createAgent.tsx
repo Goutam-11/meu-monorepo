@@ -1,6 +1,6 @@
 "use client";
 
-import {DEFAULT_FEE_BUFFER_BPS, DEFAULT_SLIPPAGE_BUFFER_BPS} from '../../../../../shared/trading/executionCosts';
+import {DEFAULT_FEE_BUFFER_BPS, DEFAULT_SLIPPAGE_BUFFER_BPS} from '../../../../../../shared/trading/executionCosts';
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -45,7 +45,7 @@ import {
 } from "@/generated/prisma/enums";
 import { AgentBudgetFields, AgentConfigurationReview } from "./agent-budget-fields";
 import { AgentFormFeedback } from "./agent-form-feedback";
-import { brokerCapabilities } from "../../../../../shared/trading/brokerCapabilities";
+import { brokerCapabilities } from "../../../../../../shared/trading/brokerCapabilities";
 import { AgentIntelligenceFields } from "./agent-intelligence-fields";
 import { useCreateAgent } from "@/features/agents/hooks/use-agent";
 import { CandlestickChartIcon, Plus, Trash2 } from "lucide-react";

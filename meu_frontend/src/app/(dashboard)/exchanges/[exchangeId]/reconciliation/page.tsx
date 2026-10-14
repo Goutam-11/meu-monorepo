@@ -1,4 +1,4 @@
-import { requireAuth } from '@/lib/auth-utils';
+import { requireAuth } from '@/lib/auth/session';
 import { ReconciliationWorkspace } from '@/features/exchange/components/reconciliation-workspace';
 
 export default async function ReconciliationPage({ params }: { params: Promise<{exchangeId:string}> }) {

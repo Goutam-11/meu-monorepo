@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ErrorView } from "@/components/entityComponents";
-import { reportClientError } from "@/lib/client-error-report";
+import { reportClientError } from "@/lib/logging/client-error-report";
 
 export default function DashboardError({
   error,

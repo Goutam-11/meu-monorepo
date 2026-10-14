@@ -1,5 +1,5 @@
 import { test, expect } from "bun:test";
-import { validPushEndpoint, validPushKeys } from "../src/push-validation";
+import { validPushEndpoint, validPushKeys } from "../src/channels/web-push/validation";
 test("consumer rejects untrusted stored destinations and invalid encryption keys", () => {
   expect(validPushEndpoint("https://updates.push.services.mozilla.com/wpush/v2/fake")).toBe(true);
   expect(validPushEndpoint("https://localhost/endpoint")).toBe(false);

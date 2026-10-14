@@ -3,7 +3,7 @@ const limits={maxOpenPositions:3,maxMarginPct:50,maxDailyLossPct:1,maxNotionalMu
 let busy=false,running=false,releaseFailure=false,updates=0,releases=0;
 const queries:Record<string,unknown>[]=[];
 mock.module('server-only',()=>({}));
-mock.module('@/lib/auth',()=>({auth:{api:{getSession:async()=>({user:{id:'owner'}})}}}));
+mock.module('@/lib/auth/server',()=>({auth:{api:{getSession:async()=>({user:{id:'owner'}})}}}));
 mock.module('next/headers',()=>({headers:async()=>new Headers()}));
 mock.module('../src/features/exchange/server/execution-account',()=>({
  executionConnection:async (_id:string,userId:string)=>{expect(userId).toBe('owner');return{exchange:{}};},

@@ -1,6 +1,6 @@
 import ccxt from "../../meu/schedulerService/node_modules/ccxt/js/ccxt.js";
 import { PrismaClient } from "../src/generated/prisma/client";
-import { decryptSecret } from "../src/lib/encryption";
+import { decryptSecret } from "../src/lib/security/encryption";
 import { configureCryptoExchange } from "../../meu/schedulerService/src/config/config";
 import { fetchCryptoOpenOrders, fetchDailyCryptoLoss } from "../../meu/schedulerService/src/brokers/crypto/cryptoRisk";
 

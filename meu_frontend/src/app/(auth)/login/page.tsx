@@ -1,5 +1,5 @@
-import LoginForm from "@/components/login"
-import { requireNoAuth } from "@/lib/auth-utils";
+import LoginForm from "@/features/auth/components/login"
+import { requireNoAuth } from "@/lib/auth/session";
 
 const Page = async () => {
   await requireNoAuth();

@@ -1,9 +1,9 @@
-import { auth } from '@/lib/auth';
+import { auth } from '@/lib/auth/server';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { headers } from 'next/headers';
 import { cache } from 'react';
 import superjson from 'superjson';
-import { appLog, newRequestId, safeLogCode, safeProcedureName } from '@/lib/app-logger';
+import { appLog, newRequestId, safeLogCode, safeProcedureName } from '@/lib/logging/app-logger';
 export const createTRPCContext = cache(async (requestId?: string) => {
   return { userId: 'user_123', requestId: requestId ?? newRequestId() };
 });

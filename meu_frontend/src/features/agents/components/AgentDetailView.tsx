@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import {EntryPreview} from "./entry-preview";
+import {EntryPreview} from "./forms/entry-preview";
 import {sizingPolicySchema} from "../validation";
 import { PaperPortfolio } from "@/features/backtests/components/paper-portfolio";
 import { motion, type Variants } from "framer-motion";

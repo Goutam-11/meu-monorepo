@@ -1,5 +1,5 @@
 import { Toaster } from "sonner";
-import { AuthShell } from "@/components/auth-shell";
+import { AuthShell } from "@/features/auth/components/auth-shell";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

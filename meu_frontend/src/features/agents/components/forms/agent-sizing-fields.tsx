@@ -1,13 +1,13 @@
 'use client';
 
-import {brokerCapabilities} from '../../../../../shared/trading/brokerCapabilities';
+import {brokerCapabilities} from '../../../../../../shared/trading/brokerCapabilities';
 import Link from 'next/link';
 import {useQuery} from '@tanstack/react-query';
 import {useTRPC} from '@/trpc/client';
 import {useFormContext, useWatch} from 'react-hook-form';
 import type {z} from 'zod';
-import {agentFormSchema} from '../validation';
-import {defaultSizingPolicy} from '../../../../../shared/trading/sizing';
+import {agentFormSchema} from '../../validation';
+import {defaultSizingPolicy} from '../../../../../../shared/trading/sizing';
 import {FormControl,FormDescription,FormField,FormItem,FormLabel,FormMessage} from '@/components/ui/form';
 import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from '@/components/ui/select';
 import {Input} from '@/components/ui/input';

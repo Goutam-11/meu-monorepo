@@ -2,7 +2,7 @@ import {afterAll,beforeEach,expect,mock,test} from 'bun:test';
 import {NextRequest} from 'next/server';
 mock.module('server-only',()=>({}));
 let user='owner',deviceCount=0,updated=0,created=0,lookups=0;
-mock.module('@/lib/auth',()=>({auth:{api:{getSession:async()=>({user:{id:user}})}}}));
+mock.module('@/lib/auth/server',()=>({auth:{api:{getSession:async()=>({user:{id:user}})}}}));
 mock.module('@/lib/db',()=>({default:{pushSubscription:{
   updateMany:async({where}:{where:{userId:string}})=>{expect(where.userId).toBe(user);lookups++;return {count:updated};},
   count:async({where}:{where:{userId:string}})=>{expect(where.userId).toBe(user);return deviceCount;},

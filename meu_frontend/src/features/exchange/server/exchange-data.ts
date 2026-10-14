@@ -1,10 +1,10 @@
 import "server-only";
-import prisma from "./db";
+import prisma from "../../../lib/db";
 import ccxt, { Balances, Position, Trade } from "ccxt";
 import { TRPCError } from "@trpc/server";
 import { getKiteDashboardData, isZerodhaExchange } from "./kite";
-import { decryptSecret } from "./encryption";
-import { appLog } from "./app-logger";
+import { decryptSecret } from "../../../lib/security/encryption";
+import { appLog } from "../../../lib/logging/app-logger";
 // ccxt exchange map
 
 

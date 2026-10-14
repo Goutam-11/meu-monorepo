@@ -6,6 +6,8 @@ This page describes runtime responsibilities. The generated reference enumerates
 
 See [scheduler folder responsibilities and dependency diagram](SCHEDULER_STRUCTURE.md) for the source layout and rules for adding modules.
 
+See [frontend and notification structure](PROJECT_STRUCTURE.md) for their folder responsibilities.
+
 ## Main boundaries
 
 | Area | Entry points and collaborators | Responsibility |

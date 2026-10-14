@@ -5,7 +5,7 @@ import {
   QueryCache,
 } from '@tanstack/react-query';
 import superjson from 'superjson';
-import { reportClientError } from '@/lib/client-error-report';
+import { reportClientError } from '@/lib/logging/client-error-report';
 export function makeQueryClient() {
   return new QueryClient({
     queryCache: new QueryCache({

@@ -13,9 +13,9 @@ import {
   SidebarMenuItem,
   Sidebar,
   SidebarContent,
-} from "./ui/sidebar";
+} from "../ui/sidebar";
 import { BellDotIcon } from "lucide-react";
-import { MeuMark } from "@/components/meu-logo";
+import { MeuMark } from "@/components/branding/meu-logo";
 import {
   AgentIcon,
   BellIcon,
@@ -23,9 +23,9 @@ import {
   DashboardIcon,
   TuneIcon,
   VaultIcon,
-} from "@/components/meu-icons";
+} from "@/components/branding/meu-icons";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth/client";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useUnreadNotifications } from "@/features/notifications/hooks/use-notifications";

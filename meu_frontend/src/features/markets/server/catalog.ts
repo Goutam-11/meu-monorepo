@@ -2,8 +2,8 @@ import 'server-only';
 import ccxt from 'ccxt';
 import {TRPCError} from '@trpc/server';
 import prisma from '@/lib/db';
-import {decryptSecret} from '@/lib/encryption';
-import {isKiteTokenFresh} from '@/lib/kite';
+import {decryptSecret} from '@/lib/security/encryption';
+import {isKiteTokenFresh} from '@/features/exchange/server/kite';
 
 export type MarketChoice = {
   value:string; symbol:string; nativeSymbol:string; name:string;

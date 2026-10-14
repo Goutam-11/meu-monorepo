@@ -5,7 +5,7 @@ import { credentialsRouter } from '@/features/credentials/server/router';
 import { notificationsRouter } from '@/features/notifications/server/router';
 import { settingsRouter } from '@/features/settings/server/router';
 import z from 'zod';
-import { getExchangeData } from '@/lib/config';
+import { getExchangeData } from '@/features/exchange/server/exchange-data';
 import { backtestsRouter } from '@/features/backtests/server/router';
 import { chartsRouter } from '@/features/charts/server/router';
 export const appRouter = createTRPCRouter({

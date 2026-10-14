@@ -3,8 +3,8 @@
 import {useFormContext, useWatch} from 'react-hook-form';
 import type {ReactNode} from 'react';
 import type {z} from 'zod';
-import {brokerCapabilities} from '../../../../../shared/trading/brokerCapabilities';
-import {agentFormSchema} from '../validation';
+import {brokerCapabilities} from '../../../../../../shared/trading/brokerCapabilities';
+import {agentFormSchema} from '../../validation';
 import {FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';

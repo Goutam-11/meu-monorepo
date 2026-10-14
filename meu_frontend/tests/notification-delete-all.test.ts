@@ -5,9 +5,9 @@ let failDelete = false;
 let notices: { userId: string; status: string }[] = [];
 const changes: string[] = [];
 mock.module("server-only", () => ({}));
-mock.module("@/lib/auth", () => ({ auth: { api: { getSession: async () => signedIn ? { user: { id: "owner" } } : null } } }));
+mock.module("@/lib/auth/server", () => ({ auth: { api: { getSession: async () => signedIn ? { user: { id: "owner" } } : null } } }));
 mock.module("next/headers", () => ({ headers: async () => new Headers() }));
-mock.module("@/lib/notification-events", () => ({
+mock.module("@/features/notifications/server/events", () => ({
   emitNotificationChange: (userId: string) => changes.push(userId),
   getNotificationVersion: () => 0,
   notificationIterator: async function* () {},

@@ -1,5 +1,7 @@
 # Notification Service
 
+See [project structure and module ownership](../../docs/PROJECT_STRUCTURE.md) for the current folder layout, dependencies and maintenance boundaries.
+
 Consumes the `notifications` BullMQ queue emitted by `schedulerService`,
 persists notifications to the shared MongoDB `Notification` collection, and
 delivers them as Web Push to the user's subscribed browsers.
@@ -66,8 +68,8 @@ Run `bun run test` and `bun run typecheck` for offline verification. See [contai
 | `redisConnection` | Runtime env, IORedis | Prefer Redis Unix socket; otherwise URL or host/port. |
 | `createNotificationProcessor` | Zod schema, Mongo, `sendPush`, logger | Validate event, idempotently persist it, then attempt optional push. |
 | `sendPush` | Push subscription collection, endpoint/key validation, web-push encryption, native fetch | Process subscription batches with retries/deadlines and expiry cleanup. |
-| `src/push-validation.ts` | URL, Buffer | Reject untrusted destinations and malformed browser encryption keys before HTTP. |
-| `src/logger.ts` | Pino | Allowlist correlation IDs, fixed events and numeric/error metadata; omit sensitive payloads. |
+| `src/channels/web-push/validation.ts` | URL, Buffer | Reject untrusted destinations and malformed browser encryption keys before HTTP. |
+| `src/infrastructure/logger.ts` | Pino | Allowlist correlation IDs, fixed events and numeric/error metadata; omit sensitive payloads. |
 
 ```mermaid
 sequenceDiagram

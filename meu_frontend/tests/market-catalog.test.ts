@@ -10,8 +10,8 @@ class Adapter {
 }
 mock.module('server-only',()=>({}));
 mock.module('ccxt',()=>({default:{delta:Adapter,binance:Adapter,bybit:Adapter,kraken:Adapter,kucoin:Adapter}}));
-mock.module('@/lib/encryption',()=>({decryptSecret:(value:string)=>value}));
-mock.module('@/lib/kite',()=>({isKiteTokenFresh:()=>fresh}));
+mock.module('@/lib/security/encryption',()=>({decryptSecret:(value:string)=>value}));
+mock.module('@/features/exchange/server/kite',()=>({isKiteTokenFresh:()=>fresh}));
 mock.module('@/lib/db',()=>({default:{exchange:{findFirst:async({where}:any)=>where.userId!=='owner'||where.id==='foreign'?null:{id:where.id,name:where.id.includes('kite')?'ZERODHA':where.id.includes('binance')?'BINANCE':'DELTA',sandbox:where.id.includes('demo'),apiKey:'fixture-key',accessToken:'fixture-token',tokenIssuedAt:new Date()}}}}));
 const {loadMarketCatalog,searchMarkets,assertMarketSymbols,parseInstrumentCsv}=await import('../src/features/markets/server/catalog');
 test('CCXT discovery pins India environment, filters supported perpetuals and caches public metadata',async()=>{

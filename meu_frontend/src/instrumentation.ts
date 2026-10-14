@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { emitNotificationChange } from "@/lib/notification-events";
+import { emitNotificationChange } from "@/features/notifications/server/events";
 
 const state = globalThis as typeof globalThis & { notificationWatcherStarted?: boolean };
 async function startNotificationWatcher() {

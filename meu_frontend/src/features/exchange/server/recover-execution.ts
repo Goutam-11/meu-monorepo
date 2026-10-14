@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { TRPCError } from '@trpc/server';
 import type { Agent, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/db';
-import { appLog } from '@/lib/app-logger';
+import { appLog } from '@/lib/logging/app-logger';
 import { readRows } from './reconciliation';
 import { executionConnection, linkedExchangeIds, registerExecutionAccount } from './execution-account';
 import {fetchCryptoLeverage,cryptoEntryMarket} from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
