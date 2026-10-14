@@ -81,7 +81,7 @@ export default function ExchangesPage() {
         renderItem={(ex) => (
           <EntityItem
             title={ex.displayName || ex.name}
-            tone={ex.sandbox ? "sand" : "neutral"}
+            tone={ex.sandbox ? "sand" : "sage"}
             className="flex flex-row h-16 items-center"
             subtitle={`${ex.name} · ${ex.sandbox ? "Sandbox" : "Live"} • Created ${formatDate(ex.createdAt, "dd MMMM yyyy")} • Updated ${formatDistanceToNow(new Date(ex.updatedAt), {
               addSuffix:true

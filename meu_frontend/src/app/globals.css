@@ -87,12 +87,12 @@
   --surface-edge: #ffffffb3;
   --forest: #205a46;
   --forest-foreground: #fff5e6;
-  --surface-sage: #dce5dc;
+  --surface-sage: #ccd9c7;
   --surface-sage-foreground: #293e32;
-  --surface-sage-muted: #4b6252;
-  --surface-sand: #edcfad;
+  --surface-sage-muted: #455b4b;
+  --surface-sand: #e9b47d;
   --surface-sand-foreground: #342b21;
-  --surface-sand-muted: #685038;
+  --surface-sand-muted: #5c4934;
   --surface-danger: #eddbdb;
   --surface-danger-foreground: #5c2933;
   --surface-danger-muted: #7b3b47;
@@ -129,12 +129,12 @@
   --surface-edge: #ffffff0a;
   --forest: #205a46;
   --forest-foreground: #fff5e6;
-  --surface-sage: #263d34;
+  --surface-sage: #314b3f;
   --surface-sage-foreground: #f2f2f2;
   --surface-sage-muted: #bacdc2;
-  --surface-sand: #4b3b2d;
-  --surface-sand-foreground: #f5e5d4;
-  --surface-sand-muted: #d8c2a9;
+  --surface-sand: #e9c46a;
+  --surface-sand-foreground: #342b21;
+  --surface-sand-muted: #5c4934;
   --surface-danger: #452e35;
   --surface-danger-foreground: #f5e2e6;
   --surface-danger-muted: #ddbbc2;
@@ -195,6 +195,26 @@
     background: var(--apricot);
     color: var(--apricot-foreground);
   }
+  /* Dashboard colors carry the same role on featured tiles in both themes. */
+  .tile-forest {
+    --foreground: var(--forest-foreground);
+    --muted-foreground: #d1e0d5;
+    --primary: #fff5e6;
+    --success: #c4e3d2;
+    --focus-ring: #fff5e6;
+    --border: #7f9d8c;
+    background: var(--forest);
+    color: var(--foreground);
+  }
+  .tile-apricot {
+    --foreground: var(--apricot-foreground);
+    --muted-foreground: #5c4934;
+    --primary: #205a46;
+    --success: #205a46;
+    --focus-ring: #205a46;
+    background: var(--apricot);
+    color: var(--foreground);
+  }
   /* Deliberate state/summary accents; neutral remains the default material. */
   .surface-sage {
     --surface-fill: var(--surface-sage);
@@ -202,6 +222,10 @@
     --muted-foreground: var(--surface-sage-muted);
   }
   .surface-sand {
+    --accent: #dba968;
+    --primary: #205a46;
+    --success: #205a46;
+    --focus-ring: #205a46;
     --surface-fill: var(--surface-sand);
     --foreground: var(--surface-sand-foreground);
     --muted-foreground: var(--surface-sand-muted);
@@ -430,6 +454,16 @@
   gap: 0;
   justify-content: center;
   flex-shrink: 0;
+}
+
+/* Warm cards need opaque semantic badges, including in Graphite. */
+.surface-sand [data-variant="success"] {
+  background: #d8e8dc;
+  color: #205a46;
+}
+.surface-sand [data-variant="warning"] {
+  background: #fff0d9;
+  color: #664318;
 }
 
 /* Dark mode keeps solid accents on a charcoal material. */

@@ -190,7 +190,9 @@ Graphite background/card use charcoal #303438; popover is #34393e, secondary neu
 
 ### Selective card accents
 
-Neutral surfaces remain the default. Running agent rows and the allocation detail use a muted sage surface; strategy result headings and sandbox connections use warm sand. Unread error/warning rows use red/sand with their existing icons and labels; read rows return to neutral at full text contrast. Credentials use small forest provider icons, with apricot for Bedrock. These are solid, role-based fills, never alternating decorative colors. `--surface-sage`, `--surface-sand` and `--surface-danger` have dedicated foreground and secondary text tokens for each mode. Colored list hover retains its fill.
+Use the dashboard's solid forest and apricot/gold as the anchor colors across the app. Running agents have a forest identity block with cream text, while their metrics and controls stay on neutral surfaces. Allocation tiles use forest; per-entry risk tiles and strategy summaries use apricot in Pearl and gold in Graphite. Paused agent identities remain quiet. Credentials and exchange rows use supporting sage, with warm cards for Bedrock and sandbox connections. These roles are stable across pagination, never based on row position. Unread errors keep red and warnings keep warm fills; icons and labels convey meaning alongside color.
+
+`tile-forest` and `tile-apricot` scope their own foreground, secondary text, focus and icon colors. Supporting `surface-sage`, `surface-sand` and `surface-danger` use separate foreground tokens for both modes. Keep the existing matte, paired shadows on the raised parent cards; colored identity regions do not need another shadow. No gradients or glows.
 
 ### Semantic and chart colors
 

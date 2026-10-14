@@ -101,8 +101,8 @@ export function AgentsPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {agents.map((agent) => (
-            <article key={agent.id} className={cn("neu-panel group relative grid min-w-0 gap-3 p-4 xl:grid-cols-[minmax(12rem,1fr)_minmax(0,1.35fr)_12rem] xl:items-center xl:gap-6 xl:py-3", agent.status === Status.RUNNING && "surface-sage")}>
-              <div className="min-w-0 space-y-1.5">
+            <article key={agent.id} className="neu-panel group relative grid min-w-0 gap-3 p-3 xl:grid-cols-[minmax(12rem,1fr)_minmax(0,1.35fr)_12rem] xl:items-center xl:gap-6 xl:py-2">
+              <div className={cn("min-w-0 space-y-2 rounded-xl p-3 xl:self-stretch xl:content-center", agent.status === Status.RUNNING ? "tile-forest" : "bg-muted")}>
                 <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
                   <Link href={`/agents/${agent.id}`} title={agent.name} className="min-w-0 max-w-full truncate text-sm font-semibold hover:underline underline-offset-4 after:absolute after:inset-0 after:rounded-xl focus-visible:outline-primary">
                     {agent.name}

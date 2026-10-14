@@ -88,6 +88,7 @@ export default function CredentialsPage() {
         renderItem={(cred) => (
           <EntityItem
             title={cred.displayName || (cred.type === "AMAZON_BEDROCK" ? "Amazon Bedrock" : cred.type)}
+            tone={cred.type === "AMAZON_BEDROCK" ? "sand" : "sage"}
             className="flex flex-row h-18 items-center"
             subtitle={`${cred.type}${cred.type === "AMAZON_BEDROCK" ? ` · ${cred.bedrockEndpoint === "mantle" ? "Mantle" : "Runtime"}` : ""}${cred.region ? ` · ${cred.region}` : ""} • Created ${formatDate(cred.createdAt, "dd MMMM yyyy")} • Updated ${formatDistanceToNow(new Date(cred.updatedAt), {
               addSuffix:true
@@ -95,7 +96,7 @@ export default function CredentialsPage() {
             image={
               <EntityAvatar
                 icon={KeyIcon}
-                variant={cred.type === "AMAZON_BEDROCK" ? "apricot" : "forest"}
+                variant="forest"
               />
             }
             badge={

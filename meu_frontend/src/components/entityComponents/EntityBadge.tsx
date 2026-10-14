@@ -21,6 +21,7 @@ export const EntityBadge = ({
 }: EntityBadgeProps) => {
   return (
     <span
+      data-variant={variant}
       className={cn(
         "inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium",
         variantClasses[variant],

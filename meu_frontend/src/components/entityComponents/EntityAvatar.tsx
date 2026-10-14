@@ -51,6 +51,7 @@ export const EntityAvatar = ({
 
   return (
     <div
+      data-variant={variant}
       className={cn(
         "rounded-lg flex items-center justify-center font-medium shrink-0",
         sizeClasses[size],
