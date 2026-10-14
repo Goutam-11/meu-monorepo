@@ -188,6 +188,10 @@ The legacy `--apricot` token supplies golden yellow #e9c46a in Graphite and apri
 
 Graphite background/card use charcoal #303438; popover is #34393e, secondary neutral #383d42, muted #2b2f33 and field/divider borders #535a61. Accent hover remains dark green. Pearl keeps its existing warm stone neutrals. `--foreground` and `--muted-foreground` distinguish primary text from supporting labels; borders support fields and dividers.
 
+### Selective card accents
+
+Neutral surfaces remain the default. Running agent rows and the allocation detail use a muted sage surface; strategy result headings and sandbox connections use warm sand. Unread error/warning rows use red/sand with their existing icons and labels; read rows return to neutral at full text contrast. Credentials use small forest provider icons, with apricot for Bedrock. These are solid, role-based fills, never alternating decorative colors. `--surface-sage`, `--surface-sand` and `--surface-danger` have dedicated foreground and secondary text tokens for each mode. Colored list hover retains its fill.
+
 ### Semantic and chart colors
 
 Graphite restores green success, golden warning and red #f3939f destructive feedback with dark red destructive foreground. Pair feedback with text/icons. The thirteen monochrome Tailwind utility overrides were removed; stock utility status/link hues apply again. Do not add grayscale overrides. Charts use the implemented green, gold, muted violet and muted rose auxiliary series colors; these data roles do not authorize decorative pink/violet surfaces. Pearl remains unchanged.

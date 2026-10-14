@@ -87,6 +87,15 @@
   --surface-edge: #ffffffb3;
   --forest: #205a46;
   --forest-foreground: #fff5e6;
+  --surface-sage: #dce5dc;
+  --surface-sage-foreground: #293e32;
+  --surface-sage-muted: #4b6252;
+  --surface-sand: #edcfad;
+  --surface-sand-foreground: #342b21;
+  --surface-sand-muted: #685038;
+  --surface-danger: #eddbdb;
+  --surface-danger-foreground: #5c2933;
+  --surface-danger-muted: #7b3b47;
   --apricot: #e9b47d;
   --apricot-foreground: #342b21;
 }
@@ -120,6 +129,15 @@
   --surface-edge: #ffffff0a;
   --forest: #205a46;
   --forest-foreground: #fff5e6;
+  --surface-sage: #263d34;
+  --surface-sage-foreground: #f2f2f2;
+  --surface-sage-muted: #bacdc2;
+  --surface-sand: #4b3b2d;
+  --surface-sand-foreground: #f5e5d4;
+  --surface-sand-muted: #d8c2a9;
+  --surface-danger: #452e35;
+  --surface-danger-foreground: #f5e2e6;
+  --surface-danger-muted: #ddbbc2;
   --apricot: #e9c46a;
   --apricot-foreground: #342b21;
   --focus-ring: #88ceb0;
@@ -176,6 +194,34 @@
   .snapshot-panel {
     background: var(--apricot);
     color: var(--apricot-foreground);
+  }
+  /* Deliberate state/summary accents; neutral remains the default material. */
+  .surface-sage {
+    --surface-fill: var(--surface-sage);
+    --foreground: var(--surface-sage-foreground);
+    --muted-foreground: var(--surface-sage-muted);
+  }
+  .surface-sand {
+    --surface-fill: var(--surface-sand);
+    --foreground: var(--surface-sand-foreground);
+    --muted-foreground: var(--surface-sand-muted);
+  }
+  .surface-danger {
+    --surface-fill: var(--surface-danger);
+    --foreground: var(--surface-danger-foreground);
+    --muted-foreground: var(--surface-danger-muted);
+  }
+  .surface-sage,
+  .surface-sand,
+  .surface-danger {
+    background: var(--surface-fill);
+    color: var(--foreground);
+    --color-card-foreground: var(--foreground);
+  }
+  .surface-sage[data-slot="card"]:hover,
+  .surface-sand[data-slot="card"]:hover,
+  .surface-danger[data-slot="card"]:hover {
+    background: var(--surface-fill);
   }
   .neu-inset {
     background: var(--background);

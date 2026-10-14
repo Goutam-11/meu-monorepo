@@ -220,7 +220,7 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
             custom={i + 1}
             variants={fadeUp}
           >
-            <Card className="border-border/60">
+            <Card className={card.title === "Allocated Capital" ? "surface-sage" : "border-border/60"}>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {card.title}

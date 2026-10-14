@@ -20,7 +20,6 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { useRemoveNotifications, useNotifications, useMarkAllAsRead, useUnreadNotifications, useDeleteAllNotifications } from "../hooks/use-notifications";
 import { formatDistanceToNow } from "date-fns";
-import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 export default function NotificationsPage() {
@@ -138,6 +137,7 @@ export default function NotificationsPage() {
           return (
             <EntityItem
               title={notif.title}
+              tone={isRead ? "neutral" : notif.type === "ERROR" ? "danger" : notif.type === "WARNING" ? "sand" : "neutral"}
               subtitle={notif.message}
               image={
                 <EntityAvatar
@@ -145,7 +145,7 @@ export default function NotificationsPage() {
                   variant={config.variant}
                 />
               }
-              badge={!isRead && <EntityBadge variant="success">New</EntityBadge>}
+              badge={!isRead && <EntityBadge variant={notif.type === "ERROR" ? "destructive" : notif.type === "WARNING" ? "warning" : "outline"}>New</EntityBadge>}
               actions={
                 <span className="text-xs text-muted-foreground truncate max-w-[100px]">
                   {formatDistanceToNow(new Date(notif.createdAt), {
@@ -153,7 +153,7 @@ export default function NotificationsPage() {
                   })}
                 </span>
               }
-              className={cn("flex flex-row items-center h-16 ",isRead ? "opacity-60" : "")}
+              className="flex flex-row items-center h-16"
               onRemove={deleteAll.isPending ? undefined : () => removeNotif.mutate({id:notif.id})}
               onClick={() => router.push(`/notifications/${notif.id}`)}
             />

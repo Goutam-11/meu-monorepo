@@ -95,7 +95,7 @@ export default function CredentialsPage() {
             image={
               <EntityAvatar
                 icon={KeyIcon}
-                variant={"default"}
+                variant={cred.type === "AMAZON_BEDROCK" ? "apricot" : "forest"}
               />
             }
             badge={

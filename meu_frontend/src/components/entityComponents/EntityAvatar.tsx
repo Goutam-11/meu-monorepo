@@ -7,7 +7,7 @@ interface EntityAvatarProps {
   image?: string;
   name?: string;
   size?: "sm" | "md" | "lg";
-  variant?: "default" | "primary" | "secondary" | "success" | "warning" | "destructive";
+  variant?: "forest" | "apricot" | "default" | "primary" | "secondary" | "success" | "warning" | "destructive";
   className?: string;
 }
 
@@ -24,6 +24,8 @@ const iconSizeClasses = {
 };
 
 const variantClasses = {
+  forest: "bg-[var(--forest)] text-[var(--forest-foreground)]",
+  apricot: "bg-[var(--apricot)] text-[var(--apricot-foreground)]",
   default: "bg-muted text-muted-foreground",
   primary: "bg-primary/10 text-primary",
   secondary: "bg-secondary text-secondary-foreground",

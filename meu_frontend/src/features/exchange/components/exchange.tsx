@@ -81,6 +81,7 @@ export default function ExchangesPage() {
         renderItem={(ex) => (
           <EntityItem
             title={ex.displayName || ex.name}
+            tone={ex.sandbox ? "sand" : "neutral"}
             className="flex flex-row h-16 items-center"
             subtitle={`${ex.name} · ${ex.sandbox ? "Sandbox" : "Live"} • Created ${formatDate(ex.createdAt, "dd MMMM yyyy")} • Updated ${formatDistanceToNow(new Date(ex.updatedAt), {
               addSuffix:true
@@ -88,7 +89,7 @@ export default function ExchangesPage() {
             image={
               <EntityAvatar
                 icon={CandlestickChartIcon}
-                variant={"default"}
+                variant={ex.sandbox ? "apricot" : "forest"}
               />
             }
             badge={

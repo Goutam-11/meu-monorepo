@@ -231,7 +231,7 @@ This index lists static imports, literal dynamic imports and named functions/met
 | [meu_frontend/src/features/notifications/components/NotificationView.tsx](#file-69429fa545c9) | 4 | 5 |
 | [meu_frontend/src/features/notifications/components/notification-bell.tsx](#file-660ac2be4da1) | 1 | 4 |
 | [meu_frontend/src/features/notifications/components/notification-watcher.tsx](#file-11d66e1b38b9) | 1 | 2 |
-| [meu_frontend/src/features/notifications/components/notifications.tsx](#file-7f59b6fb5baf) | 5 | 5 |
+| [meu_frontend/src/features/notifications/components/notifications.tsx](#file-7f59b6fb5baf) | 5 | 4 |
 | [meu_frontend/src/features/notifications/hooks/use-browser-notifications.ts](#file-1f343c494dac) | 11 | 1 |
 | [meu_frontend/src/features/notifications/hooks/use-notifications.ts](#file-c84e6c94eb3d) | 18 | 2 |
 | [meu_frontend/src/features/notifications/server/events.ts](#file-37d6abefa8af) | 6 | 0 |
@@ -2474,7 +2474,7 @@ External or unresolved imports: `lucide-react`, `next/image`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `EntityAvatar` | [35](../../meu_frontend/src/components/entityComponents/EntityAvatar.tsx#L35) | `cn` |
+| `EntityAvatar` | [37](../../meu_frontend/src/components/entityComponents/EntityAvatar.tsx#L37) | `cn` |
 
 <a id="file-09f652494ac0"></a>
 
@@ -2570,9 +2570,9 @@ External or unresolved imports: `lucide-react`, `next/link`.
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `EntityItem` | [27](../../meu_frontend/src/components/entityComponents/EntityItem.tsx#L27) | `cn` |
-| `handleRemove` | [40](../../meu_frontend/src/components/entityComponents/EntityItem.tsx#L40) | `e.preventDefault`, `e.stopPropagation`, `onRemove` |
-| `handleEdit` | [47](../../meu_frontend/src/components/entityComponents/EntityItem.tsx#L47) | `e.preventDefault`, `e.stopPropagation`, `onEdit` |
+| `EntityItem` | [28](../../meu_frontend/src/components/entityComponents/EntityItem.tsx#L28) | `cn` |
+| `handleRemove` | [42](../../meu_frontend/src/components/entityComponents/EntityItem.tsx#L42) | `e.preventDefault`, `e.stopPropagation`, `onRemove` |
+| `handleEdit` | [49](../../meu_frontend/src/components/entityComponents/EntityItem.tsx#L49) | `e.preventDefault`, `e.stopPropagation`, `onEdit` |
 
 <a id="file-51b6547cb94e"></a>
 
@@ -6385,7 +6385,6 @@ External or unresolved imports: `react`.
 | `@/components/entityComponents` | [meu_frontend/src/components/entityComponents/index.ts](#file-c5798052126a) |
 | `@/components/ui/alert-dialog` | [meu_frontend/src/components/ui/alert-dialog.tsx](#file-ed34d47c4dac) |
 | `@/components/ui/button` | [meu_frontend/src/components/ui/button.tsx](#file-caabce9f69f7) |
-| `@/lib/utils` | [meu_frontend/src/lib/utils.ts](#file-130a50dc24d7) |
 
 ### Imported by
 
@@ -6397,11 +6396,11 @@ External or unresolved imports: `date-fns`, `lucide-react`, `next/navigation`, `
 
 | Function / method | Source line | Direct calls (syntax only) |
 |---|---|---|
-| `NotificationsPage` | [26](../../meu_frontend/src/features/notifications/components/notifications.tsx#L26) | `buttonVariants`, `useDeleteAllNotifications`, `useMarkAllAsRead`, `useNotifications`, `useRemoveNotifications`, `useRouter`, `useState`, `useUnreadNotifications` |
-| `handleSearch` | [39](../../meu_frontend/src/features/notifications/components/notifications.tsx#L39) | `setPage`, `setSearch` |
-| `handlePageChange` | [44](../../meu_frontend/src/features/notifications/components/notifications.tsx#L44) | `setPage` |
-| `getTypeConfig` | [48](../../meu_frontend/src/features/notifications/components/notifications.tsx#L48) | — |
-| `onSuccess` | [106](../../meu_frontend/src/features/notifications/components/notifications.tsx#L106) | `setDeleteDialogOpen`, `setPage`, `setSearch` |
+| `NotificationsPage` | [25](../../meu_frontend/src/features/notifications/components/notifications.tsx#L25) | `buttonVariants`, `useDeleteAllNotifications`, `useMarkAllAsRead`, `useNotifications`, `useRemoveNotifications`, `useRouter`, `useState`, `useUnreadNotifications` |
+| `handleSearch` | [38](../../meu_frontend/src/features/notifications/components/notifications.tsx#L38) | `setPage`, `setSearch` |
+| `handlePageChange` | [43](../../meu_frontend/src/features/notifications/components/notifications.tsx#L43) | `setPage` |
+| `getTypeConfig` | [47](../../meu_frontend/src/features/notifications/components/notifications.tsx#L47) | — |
+| `onSuccess` | [105](../../meu_frontend/src/features/notifications/components/notifications.tsx#L105) | `setDeleteDialogOpen`, `setPage`, `setSearch` |
 
 <a id="file-1f343c494dac"></a>
 
@@ -6962,7 +6961,6 @@ External or unresolved imports: `node:crypto`.
 - [meu_frontend/src/features/auth/components/password-input.tsx](#file-1fc0077043d5)
 - [meu_frontend/src/features/exchange/components/ExchangeDashboard.tsx](#file-020e7b2d2cba)
 - [meu_frontend/src/features/exchange/components/portfolio-overview.tsx](#file-71c3b269af63)
-- [meu_frontend/src/features/notifications/components/notifications.tsx](#file-7f59b6fb5baf)
 
 External or unresolved imports: `ccxt`, `clsx`, `tailwind-merge`.
 

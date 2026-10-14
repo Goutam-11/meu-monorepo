@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 
 interface EntityItemProps {
   href?: string;
+  tone?: "neutral" | "sage" | "sand" | "danger";
   title: string;
   subtitle?: React.ReactNode;
   image?: React.ReactNode;
@@ -26,6 +27,7 @@ interface EntityItemProps {
 
 export const EntityItem = ({
   href,
+  tone = "neutral",
   title,
   subtitle,
   image,
@@ -53,7 +55,11 @@ export const EntityItem = ({
   const content = (
     <Card
       className={cn(
-        "group transition-colors duration-150 hover:border-primary/50 hover:bg-accent/40 cursor-pointer",
+        "group transition-colors duration-150 hover:border-primary/50 cursor-pointer",
+        tone === "neutral" && "hover:bg-accent/40",
+        tone === "sage" && "surface-sage",
+        tone === "sand" && "surface-sand",
+        tone === "danger" && "surface-danger",
         isRemoving && "opacity-50 cursor-not-allowed pointer-events-none",
         className
       )}
@@ -68,7 +74,7 @@ export const EntityItem = ({
         
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+            <h3 className="font-semibold text-foreground truncate group-hover:underline underline-offset-4">
               {title}
             </h3>
             {badge}
