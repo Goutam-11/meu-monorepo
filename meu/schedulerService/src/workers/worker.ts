@@ -75,6 +75,7 @@ export function createRunProcessor(db: Db) {
     let llmEndpoint: string | undefined;
     let claimed = false;
     let completed = false;
+    let cryptoConfig: ReturnType<typeof validateCryptoStrategy> | undefined;
     let brokerOperationRequested = false;
     let ambiguous = false;
     let uncertainFailure:unknown;
@@ -97,7 +98,7 @@ export function createRunProcessor(db: Db) {
       const paper = agent.executionMode === "PAPER";
       const cryptoAlgo = strategy === "ALGO_TRADING" && agent.type === "CRYPTO" && exchangeDoc.name.toUpperCase() === "DELTA" && ["PAPER", "LIVE"].includes(agent.executionMode);
       if (paper && !cryptoAlgo) throw new Error("Paper mode requires a saved Delta algorithm strategy");
-      const cryptoConfig = cryptoAlgo ? validateCryptoStrategy(agent.strategyConfig) : undefined;
+      cryptoConfig = cryptoAlgo ? validateCryptoStrategy(agent.strategyConfig) : undefined;
       const policyMismatch = cryptoConfig && cryptoPolicyMismatch(cryptoConfig, agent as unknown as CryptoPolicyAgent);
       if (policyMismatch) throw new Error(policyMismatch);
       const zerodha = exchangeDoc.name.toUpperCase() === "ZERODHA";
@@ -397,6 +398,14 @@ export function createRunProcessor(db: Db) {
       log.error({ event: safeToRelease ? 'run.rejected_before_orders' : 'run.review_required', stage, exchangeId: String(agent.exchangeId), durationMs: Date.now() - startedAt, ...errMeta(err), failure }, safeToRelease ? 'Agent paused; execution locks can be released after failure persistence' : 'Agent run failed; pausing for review');
       try { await agents.updateOne({ _id: agent._id, userId }, { $set: { status: "PAUSED", updatedAt: new Date() } }); }
       catch(pauseError) { log.error({event:'run.pause_persist_failed',...errMeta(pauseError)},'Could not persist pause; execution locks remain held'); }
+      if (cryptoConfig && err instanceof Error && /^Contract (?:terms|size) changed/.test(err.message)) {
+        try {
+          await agents.updateOne({ _id: agent._id, userId }, { $set: { contractRefreshAt: new Date() } });
+          log.warn({ event: "reconcile.contract_refresh_scheduled", agentId }, "Contract drift scheduled for the reconciler; the agent stays parked");
+        } catch (markerError) {
+          log.error({ event: "reconcile.contract_refresh_schedule_failed", ...errMeta(markerError), agentId }, "Could not schedule a contract refresh");
+        }
+      }
       try { await deleteAgentCached(agentId); }
       catch(cacheError) { log.error({event:'run.cache_remove_failed',...errMeta(cacheError)},'Could not remove agent registry entry'); }
       let executionRecordSaved=false;
