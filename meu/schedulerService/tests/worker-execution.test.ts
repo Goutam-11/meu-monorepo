@@ -193,6 +193,17 @@ describe("worker replay and durable claims", () => {
     expect(notices[0]).toMatchObject({type:'WARNING',code:'DELTA_DATA_TIMEOUT',metadata:execution.failure});
     expect(JSON.stringify(notices)).toContain('Simulation state was not advanced');
   });
+  test('contract metadata drift parks the agent and schedules a reconciler refresh',async()=>{
+    const state=makeDb({paper:true});
+    runPaper=async()=>{throw new Error('Contract terms changed; review the strategy before resuming');};
+    const processor=(await import('../src/workers/worker')).createRunProcessor(state.db) as Processor;
+    await expect(processor({id:'contract-drift',data:{agentId:agentId.toHexString(),userId:owner,runAt}})).rejects.toThrow('Contract terms changed');
+    expect(state.agent.status).toBe('PAUSED');
+    expect(state.agent.contractRefreshAt).toBeInstanceOf(Date);
+    expect(state.executions.get('contract-drift')).toMatchObject({state:'REVIEW_REQUIRED'});
+    expect(state.locks.size).toBe(1);
+  });
+
   test('paper rate limits honor Retry-After and invalid responses still pause for review',async()=>{
     const state=makeDb({paper:true});runPaper=async()=>{throw new DeltaDataError('DELTA_DATA_RATE_LIMIT','product details',1,429,10*60_000);};
     const processor=(await import('../src/workers/worker')).createRunProcessor(state.db) as Processor;

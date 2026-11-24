@@ -1,6 +1,7 @@
 import { connectDB, closeDB } from "@/db/db";
 import { startWatcher } from "@/watchers/watcher";
 import { startScheduler } from "@/schedulers/scheduler";
+import { startReconciler } from "@/reconciler/reconciler";
 // TODO: re-enable once exchange sync logic exists (queue + worker are disabled)
 // import { startExchangeWatcher } from "@/watchers/exchangeWatcher";
 // import { startExchangeScheduler } from "@/schedulers/exchangeScheduler";
@@ -36,6 +37,7 @@ async function main() {
   await bootstrapAgents(agents);
   startWatcher(agentCollection);
   startScheduler(agentCollection);
+  startReconciler(db);
 
   // startExchangeWatcher(exchangeCollection);
   // startExchangeScheduler();
