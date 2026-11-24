@@ -35,7 +35,7 @@ describe("notification emission correlation", () => {
       await runWithLogContext({runId:'run-1',agentId:'agent-1'},()=>emitNotification({...document,runId:'ignored'}));
       assert.equal(queued.length,1);assert.equal(queued[0].runId,'run-1');
       assert.equal(getCurrentRunId(),undefined);
-      const {createNotificationProcessor}=await import('../notificationService/src/index');
+      const {createNotificationProcessor}=await import('../notificationService/src/workers/notification-processor');
       const db={collection:()=>({updateOne:async filter=>{
         assert.equal(filter.deliveryJobId,queued[0].deliveryId);return {upsertedCount:1};
       },find:()=>({toArray:async()=>[]})})};

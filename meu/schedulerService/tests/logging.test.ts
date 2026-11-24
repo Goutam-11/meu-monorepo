@@ -3,10 +3,10 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 // Separate process avoids the worker suite's logger mocks and verifies actual stdout.
-function probe(script: string) {
+function probe(script: string, env: Record<string, string> = {}) {
   const result = spawnSync(process.execPath, ["-e", script], {
     cwd: fileURLToPath(new URL("..", import.meta.url)),
-    env: { ...process.env, NODE_ENV: "production", PRETTY_LOGS: "false", LOG_LEVEL: "info" },
+    env: { ...process.env, NODE_ENV: "production", PRETTY_LOGS: "false", LOG_LEVEL: "info", ...env },
     encoding: "utf8",
   });
   expect(result.status).toBe(0);
@@ -14,6 +14,24 @@ function probe(script: string) {
 }
 
 describe("safe scheduler logging", () => {
+  test("a thrown Error keeps its message in the log record", () => {
+    const logs = probe(`
+      import {logger} from './src/lib/logger';
+      try { throw new Error('boom'); } catch (err) { logger.error({event:'run.failed', err}, 'Agent run failed'); }
+    `);
+    expect(logs[0]).toMatchObject({ event: "run.failed", err: { name: "Error", message: "boom" } });
+  });
+
+  test("stacks stay out of production logs but are available in development", () => {
+    const script = `
+      import {logger} from './src/lib/logger';
+      try { throw new Error('boom'); } catch (err) { logger.error({err}, 'Agent run failed'); }
+    `;
+    expect(probe(script)[0].err.stack).toBeUndefined();
+    expect(probe(script, { NODE_ENV: "development" })[0].err.stack).toContain("Error: boom");
+    expect(probe(script, { LOG_ERROR_STACKS: "true" })[0].err.stack).toContain("Error: boom");
+  });
+
   test("redacts nested fields, child bindings and arbitrary broker error text", () => {
     const logs = probe(`
       import {logger, errMeta} from './src/lib/logger';
@@ -25,7 +43,7 @@ describe("safe scheduler logging", () => {
       logger.error({err:'synthetic-string-secret'}, 'audit.error');
     `);
     expect(JSON.stringify(logs)).not.toContain("synthetic-");
-    expect(logs[0].err).toEqual({name: "Error", code: 11000});
+    expect(logs[0].err).toEqual({name: "Error", message: "[REDACTED]", code: 11000});
     expect(logs[0].totalTokens).toBe(50);
     expect(logs[0].inputTokens).toBe(42);
     expect(logs[0].accessToken).toBe("[REDACTED]");
