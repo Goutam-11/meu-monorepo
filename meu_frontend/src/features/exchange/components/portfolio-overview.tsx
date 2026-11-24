@@ -39,6 +39,8 @@ export type PortfolioOverviewProps = {
   balance: Balances;
   selector?: ReactNode;
   notices?: ReactNode;
+  lastUpdated?: number;
+  stale?: boolean;
   onRefresh?: () => void;
   refreshing?: boolean;
   unavailable?: { balance?: boolean; positions?: boolean; trades?: boolean };
@@ -93,6 +95,8 @@ export function PortfolioOverview({
   balance,
   selector,
   notices,
+  lastUpdated,
+  stale,
   onRefresh,
   refreshing,
   unavailable = {},
@@ -156,6 +160,16 @@ export function PortfolioOverview({
           <p className="text-sm text-muted-foreground">
             Your portfolio and trading activity, at a glance.
           </p>
+          {lastUpdated ? (
+            <p className="text-xs text-muted-foreground">
+              {stale ? "Showing last known values" : "Updated"}{" "}
+              {new Date(lastUpdated).toLocaleTimeString("en-IN", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+              {stale ? " · waiting for the venue" : ""}
+            </p>
+          ) : null}
         </div>
         <div className="flex items-center gap-3">
           {selector}

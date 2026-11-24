@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useTRPC } from "@/trpc/client";
 import {
   keepPreviousData,
@@ -8,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { browserSnapshotStorage, classifyExchangeFailure, nextPollInterval, parseExchangeSnapshot, snapshotKey, subscribeExchangeSnapshots, writeExchangeSnapshot, type ExchangeSnapshot } from "../lib/exchange-snapshot";
 import type { Balances, Position, Trade } from "ccxt";
 
 export const useSuspenseExchanges = () => {
@@ -99,8 +101,32 @@ export const useDeleteExchange = () => {
   );
 };
 
+type SnapshotData = { positions: Position[]; trades: Trade[]; balance: Balances };
+type ExchangeQueryData = SnapshotData & {
+  positionsError?: string | null;
+  tradesError?: string | null;
+  balanceError?: string | null;
+  hasError?: unknown;
+  kiteTokenExpired?: boolean;
+  loginUrl?: string | null;
+};
+
 export const useGetExchangeData = (exchangeId: string) => {
   const trpc = useTRPC();
+  const [hidden, setHidden] = useState(false);
+  const snapshotRaw = useSyncExternalStore(
+    useCallback((onChange) => subscribeExchangeSnapshots(onChange), []),
+    useCallback(() => browserSnapshotStorage()?.getItem(snapshotKey(exchangeId)) ?? "", [exchangeId]),
+    () => "",
+  );
+  const snapshot = useMemo(() => parseExchangeSnapshot<SnapshotData>(snapshotRaw), [snapshotRaw]);
+
+  useEffect(() => {
+    const update = () => setHidden(document.visibilityState === "hidden");
+    update();
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
 
   const query = useQuery(
     trpc.exData.getById.queryOptions(
@@ -108,13 +134,39 @@ export const useGetExchangeData = (exchangeId: string) => {
       {
         enabled: !!exchangeId,
         retry: 2,
-        refetchInterval: 5000,
-        staleTime: 0,
+        staleTime: 5_000,
+        refetchInterval: (current) => nextPollInterval({
+          hidden,
+          failed: Boolean(current.state.error) || Boolean((current.state.data as ExchangeQueryData | undefined)?.hasError),
+        }),
       }
     )
   );
 
-  const data = query.data;
+  const live = query.data as ExchangeQueryData | undefined;
+  const data = live ?? (snapshot?.data as ExchangeQueryData | undefined);
+
+  useEffect(() => {
+    if (!live || live.hasError || live.kiteTokenExpired) return;
+    const next: ExchangeSnapshot<SnapshotData> = {
+      data: { positions: live.positions ?? [], trades: live.trades ?? [], balance: live.balance ?? {} },
+      fetchedAt: query.dataUpdatedAt || Date.now(),
+      source: "broker",
+    };
+    const storage = browserSnapshotStorage();
+    if (storage) writeExchangeSnapshot(storage, exchangeId, next);
+  }, [live, query.dataUpdatedAt, exchangeId]);
+
+  const failureKind = classifyExchangeFailure({
+    errorMessage: query.error?.message,
+    positionsError: data?.positionsError,
+    tradesError: data?.tradesError,
+    balanceError: data?.balanceError,
+  });
+  const failed = failureKind !== "none";
+  const isInitialLoading = query.isLoading && !snapshot;
+  const isStale = !!snapshot && (query.isError || !live || (query.dataUpdatedAt > 0 && query.dataUpdatedAt < snapshot.fetchedAt));
+  const lastUpdated = live ? query.dataUpdatedAt || snapshot?.fetchedAt : snapshot?.fetchedAt;
 
   // Zerodha daily token state — when expired the UI shows the re-auth flow
   const kiteData = data as { kiteTokenExpired?: boolean; loginUrl?: string | null } | undefined;
@@ -138,11 +190,7 @@ export const useGetExchangeData = (exchangeId: string) => {
   };
 
   //Detect total failure
-  const isTotallyBroken =
-    !kiteTokenExpired &&
-    !!data?.positionsError &&
-    !!data?.tradesError &&
-    !!data?.balanceError;
+  const isTotallyBroken = !kiteTokenExpired && !!data?.positionsError && !!data?.tradesError && !!data?.balanceError;
 
   return {
     ...query,
@@ -152,6 +200,11 @@ export const useGetExchangeData = (exchangeId: string) => {
     isTotallyBroken,
     kiteTokenExpired,
     kiteLoginUrl,
+    isInitialLoading,
+    isStale,
+    lastUpdated,
+    failureKind,
+    failed,
   };
 };
 
