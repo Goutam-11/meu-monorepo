@@ -11,7 +11,7 @@ Schema: [`meu_frontend/prisma/schema.prisma`](../meu_frontend/prisma/schema.pris
 | Model | Purpose and identity |
 |---|---|
 | User, Session, Account, Verification | Better Auth string IDs; mapped lowercase collections. |
-| Agent | ObjectId; owner, saved connection/credential IDs, capital/risk/cadence, strategy config, status, next-run and activation timestamps. |
+| Agent | ObjectId; owner, saved connection/credential IDs, capital/risk/cadence, strategy config, status, next-run and activation timestamps. `Agent.risk` and `Agent.capital` own the policy; a crypto algorithm's `strategyConfig.simulation` is projected from them at write time. See [risk policy ownership](RISK_POLICY_OWNERSHIP.md). |
 | Exchange / Credentials | ObjectIds; owner, descriptive names/type, encrypted secrets and provider/account settings. |
 | AgentRuns | ObjectId run history; worker also writes additive structured memory/execution fields not all represented in Prisma. |
 | BacktestRun | Owner-scoped versioned strategy/config snapshot, contract, candles/data hash, assumptions, results and creation time. |

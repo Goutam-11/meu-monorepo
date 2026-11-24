@@ -6,6 +6,7 @@ import prisma from '@/lib/db';
 import type { Prisma } from '@/generated/prisma/client';
 import { configuredCryptoAgentSchema } from '@/features/backtests/validation';
 import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';
+import { projectCryptoPolicy } from './crypto-policy';
 import { executionConnection, registerExecutionAccount } from '@/features/exchange/server/execution-account';
 import { cryptoEntryMarket, fetchCryptoOpenOrders, normalizeCryptoPositions } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
 
@@ -77,13 +78,19 @@ export async function editCryptoAgent(userId: string, input: z.infer<typeof edit
       contract=(await loadDeltaBacktestData({symbol:input.config.symbol,timeframe:input.config.timeframe,start:end-warmup*interval,end})).contract;
     }
     const config = input.config;
+    const simulation = config.simulation;
+    const policy = projectCryptoPolicy({
+      risk: input.risk ?? { maxRiskPerTradePct: simulation.riskPerTradePct, maxDailyLossPct: simulation.maxDailyLossPct, maxOpenPositions: 1, maxTradesPerDay: simulation.maxTradesPerDay, maxPositionsOpenedPerDay: simulation.maxPositionsOpenedPerDay },
+      capital: input.capital ?? { allocated: simulation.initialCapital, currency: 'USD' },
+      simulation,
+    });
     const result = await prisma.agent.update({where:{id:agent.id,userId,status:'PAUSED',updatedAt:agent.updatedAt},data:{
       name:input.name,
       market:{symbols:agent.market.symbols,agentCycles:input.agentCycles},
       ...(changed ? {
-        capital:{allocated:config.simulation.initialCapital,currency:'USD'},
-        risk:{maxRiskPerTradePct:config.simulation.riskPerTradePct,maxDailyLossPct:config.simulation.maxDailyLossPct,maxOpenPositions:1,maxTradesPerDay:config.simulation.maxTradesPerDay,maxPositionsOpenedPerDay:config.simulation.maxPositionsOpenedPerDay},
-        strategyConfig:{...config.strategy,timeframe:config.timeframe,simulation:config.simulation,contract,stateId:`${agent.id}:${randomUUID()}`,revisionAt:new Date().toISOString()} as Prisma.InputJsonValue,
+        capital:policy.capital,
+        risk:policy.risk,
+        strategyConfig:{...config.strategy,timeframe:config.timeframe,simulation:policy.simulation,contract,stateId:`${agent.id}:${randomUUID()}`,revisionAt:new Date().toISOString()} as Prisma.InputJsonValue,
         strategyStartedAt:null,nextRunAt:null,
       } : {}),
     }});

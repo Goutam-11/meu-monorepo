@@ -6,6 +6,7 @@ import type { Prisma } from '@/generated/prisma/client';
 import { backtestInputSchema, configuredCryptoAgentSchema, type BacktestInput } from '../validation';
 import { loadDeltaBacktestData } from './delta-data';
 import { strategyCatalog, strategyStateKey, STRATEGY_VERSION } from '../../../../../shared/trading/strategies';
+import { projectCryptoPolicy } from '../../agents/server/crypto-policy';
 import { runPerpetualBacktest, type Contract } from '../../../../../shared/trading/perpetualBacktest';
 import type { Candle } from '../../../../../shared/trading/emaCrossover';
 type Snapshot = {
@@ -39,6 +40,12 @@ async function createPausedCryptoAgent(userId: string, input: z.infer<typeof con
     if (input.mode === 'LIVE' && (!exchange.apiKey || !exchange.secret))
         throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Live mode requires saved Delta API credentials.' });
     const { config } = input;
+    const simulation = config.simulation;
+    const policy = projectCryptoPolicy({
+        risk: input.risk ?? { maxRiskPerTradePct: simulation.riskPerTradePct, maxDailyLossPct: simulation.maxDailyLossPct, maxOpenPositions: 1, maxTradesPerDay: simulation.maxTradesPerDay, maxPositionsOpenedPerDay: simulation.maxPositionsOpenedPerDay },
+        capital: input.capital ?? { allocated: simulation.initialCapital, currency: 'USD' },
+        simulation,
+    });
     let contract = saved?.contract;
     if (!contract) {
         // Resolve contract terms server-side. This is indicator history validation, not a backtest.
@@ -56,9 +63,9 @@ async function createPausedCryptoAgent(userId: string, input: z.infer<typeof con
         credentialId: null, exchangeId: exchange.id, llmModel: '', temperature: 0.7,
         type: 'CRYPTO', strategy: 'ALGO_TRADING', executionMode: input.mode,
         market: { symbols: [config.symbol], agentCycles: input.agentCycles },
-        risk: { maxRiskPerTradePct: config.simulation.riskPerTradePct, maxDailyLossPct: config.simulation.maxDailyLossPct, maxOpenPositions: 1, maxTradesPerDay: config.simulation.maxTradesPerDay, maxPositionsOpenedPerDay: config.simulation.maxPositionsOpenedPerDay },
-        capital: { allocated: config.simulation.initialCapital, currency: 'USD' },
-        strategyConfig: { ...config.strategy, timeframe: config.timeframe, simulation: config.simulation, contract, ...(saved ? { backtestRunId: saved.runId } : {}), activationAt: new Date().toISOString() } as unknown as Prisma.InputJsonValue,
+        risk: policy.risk,
+        capital: policy.capital,
+        strategyConfig: { ...config.strategy, timeframe: config.timeframe, simulation: policy.simulation, contract, ...(saved ? { backtestRunId: saved.runId } : {}), activationAt: new Date().toISOString() } as unknown as Prisma.InputJsonValue,
     }, select: { id: true, name: true, executionMode: true, status: true } });
     return { ...agent, executionMode: input.mode };
 }

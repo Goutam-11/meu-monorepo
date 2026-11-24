@@ -89,7 +89,10 @@ test('direct configuration validates owned Delta metadata and creates a paused a
         const result = u.pathname.includes('/products/') ? { symbol: 'BTCUSD', contract_type: 'perpetual_futures', notional_type: 'vanilla', is_quanto: false, contract_value: '0.001', maintenance_margin: '0.25', settling_asset: { symbol: 'USD' } } : Array.from({ length: Math.ceil((end - from) / 3600) }, (_, i) => ({ time: from + i * 3600, open: 100, high: 101, low: 99, close: 100, volume: 1 }));
         return new Response(JSON.stringify({ success: true, result }));
     }) as typeof fetch;
-    const request = { name: 'Direct test', exchangeId: 'd'.repeat(24), mode: 'LIVE' as const, agentCycles: 60, config: { symbol: input.symbol, timeframe: input.timeframe, strategy: input.strategy, simulation: input.simulation } };
+    const request = { name: 'Direct test', exchangeId: 'd'.repeat(24), mode: 'LIVE' as const, agentCycles: 60,
+        risk: { maxRiskPerTradePct: 1, maxDailyLossPct: 5, maxOpenPositions: 1 as const, maxTradesPerDay: 10, maxPositionsOpenedPerDay: 5 },
+        capital: { allocated: 1000, currency: 'USD' as const },
+        config: { symbol: input.symbol, timeframe: input.timeframe, strategy: input.strategy, simulation: input.simulation } };
     try {
         owner = 'bob';
         const before = createdAgent;
@@ -101,9 +104,12 @@ test('direct configuration validates owned Delta metadata and creates a paused a
         expect(createdAgent!.nextRunAt).toBeNull(); expect(createdAgent!.lastRun).toBeNull();
         expect(createdAgent!.credentialId).toBeNull();
         expect(createdAgent!.capital).toEqual({ allocated: 1000, currency: 'USD' });
+        expect(createdAgent!.risk).toEqual(request.risk);
         expect(createdAgent!.market).toEqual({ symbols: ['BTCUSD'], agentCycles: 60 });
         expect(createdAgent!.strategyConfig).toMatchObject({ timeframe: '1h', simulation: input.simulation, contract: { symbol: 'BTCUSD', contractSize: 0.001, settlement: 'USD' } });
         expect(createdAgent!.strategyConfig).not.toHaveProperty('backtestRunId');
+        expect((createdAgent!.strategyConfig as {simulation:{riskPerTradePct:number}}).simulation.riskPerTradePct).toBe(request.risk.maxRiskPerTradePct);
+        await expect(caller.createConfiguredAgent({ ...request, risk: { ...request.risk, maxRiskPerTradePct: 2 } })).rejects.toMatchObject({ code: 'BAD_REQUEST' });
         expect(saved).toHaveLength(0);
         await expect(caller.createConfiguredAgent(request)).rejects.toMatchObject({ code: 'TOO_MANY_REQUESTS' });
     } finally { owner = 'alice'; globalThis.fetch = originalFetch; Date.now = originalNow; }
