@@ -10,10 +10,33 @@ export const configuredCryptoAgentSchema = z.object({
     exchangeId: z.string().regex(/^[a-f0-9]{24}$/i),
     mode: z.enum(['PAPER', 'LIVE']),
     agentCycles: z.number().int().min(1).max(86400),
+    risk: z.object({
+        maxRiskPerTradePct: z.number().positive().max(10),
+        maxDailyLossPct: z.number().positive().max(100),
+        maxOpenPositions: z.literal(1),
+        maxTradesPerDay: z.number().int().min(1).max(1000),
+        maxPositionsOpenedPerDay: z.number().int().min(1).max(1000),
+    }).optional(),
+    capital: z.object({ allocated: z.number().positive().max(1e8), currency: z.literal('USD') }).optional(),
     config: cryptoStrategySettingsSchema,
 }).superRefine((input, ctx) => {
     const interval = { '15m': 900, '1h': 3600, '4h': 14400, '1d': 86400 }[input.config.timeframe];
     if (input.agentCycles > interval) ctx.addIssue({ code: 'custom', path: ['agentCycles'], message: 'Agent cycle must not exceed the candle timeframe' });
+    if (Boolean(input.risk) !== Boolean(input.capital))
+        ctx.addIssue({ code: 'custom', path: [input.risk ? 'capital' : 'risk'], message: 'Provide both the agent risk policy and its capital allocation' });
+    if (input.risk && input.capital) {
+        const simulation = input.config.simulation;
+        const pairs: [string, number, string, number][] = [
+            ['risk.maxRiskPerTradePct', input.risk.maxRiskPerTradePct, 'config.simulation.riskPerTradePct', simulation.riskPerTradePct],
+            ['risk.maxDailyLossPct', input.risk.maxDailyLossPct, 'config.simulation.maxDailyLossPct', simulation.maxDailyLossPct],
+            ['risk.maxTradesPerDay', input.risk.maxTradesPerDay, 'config.simulation.maxTradesPerDay', simulation.maxTradesPerDay],
+            ['risk.maxPositionsOpenedPerDay', input.risk.maxPositionsOpenedPerDay, 'config.simulation.maxPositionsOpenedPerDay', simulation.maxPositionsOpenedPerDay],
+            ['capital.allocated', input.capital.allocated, 'config.simulation.initialCapital', simulation.initialCapital],
+        ];
+        for (const [agentField, agentValue, simulationField, simulationValue] of pairs)
+            if (agentValue !== simulationValue)
+                ctx.addIssue({ code: 'custom', path: ['risk'], message: `${agentField}=${agentValue} must match ${simulationField}=${simulationValue}` });
+    }
 });
 export const backtestInputSchema = cryptoStrategySettingsSchema.extend({
     start: z.number().int().nonnegative(), end: z.number().int().positive(),

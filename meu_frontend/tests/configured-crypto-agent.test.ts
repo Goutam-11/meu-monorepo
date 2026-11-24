@@ -2,12 +2,23 @@ import { describe, expect, test } from 'bun:test';
 import { configuredCryptoAgentSchema } from '../src/features/backtests/validation';
 const input = {
   name: 'XRP test', exchangeId: '697a21e128365ca4c9063c27', mode: 'PAPER', agentCycles: 60,
+  risk: { maxRiskPerTradePct: 0.5, maxDailyLossPct: 1, maxOpenPositions: 1, maxTradesPerDay: 1, maxPositionsOpenedPerDay: 1 },
+  capital: { allocated: 10, currency: 'USD' },
   config: { symbol: 'XRPUSD', timeframe: '1h', strategy: { id: 'donchian', fastPeriod: 20, slowPeriod: 50, lookback: 20, atrPeriod: 14, stopAtr: 2, rewardRisk: 2 }, simulation: { initialCapital: 10, leverage: 2, riskPerTradePct: 0.5, maxMarginPct: 10, feeBps: 10, slippageBps: 5, fundingRatePct8h: 0, maxTradesPerDay: 1, maxPositionsOpenedPerDay: 1, maxDailyLossPct: 1, direction: 'both' } },
 };
 describe('direct crypto algorithm configuration', () => {
   test('accepts paper and live configurations without a backtest ID or client contract', () => {
     for (const mode of ['PAPER', 'LIVE']) expect(configuredCryptoAgentSchema.safeParse({ ...input, mode }).success).toBe(true);
   });
+  test('rejects a canonical policy that disagrees with the simulation projection', () => {
+    const parsed = configuredCryptoAgentSchema.safeParse({
+      ...input,
+      risk: { ...input.risk, maxRiskPerTradePct: 2 },
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) expect(parsed.error.issues.map(issue => issue.message).join('; ')).toContain('risk.maxRiskPerTradePct=2');
+  });
+
   test('rejects cycles slower than the strategy candle timeframe', () => {
     expect(configuredCryptoAgentSchema.safeParse({ ...input, agentCycles: 14400 }).success).toBe(false);
   });

@@ -23,7 +23,7 @@ mock.module('@/lib/db',()=>({default:{
  },
 }}));
 const {editCryptoAgent,editCryptoAgentSchema}=await import('../src/features/agents/server/edit-crypto-agent');
-const request=()=>editCryptoAgentSchema.parse({id,name:'Renamed',exchangeId,mode:agent.executionMode,agentCycles:60,config,expectedUpdatedAt:version.toISOString()});
+const request=()=>editCryptoAgentSchema.parse({id,name:'Renamed',exchangeId,mode:agent.executionMode,agentCycles:60,risk:{maxRiskPerTradePct:0.5,maxDailyLossPct:1,maxOpenPositions:1,maxTradesPerDay:1,maxPositionsOpenedPerDay:1},capital:{allocated:100,currency:'USD'},config,expectedUpdatedAt:version.toISOString()});
 beforeEach(()=>{
  foreign=busy=exposure=owner=unfinished=stale=releaseFailure=false;commands.length=writes.length=brokerWrites.length=0;
  agent={id,userId:'owner',name:'Original',status:'PAUSED',type:'CRYPTO',strategy:'ALGO_TRADING',executionMode:'PAPER',updatedAt:version,exchangeId,market:{symbols:['XRPUSD'],agentCycles:60},strategyConfig:{...config.strategy,timeframe:config.timeframe,simulation:config.simulation,contract,backtestRunId:'old'},capital:{allocated:100,currency:'USD'},risk:{}};
@@ -33,6 +33,17 @@ test('rename and cadence changes preserve strategy state and original backtest r
  expect(writes[0]).toEqual({name:'Renamed',market:{symbols:['XRPUSD'],agentCycles:300}});
  expect(commands.filter(c=>c.insert)).toHaveLength(1);expect(commands.every(c=>!c.update)).toBe(true);
 });
+test('saves the canonical agent policy and projects it into the strategy revision',async()=>{
+ const input=request();
+ input.risk={...input.risk,maxRiskPerTradePct:0.75} as typeof input.risk;
+ input.config={...config,simulation:{...config.simulation,riskPerTradePct:0.75}};
+ input.restartPaper=true;
+ await editCryptoAgent('owner',input);
+ expect(writes[0].risk).toEqual(input.risk);
+ expect(writes[0].capital).toEqual(input.capital);
+ expect(writes[0].strategyConfig.simulation).toMatchObject({initialCapital:100,riskPerTradePct:0.75,maxDailyLossPct:1,maxTradesPerDay:1,maxPositionsOpenedPerDay:1});
+});
+
 test('paper execution changes require acknowledgement and retain old state through a new revision key',async()=>{
  const input=request();input.config={...config,strategy:{...config.strategy,id:'donchian'}} as typeof input.config;
  await expect(editCryptoAgent('owner',input)).rejects.toMatchObject({code:'PRECONDITION_FAILED'});expect(writes).toHaveLength(0);

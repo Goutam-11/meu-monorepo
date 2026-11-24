@@ -58,7 +58,7 @@ function makeDb(options: { credentialOwner?: string; exchangeOwner?: string; age
     risk: { maxRiskPerTradePct: 1, maxDailyLossPct: 5, maxOpenPositions: 2 },
     capital: { allocated: 1000, currency: "USDT" },
   };
-  if(options.paper || options.liveAlgo)Object.assign(agent,{type:'CRYPTO',strategy:'ALGO_TRADING',executionMode:options.liveAlgo ? 'LIVE':'PAPER',market:{symbols:['BTCUSD'],agentCycles:60},capital:{allocated:1000,currency:'USD'},strategyConfig:{id:'ema',fastPeriod:2,slowPeriod:3,lookback:3,atrPeriod:2,stopAtr:2,rewardRisk:2,timeframe:'1h',contract:{symbol:'BTCUSD',settlement:'USD'},simulation:{initialCapital:1000,leverage:2,riskPerTradePct:1,maxDailyLossPct:5,maxMarginPct:10,feeBps:5,slippageBps:2,fundingRatePct8h:0,maxTradesPerDay:10,maxPositionsOpenedPerDay:5,direction:'both'}}});
+  if(options.paper || options.liveAlgo)Object.assign(agent,{type:'CRYPTO',strategy:'ALGO_TRADING',executionMode:options.liveAlgo ? 'LIVE':'PAPER',market:{symbols:['BTCUSD'],agentCycles:60},capital:{allocated:1000,currency:'USD'},risk:{maxRiskPerTradePct:1,maxDailyLossPct:5,maxOpenPositions:1,maxTradesPerDay:10,maxPositionsOpenedPerDay:5},strategyConfig:{id:'ema',fastPeriod:2,slowPeriod:3,lookback:3,atrPeriod:2,stopAtr:2,rewardRisk:2,timeframe:'1h',contract:{symbol:'BTCUSD',settlement:'USD'},simulation:{initialCapital:1000,leverage:2,riskPerTradePct:1,maxDailyLossPct:5,maxMarginPct:10,feeBps:5,slippageBps:2,fundingRatePct8h:0,maxTradesPerDay:10,maxPositionsOpenedPerDay:5,direction:'both'}}});
   const records = new Map<string, Map<string, Record<string, unknown>>>();
   const runs: Record<string, unknown>[] = [];
   records.set("AgentExecutions", new Map());

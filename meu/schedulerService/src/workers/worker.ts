@@ -2,6 +2,7 @@ import { exchangeMarketTimezone } from '../../../../shared/trading/marketDay';
 import { analysisTimeframe, LlmMarketDataError } from "@/market-data/cryptoAnalysis";
 import { validateSizingPolicy } from "../../../../shared/trading/sizing";
 import { executionFailure, ExecutionLockReviewError } from './executionFailure';
+import { cryptoPolicyMismatch, type CryptoPolicyAgent } from './cryptoPolicy';
 import { DeltaDataError, DeltaDataValidationError } from '../../../../shared/trading/delta-data';
 import { MissedLiveCandlesError } from '@/algorithms/crypto/cryptoStrategyConfig';
 import type { Exchange } from "ccxt";
@@ -97,7 +98,8 @@ export function createRunProcessor(db: Db) {
       const cryptoAlgo = strategy === "ALGO_TRADING" && agent.type === "CRYPTO" && exchangeDoc.name.toUpperCase() === "DELTA" && ["PAPER", "LIVE"].includes(agent.executionMode);
       if (paper && !cryptoAlgo) throw new Error("Paper mode requires a saved Delta algorithm strategy");
       const cryptoConfig = cryptoAlgo ? validateCryptoStrategy(agent.strategyConfig) : undefined;
-      if (cryptoConfig && (agent.market.symbols.length !== 1 || agent.capital.currency !== "USD" || cryptoConfig.simulation.initialCapital !== agent.capital.allocated || cryptoConfig.simulation.riskPerTradePct !== agent.risk.maxRiskPerTradePct)) throw new Error("Saved strategy allocation and agent policy differ");
+      const policyMismatch = cryptoConfig && cryptoPolicyMismatch(cryptoConfig, agent as unknown as CryptoPolicyAgent);
+      if (policyMismatch) throw new Error(policyMismatch);
       const zerodha = exchangeDoc.name.toUpperCase() === "ZERODHA";
       if (!zerodha && strategy === "LLM_TRADING") llmAnalysisTimeframe = analysisTimeframe(agent.strategyConfig?.analysisTimeframe);
       if ((strategy === "ALGO_TRADING" || strategy === "HYBRID") && !cryptoAlgo && (!zerodha || agent.type !== "STOCKS")) {
