@@ -238,12 +238,15 @@ function ConnectedDashboard({
     data,
     safeData,
     warnings,
-    isLoading,
+    isInitialLoading,
     isFetching,
     error,
     refetch,
     kiteTokenExpired,
     kiteLoginUrl,
+    isStale,
+    lastUpdated,
+    failureKind,
   } = useGetExchangeData(selectedExchange.id);
   const { data: session } = authClient.useSession();
   const searchParams = useSearchParams();
@@ -297,7 +300,7 @@ function ConnectedDashboard({
       </PopoverContent>
     </Popover>
   );
-  if (isLoading)
+  if (isInitialLoading)
     return (
       <div className="page-shell space-y-6" aria-label="Loading portfolio">
         <div className="h-16 rounded-xl bg-muted animate-pulse" />
@@ -324,18 +327,35 @@ function ConnectedDashboard({
         />
       </div>
     );
+  const failureTitle =
+    failureKind === "auth"
+      ? "Exchange authentication failed"
+      : failureKind === "unreachable"
+        ? "Exchange unreachable"
+        : "Some account data could not be loaded";
+  const lastUpdatedLabel = lastUpdated
+    ? new Date(lastUpdated).toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : undefined;
   const notices =
     error || warnings.length > 0 ? (
       <div
         role="alert"
         className="rounded-2xl border border-destructive/40 bg-destructive/10 p-5"
       >
-        <h2 className="text-sm font-medium">
-          Some account data could not be loaded
-        </h2>
+        <h2 className="text-sm font-medium">{failureTitle}</h2>
         <p className="mt-2 break-words text-sm text-muted-foreground">
           {error?.message ?? warnings.join(" · ")}
         </p>
+        {lastUpdatedLabel ? (
+          <p className="mt-2 text-xs text-muted-foreground">
+            {error ? `Showing last known values from ${lastUpdatedLabel}.` : `Last successful snapshot: ${lastUpdatedLabel}.`}
+          </p>
+        ) : null}
         <Button
           variant="outline"
           size="sm"
@@ -357,6 +377,8 @@ function ConnectedDashboard({
       balance={safeData.balance}
       selector={selector}
       notices={notices}
+      lastUpdated={lastUpdated}
+      stale={isStale}
       onRefresh={() => refetch()}
       refreshing={isFetching}
       unavailable={{
