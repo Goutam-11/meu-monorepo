@@ -39,7 +39,7 @@ Mermaid diagrams are text in the Markdown files and render in Mermaid-capable Ma
 The docs distinguish implemented features, supported markets and remaining work. Saved backtest results are research artifacts, not evidence of live exchange fills. Paper, historical simulation and live risk checks have different execution assumptions. Audits and regression tests are offline unless an audit explicitly records a read-only runtime check. Documentation and tests never require pasting exchange keys into a report.
 
 - Experimental execution rules and replay evidence (local evidence, excluded from Git): versioned proposal lifecycle, simulation/live changes and measured limitations.
-- Trend-aware signal policy v2 (local evidence, excluded from Git): missed-trend correction, directional-noise filters, reproducible comparisons and limits.
+- Trend-aware signal policy v2 (local evidence, excluded from Git; see the [research evidence inventory](reports/README.md)): missed-trend correction, directional-noise filters, reproducible comparisons and limits.
 
 ## Repository contents
 

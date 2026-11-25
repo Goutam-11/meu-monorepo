@@ -32,7 +32,9 @@
 /meu/schedulerService/scripts/research-delta-contracts.ts
 /meu/schedulerService/src/tests/
 /Makefile.local
-/docs/reports/
+/docs/reports/*
+!/docs/reports/README.md
+!/docs/reports/SHA256SUMS
 /docs/*20??-??-??*.md
 
 # College submissions and personal screenshots
