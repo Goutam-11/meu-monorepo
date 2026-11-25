@@ -5,6 +5,7 @@ import type { Exchange, MarketInterface, Order, Position } from 'ccxt';
 import { createCryptoAccountContext, deltaAccountKey, registerDeltaAccount, defaultAccountRisk } from '../src/brokers/crypto/cryptoAccount';
 import { sizeCryptoEntry, type CryptoRiskSnapshot } from '../src/brokers/crypto/cryptoRisk';
 import type { TradingPolicy } from '../src/execution/tradeGuard';
+import { COLLECTIONS } from "../../../shared/persistence/collections";
 
 type Row = Record<string, any>;
 function matches(row: Row, query: Row): boolean {
@@ -25,7 +26,7 @@ function database() {
   const db = { collection: (name: string) => ({
     findOne: async (query: Row) => rows(name).find(r => matches(r, query)) ?? null,
     find: (query: Row) => { let cap = Infinity; const cursor = { limit: (n: number) => { cap = n; return cursor; }, toArray: async () => rows(name).filter(r => matches(r, query)).slice(0, cap) }; return cursor; },
-    insertOne: async (record: Row) => { if (failOrders && name === 'ManagedCryptoOrders') throw new Error('Unavailable persistence'); if (rows(name).some(r => r._id === record._id)) throw new Error('Duplicate'); rows(name).push(record); return { acknowledged: true }; },
+    insertOne: async (record: Row) => { if (failOrders && name === COLLECTIONS.ManagedCryptoOrders) throw new Error('Unavailable persistence'); if (rows(name).some(r => r._id === record._id)) throw new Error('Duplicate'); rows(name).push(record); return { acknowledged: true }; },
     updateOne: async (query: Row, update: Row, options?: Row) => {
       let row = rows(name).find(r => matches(r, query)); let inserted = false;
       if (!row && options?.upsert) { row = { ...query, ...update.$setOnInsert }; rows(name).push(row!); inserted = true; }
@@ -71,22 +72,22 @@ test('duplicate Delta connections map to one broker identity; demo and India sta
   for (const bad of ['0','-1','1.2',null,0,NaN]) expect(() => deltaAccountKey(bad,false)).toThrow();
   const f = fixture(); await registerDeltaAccount(f.db,'account','user','connection-a');
   await registerDeltaAccount(f.db,'account','user','connection-b');
-  expect(f.rows('BrokerAccounts')).toHaveLength(1); expect(f.rows('BrokerAccountLinks')).toHaveLength(2);
+  expect(f.rows(COLLECTIONS.BrokerAccounts)).toHaveLength(1); expect(f.rows(COLLECTIONS.BrokerAccountLinks)).toHaveLength(2);
   await expect(registerDeltaAccount(f.db,'account','other-user','foreign')).rejects.toThrow('different Meu user');
-  expect(f.rows('BrokerAccountLinks')).toHaveLength(2);
+  expect(f.rows(COLLECTIONS.BrokerAccountLinks)).toHaveLength(2);
   await expect(registerDeltaAccount(f.db,'changed-account','user','connection-a')).rejects.toThrow('different broker account');
-  expect(f.rows('BrokerAccountLinks')[0]?.accountKey).toBe('account');
+  expect(f.rows(COLLECTIONS.BrokerAccountLinks)[0]?.accountKey).toBe('account');
 });
 test('manual positions and pending entries cannot be adopted or reduced', async () => {
   const f = fixture(), ctx = f.context(), pos = f.position();
   await expect(ctx.scopeSnapshot(f.snapshot({positions:[pos],openSymbols:new Set([symbol])}),market)).rejects.toThrow('unowned');
   await expect(ctx.scopeSnapshot(f.snapshot({orders:[{symbol} as Order],openSymbols:new Set([symbol])}),market)).rejects.toThrow('unowned');
   await expect(ctx.assertOwnsPosition(symbol,pos)).rejects.toThrow('does not own');
-  expect(f.rows('ManagedCryptoOrders')).toHaveLength(0);
+  expect(f.rows(COLLECTIONS.ManagedCryptoOrders)).toHaveLength(0);
 });
 test('submission is reserved durably before broker acknowledgement and uncertain entries never become available', async () => {
   const f = fixture(), ctx = f.context(); await ctx.recordSubmission(f.client(),symbol,'buy',2,false);
-  expect(f.rows('ManagedCryptoOrders')[0]?.state).toBe('SUBMITTING');
+  expect(f.rows(COLLECTIONS.ManagedCryptoOrders)[0]?.state).toBe('SUBMITTING');
   await expect(ctx.scopeSnapshot(f.snapshot(),market)).rejects.toThrow('unresolved submission');
   await expect(f.context('agent-b').recordSubmission(f.client('agent-b'),symbol,'buy',2,false)).rejects.toThrow('another agent');
   await expect(ctx.recordAccepted(f.client(),{id:'wrong',clientOrderId:'foreign',symbol} as Order)).rejects.toThrow('identity');
@@ -94,8 +95,8 @@ test('submission is reserved durably before broker acknowledgement and uncertain
 test('partial fills verify owned quantity and retain the outstanding entry', async () => {
   const f = fixture(), ctx = await f.accepted('agent-a',1,1,'open');
   const result = await ctx.scopeSnapshot(f.snapshot({positions:[f.position(1)],openSymbols:new Set([symbol]),metrics:[{symbol,exposure:20,notional:20,margin:10,lossReserve:10}]}),market);
-  expect(result.openSymbols.has(symbol)).toBe(true); expect(f.rows('CryptoPositionOwners')[0]?.contracts).toBe(1);
-  expect(f.rows('ManagedCryptoOrders')[0]?.remaining).toBe(1);
+  expect(result.openSymbols.has(symbol)).toBe(true); expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.contracts).toBe(1);
+  expect(f.rows(COLLECTIONS.ManagedCryptoOrders)[0]?.remaining).toBe(1);
   await expect(f.context('agent-b').scopeSnapshot(f.snapshot({positions:[f.position(1)],openSymbols:new Set([symbol])}),market)).rejects.toThrow('Another agent owns');
 });
 test('incomplete broker fill evidence cannot release ownership or authorize reductions', async () => {
@@ -103,15 +104,15 @@ test('incomplete broker fill evidence cannot release ownership or authorize redu
     const f = fixture(), ctx = await f.accepted();
     Object.assign(f.brokerOrders.get('entry')!,patch);
     await expect(ctx.scopeSnapshot(f.snapshot(),market)).rejects.toThrow('fill state');
-    expect(f.rows('CryptoPositionOwners')[0]?.state).not.toBe('FLAT');
+    expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.state).not.toBe('FLAT');
     await expect(ctx.assertOwnsPosition(symbol,f.position())).rejects.toThrow('fill state');
-    expect(f.rows('CryptoOwnershipPeriods')[0]?.endedAt).toBeUndefined();
+    expect(f.rows(COLLECTIONS.CryptoOwnershipPeriods)[0]?.endedAt).toBeUndefined();
   }
 });
 test('manual changes to owned quantity require review rather than silently adopting fills', async () => {
   const f = fixture(), ctx = await f.accepted();
   await expect(ctx.scopeSnapshot(f.snapshot({positions:[f.position(3)],openSymbols:new Set([symbol])}),market)).rejects.toThrow('differs');
-  expect(f.rows('CryptoPositionOwners')[0]?.state).toBe('REVIEW_REQUIRED');
+  expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.state).toBe('REVIEW_REQUIRED');
   await expect(ctx.recordSubmission(f.client('agent-a','next'),symbol,'buy',1,false)).rejects.toThrow('review');
 });
 test('agent limits exclude another ticker but shared caps still include its position', async () => {
@@ -129,10 +130,10 @@ test('agent limits exclude another ticker but shared caps still include its posi
 });
 test('wallet debits attribute only to an unambiguous ownership period; unknown debits charge every agent', async () => {
   const f = fixture(), now = Date.now();
-  f.rows('CryptoOwnershipPeriods').push({_id:'period',accountKey:'account',agentId:'agent-b',productId:'2',startedAt:new Date(now-60000)});
+  f.rows(COLLECTIONS.CryptoOwnershipPeriods).push({_id:'period',accountKey:'account',agentId:'agent-b',productId:'2',startedAt:new Date(now-60000)});
   const result = await f.context().scopeSnapshot(f.snapshot({realizedLosses:7,lossEvents:[{timestamp:now,amount:5,productId:'2'},{timestamp:now,amount:2}]}),market);
   expect(result.realizedLosses).toBe(2);expect(result.account?.realizedLosses).toBe(7);
-  f.rows('CryptoOwnershipPeriods').push({_id:'overlap',accountKey:'account',agentId:'agent-a',productId:'2',startedAt:new Date(now-50000)});
+  f.rows(COLLECTIONS.CryptoOwnershipPeriods).push({_id:'overlap',accountKey:'account',agentId:'agent-a',productId:'2',startedAt:new Date(now-50000)});
   expect((await f.context().scopeSnapshot(f.snapshot({lossEvents:[{timestamp:now,amount:5,productId:'2'}]}),market)).realizedLosses).toBe(5);
 });
 test('daily equity is first observed, never raised by a winning trade or deposit', async () => {
@@ -142,11 +143,11 @@ test('daily equity is first observed, never raised by a winning trade or deposit
 test('flat terminal entries release ownership, but orphan protection prevents reuse', async () => {
   const f = fixture(), ctx = await f.accepted();
   await expect(ctx.scopeSnapshot(f.snapshot({orders:[{symbol,reduceOnly:true} as Order]}),market)).rejects.toThrow('pending protection');
-  expect(f.rows('CryptoPositionOwners')[0]?.state).not.toBe('FLAT');
+  expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.state).not.toBe('FLAT');
   await ctx.scopeSnapshot(f.snapshot(),market);
-  expect(f.rows('CryptoPositionOwners')[0]?.state).toBe('FLAT');expect(f.rows('CryptoOwnershipPeriods')[0]?.endedAt).toBeInstanceOf(Date);
+  expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.state).toBe('FLAT');expect(f.rows(COLLECTIONS.CryptoOwnershipPeriods)[0]?.endedAt).toBeInstanceOf(Date);
   await f.context('agent-b').recordSubmission(f.client('agent-b'),symbol,'sell',1,false);
-  expect(f.rows('CryptoPositionOwners')[0]?.agentId).toBe('agent-b');
+  expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.agentId).toBe('agent-b');
 });
 test('verified reductions remain attributed to their owner and reconcile remaining contracts', async () => {
   const f = fixture(), ctx = await f.accepted();
@@ -154,12 +155,12 @@ test('verified reductions remain attributed to their owner and reconcile remaini
   await ctx.assertOwnsPosition(symbol,f.position());
   await f.accepted('agent-a',1,0,'closed','sell',true,'close');
   await ctx.scopeSnapshot(f.snapshot({positions:[f.position(1)],openSymbols:new Set([symbol])}),market);
-  expect(f.rows('CryptoPositionOwners')[0]?.contracts).toBe(1);
+  expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.contracts).toBe(1);
   await expect(f.context('agent-b').recordSubmission(f.client('agent-b'),symbol,'sell',1,true)).rejects.toThrow('owner');
 });
 test('explicit refusals can reconcile flat; failed persistence cannot free the ticker for a competitor', async () => {
   const f = fixture(), ctx = f.context(); await ctx.recordSubmission(f.client(),symbol,'buy',1,false); await ctx.recordRefused(f.client()); await ctx.scopeSnapshot(f.snapshot(),market);
-  expect(f.rows('CryptoPositionOwners')[0]?.state).toBe('FLAT');
+  expect(f.rows(COLLECTIONS.CryptoPositionOwners)[0]?.state).toBe('FLAT');
   const bad = fixture();bad.failOrderWrites();await expect(bad.context().recordSubmission(bad.client(),symbol,'buy',1,false)).rejects.toThrow('persistence');
   await expect(bad.context('agent-b').recordSubmission(bad.client('agent-b'),symbol,'buy',1,false)).rejects.toThrow('another agent');
 });

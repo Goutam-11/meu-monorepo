@@ -1,5 +1,6 @@
 import {test,expect,mock,beforeEach} from 'bun:test';
 import {TRPCError} from '@trpc/server';
+import { COLLECTIONS } from "../../shared/persistence/collections";
 let running=false,changed=false,truncated=false,brokerError=false,denied=false;
 let inspections=0;
 const commands:Record<string,any>[]=[];
@@ -23,13 +24,13 @@ mock.module('@/lib/db',()=>({default:{
  $runCommandRaw:async(command:Record<string,any>)=>{
   commands.push(command);expect(command.find).toBeDefined();
   expect(command.batchSize).toBe(command.limit);
-  if(command.find==='ExecutionLocks'){
+  if(command.find===COLLECTIONS.ExecutionLocks){
    expect(command.filter._id.$in).toEqual(['account:physical','exchange:alias-a','exchange:alias-b','agent:agent','recovery:agent']);
    return{ok:1,cursor:{id:truncated?123:0,firstBatch:[{_id:'account:physical',executionId:'run',kind:'WORKER'}]}};
   }
-  if(['CryptoPositionOwners','ManagedCryptoOrders'].includes(command.find))expect(command.filter.userId).toBe('owner');
-  const rows=command.find==='AgentExecutions'?[{_id:'run',agentId:'agent',state:'REVIEW_REQUIRED',secret:'hidden'}]
-   :command.find==='OrderIntents'?[{_id:'intent',executionId:'run',state:'PENDING',intent:{symbol:'XRP/USD:USD'},secret:'hidden'}]:[];
+  if([COLLECTIONS.CryptoPositionOwners,COLLECTIONS.ManagedCryptoOrders].includes(command.find))expect(command.filter.userId).toBe('owner');
+  const rows=command.find===COLLECTIONS.AgentExecutions?[{_id:'run',agentId:'agent',state:'REVIEW_REQUIRED',secret:'hidden'}]
+   :command.find===COLLECTIONS.OrderIntents?[{_id:'intent',executionId:'run',state:'PENDING',intent:{symbol:'XRP/USD:USD'},secret:'hidden'}]:[];
   return{ok:1,cursor:{id:{$numberLong:'0'},firstBatch:rows}};
  },
 }}));

@@ -15,6 +15,7 @@ import { configureCryptoExchange, exchangeMap } from '../../../../../meu/schedul
 import { prepareDeltaStrategyAccount } from '../../../../../meu/schedulerService/src/brokers/delta/deltaStart';
 import { cryptoEntryMarket, fetchCryptoLeverage } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
 import { OrderRejectedError } from '../../../../../meu/schedulerService/src/execution/tradeGuard';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 export async function startDeltaAgent(agent: Agent, userId: string, requestId?: string) {
   const raw = agent.strategyConfig as Record<string, unknown> | null;
@@ -37,14 +38,14 @@ export async function startDeltaAgent(agent: Agent, userId: string, requestId?: 
     throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'A production Delta India or Binance USD-M connection with saved keys is required.' });
   const lockId = `exchange:${agent.exchangeId}`, executionId = `start:${randomUUID()}`;
   const claimExchange = async () => {
-    const inserted = await prisma.$runCommandRaw({ insert: 'ExecutionLocks', documents: [{ _id: lockId, executionId, kind: 'START_PREFLIGHT', state: 'PREPARING', createdAt: { $date: new Date().toISOString() } }] });
+    const inserted = await prisma.$runCommandRaw({ insert: COLLECTIONS.ExecutionLocks, documents: [{ _id: lockId, executionId, kind: 'START_PREFLIGHT', state: 'PREPARING', createdAt: { $date: new Date().toISOString() } }] });
     if (inserted.ok !== 1 || inserted.n !== 1 || (Array.isArray(inserted.writeErrors) && inserted.writeErrors.length)) throw new Error('Lock not acquired');
   };
   try { await claimExchange(); }
   catch {
     // Recover only this agent's worker lock. A different ticker/agent may
     // own the account lock; passing the new agent ID gives a misleading error.
-    const [holding] = await readRows<{executionId:string;kind?:string}>({find:'ExecutionLocks',filter:{_id:lockId}},1);
+    const [holding] = await readRows<{executionId:string;kind?:string}>({find:COLLECTIONS.ExecutionLocks,filter:{_id:lockId}},1);
     if (!holding || holding.kind || !holding.executionId.startsWith(`${agent.id}-`))
       throw new TRPCError({code:'CONFLICT',message: holding?.kind ? 'Delta account preparation or recovery is in progress. Wait for it to finish, then retry Start.' : holding ? 'Another agent has a running or retained execution on this Delta connection. Wait for its run, or recover/reconcile that agent before starting. Different tickers share account margin and execution safety.' : 'Could not acquire the Delta execution lock. Retry Start; if this persists, check the database connection.'});
     if (protectedLlm) throw new TRPCError({code:'CONFLICT',message:'This LLM execution has a retained lock. Open Exchanges → account recovery, scan the broker account, then verify and recover before starting.'});
@@ -58,7 +59,7 @@ export async function startDeltaAgent(agent: Agent, userId: string, requestId?: 
   let activatedVersion: Date | undefined;
   const startedAt = Date.now();
   try {
-    if ((await readRows({find:'ExecutionLocks',filter:{_id:`recovery:${agent.id}`}},1)).length)
+    if ((await readRows({find:COLLECTIONS.ExecutionLocks,filter:{_id:`recovery:${agent.id}`}},1)).length)
       throw new TRPCError({code:'CONFLICT',message:'A recovery is still running or its lock needs review. Keep the agent paused and inspect account reconciliation.'});
     const assertPaused = async (accountWide = false) => {
       if (!await prisma.agent.findFirst({ where: { id: agent.id, userId, status: 'PAUSED', updatedAt: agent.updatedAt }, select: { id: true } }))
@@ -78,7 +79,7 @@ export async function startDeltaAgent(agent: Agent, userId: string, requestId?: 
     const registered = await registerExecutionAccount(exchange, agent.exchangeId, userId);
     connectedIds = await linkedExchangeIds(registered.accountKey, userId);
     const accountLock = `account:${registered.accountKey}`;
-    const accountClaim = await prisma.$runCommandRaw({ insert: 'ExecutionLocks', documents: [{ _id: accountLock, executionId, kind: 'START_PREFLIGHT', state: 'PREPARING', createdAt: { $date: new Date().toISOString() } }] });
+    const accountClaim = await prisma.$runCommandRaw({ insert: COLLECTIONS.ExecutionLocks, documents: [{ _id: accountLock, executionId, kind: 'START_PREFLIGHT', state: 'PREPARING', createdAt: { $date: new Date().toISOString() } }] });
     if (accountClaim.ok !== 1 || accountClaim.n !== 1 || (Array.isArray(accountClaim.writeErrors) && accountClaim.writeErrors.length))
       throw new TRPCError({ code: 'CONFLICT', message: 'This broker account is busy or has an unresolved execution. Another saved connection may refer to the same account.' });
     ownedLocks.push(accountLock);
@@ -110,7 +111,7 @@ export async function startDeltaAgent(agent: Agent, userId: string, requestId?: 
     appLog('warn', 'agent.start.preflight.failed', { requestId, operation: 'trpc.agents.statusChange', durationMs: Date.now() - startedAt, code: 'PRECONDITION_FAILED' });
     if (writeAttempted && !verified) {
       try {
-        await prisma.$runCommandRaw({ update: 'ExecutionLocks', updates: [{ q: { _id: { $in: ownedLocks }, executionId }, multi: true, u: { $set: { state: 'REVIEW_REQUIRED' } } }] });
+        await prisma.$runCommandRaw({ update: COLLECTIONS.ExecutionLocks, updates: [{ q: { _id: { $in: ownedLocks }, executionId }, multi: true, u: { $set: { state: 'REVIEW_REQUIRED' } } }] });
       } catch { appLog('error', 'agent.start.preflight.failed', { requestId, operation: 'trpc.agents.statusChange', code: 'CONFLICT' }); }
       throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Broker settings could not be verified after an update attempt. The agent remains paused and the account lock is retained. Reconcile margin/leverage and the execution lock before retrying.' });
     }
@@ -120,7 +121,7 @@ export async function startDeltaAgent(agent: Agent, userId: string, requestId?: 
   } finally {
     if (!writeAttempted || verified) {
       try {
-        const released = await prisma.$runCommandRaw({ delete: 'ExecutionLocks', deletes: ownedLocks.map(key => ({ q: { _id: key, executionId }, limit: 1 })) });
+        const released = await prisma.$runCommandRaw({ delete: COLLECTIONS.ExecutionLocks, deletes: ownedLocks.map(key => ({ q: { _id: key, executionId }, limit: 1 })) });
         if (released.ok !== 1 || released.n !== ownedLocks.length || (Array.isArray(released.writeErrors) && released.writeErrors.length)) throw new Error('Lock not released');
       } catch {
         // Never let a successfully prepared agent execute behind an unresolved start lock.

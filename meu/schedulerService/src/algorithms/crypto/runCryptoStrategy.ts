@@ -14,6 +14,7 @@ import { OrderRejectedError, DeltaLeverageUncertainError, type ExecutionSafety }
 import { logger, errMeta } from '../../lib/logger';
 
 import { intervals, MissedLiveCandlesError, type CryptoStrategyConfig } from './cryptoStrategyConfig';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 export { validateCryptoStrategy, MissedLiveCandlesError, type CryptoStrategyConfig } from './cryptoStrategyConfig';
 const log = logger.child({ module:'cryptoStrategy' });
 type LiveState = { _id:string; userId:string; lastCandle:number; history:Candle[]; activeAfter?:number; entryOrderId?:string; side?:'long'|'short'; filled?:number; positionObserved?:boolean; lastExitCandle?:number; usedEntryProposalIds?:string[] };
@@ -28,7 +29,7 @@ function sameContract(a:Contract,b:Contract) {
   if(a.symbol!==b.symbol||a.contractSize!==b.contractSize||a.maintenanceMarginRate!==b.maintenanceMarginRate) throw new Error('Contract terms changed; review the strategy before resuming');
 }
 export async function runPaperStrategy({db,agentId,userId,symbol,config,safety,activeAfter=0}:{db:Db;agentId:string;userId:string;symbol:string;config:CryptoStrategyConfig;safety:ExecutionSafety;activeAfter?:number}) {
-  const records=db.collection<{_id:string;userId:string;state:PaperState;contract:Contract;updatedAt:Date}>('PaperTradingState');
+  const records=db.collection<{_id:string;userId:string;state:PaperState;contract:Contract;updatedAt:Date}>(COLLECTIONS.PaperTradingState);
   const stateId = strategyStateKey(agentId,config);
   const saved=await records.findOne({_id:stateId,userId});
   const data=await history(symbol,config,saved?.state.lastCandle);
@@ -64,7 +65,7 @@ export async function runLiveCryptoStrategy({db,agentId,userId,symbol,config,saf
     throw new OrderRejectedError('Saved strategy futures limits are required and must match execution policy');
   const market=cryptoEntryMarket(exchange,symbol,'USD');
   if(market.contractSize!==config.contract.contractSize)throw new Error('Contract size changed; review required');
-  const records=db.collection<LiveState>('CryptoStrategyState');
+  const records=db.collection<LiveState>(COLLECTIONS.CryptoStrategyState);
   const stateId = strategyStateKey(agentId,config);
   let state=await records.findOne({_id:stateId,userId});
   // Start preflight changes activeAfter on explicit Resume, not on process restart.

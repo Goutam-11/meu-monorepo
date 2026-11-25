@@ -7,6 +7,7 @@ import { TRPCError } from "@trpc/server";
 
 import { credentialCreateSchema, credentialUpdateSchema } from "../validation";
 import {loadCredentialModels,searchCredentialModels} from './models';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 const ITEMS_PER_PAGE = 5;
 const redactCredential = <T extends { apiKey: string }>(row: T) => ({ ...row, apiKey: "" });
@@ -120,7 +121,7 @@ export const credentialsRouter = createTRPCRouter({
         if (running) throw new TRPCError({code:'PRECONDITION_FAILED',message:'Pause agents using this credential before changing its provider, API key, region or endpoint. Select a compatible model before resuming.'});
         const consumers = await prisma.agent.findMany({where:{userId:ctx.auth.user.id,credentialId:input.id},select:{id:true}});
         if (consumers.length) {
-          const result = await prisma.$runCommandRaw({find:'ExecutionLocks',filter:{$or:[{_id:{$in:consumers.map(agent=>`agent:${agent.id}`)}},...consumers.map(agent=>({executionId:{$regex:`^${agent.id}-`}}))]},limit:1,batchSize:1,projection:{_id:1}});
+          const result = await prisma.$runCommandRaw({find:COLLECTIONS.ExecutionLocks,filter:{$or:[{_id:{$in:consumers.map(agent=>`agent:${agent.id}`)}},...consumers.map(agent=>({executionId:{$regex:`^${agent.id}-`}}))]},limit:1,batchSize:1,projection:{_id:1}});
           const cursor = result.cursor as {firstBatch?:unknown[];id?:number|{$numberLong:string}} | undefined;
           const cursorId = typeof cursor?.id === 'object' ? cursor.id.$numberLong : String(cursor?.id);
           if (result.ok !== 1 || !Array.isArray(cursor?.firstBatch) || cursorId !== '0' || cursor.firstBatch.length)

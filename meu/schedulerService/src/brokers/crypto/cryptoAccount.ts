@@ -7,6 +7,7 @@ import { defaultAccountRisk, type AccountRiskLimits } from '../../../../../share
 export { defaultAccountRisk, type AccountRiskLimits } from '../../../../../shared/trading/accountRisk';
 import { OrderRejectedError, type ExecutionSafety } from '../../execution/tradeGuard';
 import { fetchCryptoOpenOrders, type CryptoRiskSnapshot } from './cryptoRisk';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 export const accountRiskSchema = z.object({
   maxOpenPositions: z.number().int().min(1).max(100),
@@ -37,14 +38,14 @@ type Owner = { _id: string; accountKey: string; userId: string; agentId: string;
 type ManagedOrder = { _id: string; accountKey: string; userId: string; agentId: string; symbol: string; clientOrderId: string; brokerOrderId?: string; side: 'buy'|'sell'; amount: number; reduceOnly: boolean; conditional?:boolean; closePosition?:boolean; triggerPrice?:number; protectionType?:'STOP_MARKET'|'TAKE_PROFIT_MARKET'; state: 'SUBMITTING'|'ACCEPTED'|'REFUSED'; filled?:number;remaining?:number;brokerStatus?:string; createdAt: Date; updatedAt: Date };
 type Period = { _id: string; accountKey: string; agentId: string; productId: string; startedAt: Date; endedAt?: Date };
 export async function registerDeltaAccount(db: Db, accountKey: string, userId: string, exchangeId: string) {
-  const accounts = db.collection<Account>('BrokerAccounts');
+  const accounts = db.collection<Account>(COLLECTIONS.BrokerAccounts);
   await accounts.updateOne({ _id: accountKey }, { $setOnInsert: { userId, limits: defaultAccountRisk, updatedAt: new Date() } }, { upsert: true });
   const account = await accounts.findOne({ _id: accountKey, userId });
   if (!account) throw new OrderRejectedError('This broker account is already registered to a different Meu user');
   accountRiskSchema.parse(account.limits);
-  const previous = await db.collection<{_id:string;accountKey:string;userId:string}>('BrokerAccountLinks').findOne({ _id:exchangeId });
+  const previous = await db.collection<{_id:string;accountKey:string;userId:string}>(COLLECTIONS.BrokerAccountLinks).findOne({ _id:exchangeId });
   if (previous && (previous.accountKey !== accountKey || previous.userId !== userId)) throw new OrderRejectedError('Saved connection points to a different broker account; create a new connection and reconcile the old account');
-  await db.collection<{_id:string;accountKey:string;userId:string;updatedAt:Date}>('BrokerAccountLinks').updateOne({ _id: exchangeId }, { $set: { accountKey, userId, updatedAt: new Date() } }, { upsert: true });
+  await db.collection<{_id:string;accountKey:string;userId:string;updatedAt:Date}>(COLLECTIONS.BrokerAccountLinks).updateOne({ _id: exchangeId }, { $set: { accountKey, userId, updatedAt: new Date() } }, { upsert: true });
   return account;
 }
 
@@ -52,9 +53,9 @@ export async function registerDeltaAccount(db: Db, accountKey: string, userId: s
 export function createCryptoAccountContext(db: Db, exchange: Exchange, input: { accountKey: string; userId: string; agentId: string; limits: AccountRiskLimits }): NonNullable<ExecutionSafety['crypto']> {
   const { accountKey, userId, agentId } = input;
   const limits = accountRiskSchema.parse(input.limits);
-  const owners = db.collection<Owner>('CryptoPositionOwners');
-  const orders = db.collection<ManagedOrder>('ManagedCryptoOrders');
-  const periods = db.collection<Period>('CryptoOwnershipPeriods');
+  const owners = db.collection<Owner>(COLLECTIONS.CryptoPositionOwners);
+  const orders = db.collection<ManagedOrder>(COLLECTIONS.ManagedCryptoOrders);
+  const periods = db.collection<Period>(COLLECTIONS.CryptoOwnershipPeriods);
   const prefix = `m${createHash('sha256').update(agentId).digest('hex').slice(0,12)}-`;
   const productId = (symbol: string) => {
     if(exchange.id==='binance') {const id=exchange.market(symbol).id;if(!id)throw new OrderRejectedError('Broker market identity unavailable');return id;}
@@ -125,7 +126,7 @@ export function createCryptoAccountContext(db: Db, exchange: Exchange, input: { 
       }
       if (!Number.isFinite(snapshot.walletEquity) || snapshot.walletEquity <= 0) throw new OrderRejectedError('An authoritative settlement equity is required for account limits');
       const date = new Date(snapshot.dayStart).toISOString();
-      const daily = db.collection<{ _id: string; equity: number }>('CryptoAccountDailyEquity');
+      const daily = db.collection<{ _id: string; equity: number }>(COLLECTIONS.CryptoAccountDailyEquity);
       await daily.updateOne({ _id: `${accountKey}:${date}` }, { $setOnInsert: { equity: snapshot.walletEquity } }, { upsert: true });
       const baseline = await daily.findOne({ _id: `${accountKey}:${date}` });
       if (!baseline || !Number.isFinite(baseline.equity) || baseline.equity <= 0) throw new OrderRejectedError('Account daily equity baseline is unavailable');

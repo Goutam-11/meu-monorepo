@@ -9,6 +9,7 @@ import { strategyCatalog, strategyStateKey, STRATEGY_VERSION } from '../../../..
 import { projectCryptoPolicy } from '../../agents/server/crypto-policy';
 import { runPerpetualBacktest, type Contract } from '../../../../../shared/trading/perpetualBacktest';
 import type { Candle } from '../../../../../shared/trading/emaCrossover';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 type Snapshot = {
     config: BacktestInput;
     contract: Contract;
@@ -160,7 +161,7 @@ export const backtestsRouter = createTRPCRouter({
         if(!agent)throw new TRPCError({code:'NOT_FOUND',message:'Agent not found'});
         if(agent.executionMode!=='PAPER')throw new TRPCError({code:'PRECONDITION_FAILED',message:'Paper history requires a paper agent.'});
         const currentStateId=strategyStateKey(agent.id,agent.strategyConfig as {stateId?:unknown}|null);
-        const result=await prisma.$runCommandRaw({find:'PaperTradingState',filter:{userId:ctx.auth.user.id,$or:[{_id:agent.id},{agentId:agent.id}]},sort:{updatedAt:-1},limit:20,batchSize:20,projection:{_id:1,'config.id':1,'config.timeframe':1,updatedAt:1}});
+        const result=await prisma.$runCommandRaw({find:COLLECTIONS.PaperTradingState,filter:{userId:ctx.auth.user.id,$or:[{_id:agent.id},{agentId:agent.id}]},sort:{updatedAt:-1},limit:20,batchSize:20,projection:{_id:1,'config.id':1,'config.timeframe':1,updatedAt:1}});
         const rows=(result.cursor as {firstBatch?:{_id:string;config?:{id?:string;timeframe?:string};updatedAt?:{$date:string}}[]}|undefined)?.firstBatch;
         if(result.ok!==1||!Array.isArray(rows))throw new TRPCError({code:'BAD_GATEWAY',message:'Could not read paper portfolio history.'});
         return rows.map(row=>({id:row._id,current:row._id===currentStateId,algorithm:row.config?.id??'Previous configuration',timeframe:row.config?.timeframe??null,updatedAt:row.updatedAt?.$date??null}));
@@ -174,7 +175,7 @@ export const backtestsRouter = createTRPCRouter({
             try { stateId=input.sessionId===agent.id ? agent.id : strategyStateKey(agent.id,{stateId:input.sessionId}); }
             catch { throw new TRPCError({code:'BAD_REQUEST',message:'Choose a portfolio belonging to this agent.'}); }
         }
-        const result = await prisma.$runCommandRaw({ find: 'PaperTradingState', filter: { _id: stateId, userId: ctx.auth.user.id,...(stateId!==agent.id ? {agentId:agent.id}: {}) }, projection: { state: 1 }, limit: 1 });
+        const result = await prisma.$runCommandRaw({ find: COLLECTIONS.PaperTradingState, filter: { _id: stateId, userId: ctx.auth.user.id,...(stateId!==agent.id ? {agentId:agent.id}: {}) }, projection: { state: 1 }, limit: 1 });
         const batch = (result.cursor as { firstBatch?: unknown[] } | undefined)?.firstBatch;
         const row = batch?.[0];
         const state = row && typeof row === 'object' ? (row as Record<string, unknown>).state : null;

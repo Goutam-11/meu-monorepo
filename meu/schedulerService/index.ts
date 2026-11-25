@@ -7,12 +7,13 @@ import { startReconciler } from "@/reconciler/reconciler";
 // import { startExchangeScheduler } from "@/schedulers/exchangeScheduler";
 import { bootstrapAgents } from "@/state/setStates";
 import { logger, errMeta } from "@/lib/logger";
+import { COLLECTIONS } from "../../shared/persistence/collections";
 
 const log = logger.child({ module: "main" });
 
 async function main() {
   const db = await connectDB();
-  const agentCollection = db.collection("Agent");
+  const agentCollection = db.collection(COLLECTIONS.Agent);
   const agents = await agentCollection
     .find({ status: "RUNNING" })
     .project({

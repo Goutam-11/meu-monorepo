@@ -31,21 +31,22 @@ import { scheduleAgentRun } from "@/schedulers/scheduler";
 import { toAgentCacheEntry } from "@/state/setStates";
 import { LLM_REQUEST_TIMEOUT_MS, type LLMProviderId } from "@/agents/llm/providers";
 import { buildRunMemory, formatRunMemory, memoryContext, operationReceipt, type OperationReceipt } from "@/agents/llm/runMemory";
+import { COLLECTIONS } from "../../../../shared/persistence/collections";
+import { agentExecutionSchema, agentJobDataSchema, type AgentJobData } from "@/persistence/schemas";
 
 const log = logger.child({ module: "worker" });
-type AgentJobData = { agentId: string; userId: string; runAt: number; recoveryFailure?: {version:1;runId:string;brokerOperationRequested:false;failedAt:string;code:string} };
 const providers: Record<string, LLMProviderId> = {
   OPENROUTER: "openrouter", OPENAI: "openai", ANTHROPIC: "anthropic", NVIDIA_NIM: "nvidia", OPENCODE: "opencode", AMAZON_BEDROCK: "bedrock",
 };
 export function createRunProcessor(db: Db) {
-  const agents = db.collection("Agent");
-  const executions = db.collection<{ _id: string; state: string; agentId: string; startedAt: Date; finishedAt?: Date; reviewReason?: string; outcome?: string; failure?: ReturnType<typeof executionFailure> & {retryAt?: string; consecutiveFailures?: number} }>("AgentExecutions");
-  const locks = db.collection<{ _id: string; executionId: string; createdAt: Date; kind?: string; state?: string }>("ExecutionLocks");
-  const intents = db.collection<{ _id: string; state: string; executionId: string; intent: Record<string, unknown>; createdAt: Date; result?: unknown }>("OrderIntents");
-  if (process.env.NOTIFICATION_TRANSPORT === "db") setLegacyNotificationCollection(db.collection("Notification"));
+  const agents = db.collection(COLLECTIONS.Agent);
+  const executions = db.collection<{ _id: string; state: string; agentId: string; startedAt: Date; finishedAt?: Date; reviewReason?: string; outcome?: string; failure?: ReturnType<typeof executionFailure> & {retryAt?: string; consecutiveFailures?: number} }>(COLLECTIONS.AgentExecutions);
+  const locks = db.collection<{ _id: string; executionId: string; createdAt: Date; kind?: string; state?: string }>(COLLECTIONS.ExecutionLocks);
+  const intents = db.collection<{ _id: string; state: string; executionId: string; intent: Record<string, unknown>; createdAt: Date; result?: unknown }>(COLLECTIONS.OrderIntents);
+  if (process.env.NOTIFICATION_TRANSPORT === "db") setLegacyNotificationCollection(db.collection(COLLECTIONS.Notification));
 
   async function processRun(job: Job<AgentJobData>) {
-    const { agentId, userId, runAt } = job.data;
+    const { agentId, userId, runAt } = agentJobDataSchema.parse(job.data);
     const startedAt = Date.now();
     log.info({ event: "run.started", scheduledAt: runAt }, "Agent run started");
     if (!ObjectId.isValid(agentId) || !Number.isSafeInteger(runAt)) throw new Error("Invalid agent job");
@@ -89,11 +90,11 @@ export function createRunProcessor(db: Db) {
         throw new Error("A supported strategy, exchange and any required model credential are required");
       }
       const credential = usesLlm
-        ? await db.collection("Credentials").findOne({ _id: new ObjectId(agent.credentialId), userId })
+        ? await db.collection(COLLECTIONS.Credentials).findOne({ _id: new ObjectId(agent.credentialId), userId })
         : null;
       llmProvider = credential ? providers[credential.type] : undefined;
       llmEndpoint = credential?.type === "AMAZON_BEDROCK" ? credential.bedrockEndpoint ?? "runtime" : undefined;
-      const exchangeDoc = await db.collection("Exchange").findOne({ _id: new ObjectId(agent.exchangeId), userId });
+      const exchangeDoc = await db.collection(COLLECTIONS.Exchange).findOne({ _id: new ObjectId(agent.exchangeId), userId });
       if ((usesLlm && !credential) || !exchangeDoc) throw new Error("Agent resources must belong to its owner");
       const paper = agent.executionMode === "PAPER";
       const cryptoAlgo = strategy === "ALGO_TRADING" && agent.type === "CRYPTO" && exchangeDoc.name.toUpperCase() === "DELTA" && ["PAPER", "LIVE"].includes(agent.executionMode);
@@ -122,7 +123,7 @@ export function createRunProcessor(db: Db) {
         await deltaExchange.loadMarkets();
         accountKey = await identifyDeltaAccount(deltaExchange, Boolean(exchangeDoc.sandbox));
         accountLimits = (await registerDeltaAccount(db, accountKey, userId, String(agent.exchangeId))).limits;
-        const links = await db.collection("BrokerAccountLinks").find({ accountKey, userId }).toArray();
+        const links = await db.collection(COLLECTIONS.BrokerAccountLinks).find({ accountKey, userId }).toArray();
         const peers = await agents.find({ userId, status: "RUNNING", exchangeId: { $in: links.map(link => new ObjectId(String(link._id))) }, _id: { $ne: agent._id }, executionMode: { $ne: "PAPER" } }).toArray();
         const canonical = (symbol: string) => deltaExchange!.market(symbol).symbol;
         if (peers.some(other => other.market?.symbols?.some((symbol: string) => agent.market.symbols.some((allowed: string) => canonical(allowed) === canonical(symbol)))))
@@ -136,9 +137,13 @@ export function createRunProcessor(db: Db) {
         catch (err) {
           if ((err as { code?: number }).code === 11000) {
             const holder = await locks.findOne({ _id: key });
-            const execution = holder && await executions.findOne({ _id: holder.executionId });
+            const storedExecution = holder && await executions.findOne({ _id: holder.executionId });
+            const parsedExecution = storedExecution ? agentExecutionSchema.safeParse(storedExecution) : null;
+            if (storedExecution && !parsedExecution?.success)
+              log.warn({ event: "execution.invalid", executionId: holder!.executionId, issueCount: parsedExecution?.error.issues.length }, "Stored execution document did not match the persistence contract");
+            const executionState = parsedExecution?.success ? parsedExecution.data.state : undefined;
             let active = false;
-            if (holder && holder.executionId !== executionId && holder.state !== "REVIEW_REQUIRED" && execution?.state !== "REVIEW_REQUIRED") {
+            if (holder && holder.executionId !== executionId && holder.state !== "REVIEW_REQUIRED" && executionState !== "REVIEW_REQUIRED") {
               if (holder.kind === "START_PREFLIGHT" && holder.state === "PREPARING") {
                 const age = Date.now() - holder.createdAt.getTime();
                 active = age >= 0 && age < 5 * 60_000;
@@ -152,7 +157,7 @@ export function createRunProcessor(db: Db) {
               log.info({ event: "run.skipped", skipReason: "exchange_busy", nextRunDelayMs: 15_000 }, "Agent run deferred until the active account operation completes");
               return;
             }
-            throw new ExecutionLockReviewError(key.split(":")[0]!,holder?.executionId,execution?.state ?? holder?.state);
+            throw new ExecutionLockReviewError(key.split(":")[0]!,holder?.executionId,executionState ?? holder?.state);
           }
           throw err;
         }
@@ -230,14 +235,14 @@ export function createRunProcessor(db: Db) {
       };
       if (deltaExchange && accountKey && accountLimits) {
         // Resolve limits under the shared lock, after any completed settings update.
-        const current = await db.collection("BrokerAccounts").findOne({ _id: accountKey, userId } as never);
+        const current = await db.collection(COLLECTIONS.BrokerAccounts).findOne({ _id: accountKey, userId } as never);
         accountLimits = accountRiskSchema.parse(current?.limits);
         safety.crypto = createCryptoAccountContext(db, deltaExchange, { accountKey, limits: accountLimits, agentId, userId });
         const market = cryptoEntryMarket(deltaExchange, policy.symbols[0]!, policy.capital.currency);
         await safety.crypto.scopeSnapshot(await cryptoEntrySnapshot(deltaExchange, market, policy), market);
       }
       const context = memoryContext(agent, exchangeDoc);
-      const recent = usesLlm ? await db.collection("AgentRuns").find({ agentId, memoryContext: context })
+      const recent = usesLlm ? await db.collection(COLLECTIONS.AgentRuns).find({ agentId, memoryContext: context })
         .sort({ createdAt: -1 }).limit(5).toArray() : [];
       const recentRuns = recent.map(formatRunMemory);
       stage = "prepare_execution";
@@ -310,7 +315,7 @@ export function createRunProcessor(db: Db) {
         await exchange.loadMarkets();
         const timeframe = analysisTimeframe(agent.strategyConfig?.analysisTimeframe);
         if (!exchange.timeframes?.[timeframe]) throw new Error(`Exchange does not support the configured ${timeframe} candle interval`);
-        const completedReviewCount = await db.collection("AgentRuns").countDocuments({ agentId });
+        const completedReviewCount = await db.collection(COLLECTIONS.AgentRuns).countDocuments({ agentId });
         const lastSuccessfulReview = agent.lastRun ? new Date(agent.lastRun) : null;
         response = await tradingAgent({ ...common, Coin: agent.market.symbols, exchange, analysisTimeframe: timeframe,
           reviewContext: {
@@ -327,7 +332,7 @@ export function createRunProcessor(db: Db) {
       stage = "persist_run";
       const missingOutput = usesLlm && !response.trim();
       const savedResponse = missingOutput ? `Model returned no readable decision summary. Recorded broker operations: ${receipts.length}. Inspect execution evidence; no model decision is available.` : response;
-      await db.collection("AgentRuns").insertOne({ agentId, llmResponse: savedResponse, createdAt: new Date(), executionId,
+      await db.collection(COLLECTIONS.AgentRuns).insertOne({ agentId, llmResponse: savedResponse, createdAt: new Date(), executionId,
         ...(usesLlm ? { memoryContext: context, memory: buildRunMemory(response, receipts) } : {}),
       });
       await executions.updateOne({ _id: executionId }, { $set: { state: "COMPLETED", finishedAt: new Date(), ...(missingOutput ? { outcome: "LLM_OUTPUT_MISSING" } : {}) } });

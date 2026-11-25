@@ -1,4 +1,5 @@
 import { beforeEach, expect, mock, test } from 'bun:test';
+import { COLLECTIONS } from "../../shared/persistence/collections";
 const id='a'.repeat(24), exchangeId='b'.repeat(24), executionId='failed-run', accountKey='delta:fixture',peerId='c'.repeat(24);
 const now=new Date(), interval=3600, end=Math.floor(Date.now()/1000/interval)*interval;
 const config={id:'donchian',fastPeriod:20,slowPeriod:50,lookback:20,atrPeriod:14,stopAtr:2,rewardRisk:2,timeframe:'1h',simulation:{initialCapital:10,leverage:2,riskPerTradePct:0.5,maxMarginPct:10,feeBps:10,slippageBps:5,fundingRatePct8h:0,maxTradesPerDay:1,maxPositionsOpenedPerDay:1,maxDailyLossPct:1,direction:'both'},contract:{symbol:'XRPUSD',contractSize:1,maintenanceMarginRate:0.005,settlement:'USD'}};
@@ -36,8 +37,8 @@ mock.module('../src/lib/db',()=>({default:{
  $runCommandRaw:async(command:Row)=>{
   if(command.insert){const name=String(command.insert);const rows=records[name]??=[];records[name]=rows;const doc=(command.documents as Row[])[0]!;if(rows.some(row=>row._id===doc._id))return {ok:1,n:0,writeErrors:[{code:11000}]};rows.push(structuredClone(doc));return {ok:1,n:1};}
   if(command.update){const name=String(command.update),{q,u}=(command.updates as {q:Row;u:{$set:Row}}[])[0]!;
-   if(name==='CryptoStrategyState' && cursorConflict)return {ok:1,n:0};
-   if(name==='AgentExecutions' && u.$set.state==='COMPLETED' && failAuditCompletion)throw new Error('Interrupted completion');
+   if(name===COLLECTIONS.CryptoStrategyState && cursorConflict)return {ok:1,n:0};
+   if(name===COLLECTIONS.AgentExecutions && u.$set.state==='COMPLETED' && failAuditCompletion)throw new Error('Interrupted completion');
    const row=records[name]!.find(row=>matches(row,q));if(!row)return {ok:1,n:0};Object.assign(row,structuredClone(u.$set));return {ok:1,n:1};}
   if(command.delete){let n=0;for(const {q} of command.deletes as {q:Row}[]){const rows=records[String(command.delete)]!,at=rows.findIndex(row=>matches(row,q));if(at>=0){rows.splice(at,1);n++;}if(partialRelease && !String(q._id).startsWith('recovery:')){partialRelease=false;return {ok:1,n};}}return {ok:1,n};}
   throw new Error('Unexpected operation');

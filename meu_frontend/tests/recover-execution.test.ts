@@ -1,4 +1,5 @@
 import {beforeEach,expect,mock,test} from 'bun:test';
+import { COLLECTIONS } from "../../shared/persistence/collections";
 type Row=Record<string,any>;
 const agent={id:'a'.repeat(24),exchangeId:'b'.repeat(24),userId:'owner',status:'PAUSED',type:'CRYPTO',strategy:'LLM_TRADING',executionMode:null,updatedAt:new Date(0),name:'LLM',capital:{allocated:20,currency:'USD'}};
 const executionId='failed-run',accountKey='delta:test';
@@ -25,7 +26,7 @@ mock.module('@/lib/db',()=>({default:{
  agent:{findFirst:async()=>changed?null:agent,findMany:async()=>[{...agent,...(running?{status:'RUNNING'}:{})}],count:async()=>running},
  $runCommandRaw:async(c:Row)=>{
   if(c.insert){const r=rows[c.insert]??=[];rows[c.insert]=r;const d=c.documents[0];if(raceCoordinator&&d._id.startsWith('recovery:')){r.push({...d,executionId:'concurrent-recovery'});raceCoordinator=false;}if(r.some(x=>x._id===d._id))return {ok:1,n:0};r.push(structuredClone(d));return {ok:1,n:1};}
-  if(c.update){const {q,u}=c.updates[0];if(c.update==='AgentExecutions'&&u.$set?.state==='COMPLETED'&&failAudit){failAudit=false;throw Error('Interrupted completion');}const r=(rows[c.update]??[]).find(x=>matches(x,q));if(!r)return {ok:1,n:0};Object.assign(r,structuredClone(u.$set??{}));for(const k of Object.keys(u.$unset??{}))delete r[k];writes++;return {ok:1,n:1};}
+  if(c.update){const {q,u}=c.updates[0];if(c.update===COLLECTIONS.AgentExecutions&&u.$set?.state==='COMPLETED'&&failAudit){failAudit=false;throw Error('Interrupted completion');}const r=(rows[c.update]??[]).find(x=>matches(x,q));if(!r)return {ok:1,n:0};Object.assign(r,structuredClone(u.$set??{}));for(const k of Object.keys(u.$unset??{}))delete r[k];writes++;return {ok:1,n:1};}
   if(c.delete){let n=0;for(const {q} of c.deletes){const r=rows[c.delete]??[],i=r.findIndex(x=>matches(x,q));if(i>=0){r.splice(i,1);n++;}if(partialDelete&&!q._id.startsWith('recovery:')){partialDelete=false;return {ok:1,n};}}return {ok:1,n};}
   throw Error('unexpected write');
  }

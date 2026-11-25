@@ -10,6 +10,7 @@ import { identifyDeltaAccount, accountRiskSchema } from '../../../../../meu/sche
 import { cryptoDayStart, cryptoEntryMarket, cryptoEntrySnapshot, previewAutomaticCryptoLeverage, sizeCryptoEntry } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
 import { OrderRejectedError, type TradingPolicy } from '../../../../../meu/schedulerService/src/execution/tradeGuard';
 import type { Exchange } from '../../../../../meu/schedulerService/node_modules/ccxt';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 export const entryPreviewSchema = z.object({
   agentId: z.string().regex(/^[a-f0-9]{24}$/i),
@@ -85,8 +86,8 @@ export async function entryPreview(userId: string, input: Input): Promise<EntryP
     try { accountKey = await identifyDeltaAccount(exchange, false); }
     catch { refuse('Could not verify the physical broker account. Check the connection and read permissions.'); }
     const [accounts, links] = await Promise.all([
-      readRows<{ userId: string; limits: unknown }>({ find: 'BrokerAccounts', filter: { _id: accountKey! } }, 1),
-      readRows<{ userId: string; accountKey: string }>({ find: 'BrokerAccountLinks', filter: { _id: agent.exchangeId } }, 1),
+      readRows<{ userId: string; limits: unknown }>({ find: COLLECTIONS.BrokerAccounts, filter: { _id: accountKey! } }, 1),
+      readRows<{ userId: string; accountKey: string }>({ find: COLLECTIONS.BrokerAccountLinks, filter: { _id: agent.exchangeId } }, 1),
     ]);
     if (!accounts[0] || !links[0]) refuse('Account safety limits are not initialized. Preview cannot register accounts; prepare or reconcile this connection first.');
     if (accounts[0].userId !== userId || links[0].userId !== userId || links[0].accountKey !== accountKey!) refuse('The saved connection and physical account ownership do not match. Reconcile the account.');
@@ -99,7 +100,7 @@ export async function entryPreview(userId: string, input: Input): Promise<EntryP
     if (siblings.some(other => other.executionMode !== 'PAPER' && other.market.symbols.some(symbol => canonical(symbol) === canonical(input.symbol))))
       refuse('Another live agent covers this account/ticker. Pause it before previewing.');
     const lockFilter = { _id: { $in: [`account:${accountKey!}`, `agent:${agent.id}`, `recovery:${agent.id}`, ...connectionIds.map(id => `exchange:${id}`)] } };
-    if ((await readRows({ find: 'ExecutionLocks', filter: lockFilter }, 104)).length) refuse('This account has an active or retained execution lock. Wait or reconcile before previewing.');
+    if ((await readRows({ find: COLLECTIONS.ExecutionLocks, filter: lockFilter }, 104)).length) refuse('This account has an active or retained execution lock. Wait or reconcile before previewing.');
     await exchange.loadMarkets();
     const market = cryptoEntryMarket(exchange, input.symbol, policy.capital.currency);
     const productId = exchange.id === 'binance' ? market.id : String(market.numericId);
@@ -115,10 +116,10 @@ export async function entryPreview(userId: string, input: Input): Promise<EntryP
     const timezone = exchange.id === 'delta' ? 'Asia/Kolkata' : 'UTC';
     const day = new Date(dayStart + (exchange.id === 'delta' ? 330 * 60_000 : 0)).toISOString().slice(0, 10);
     const [baseline, owners, submitting, usage] = await Promise.all([
-      readRows<{ equity: number }>({ find: 'CryptoAccountDailyEquity', filter: { _id: `${accountKey!}:${new Date(dayStart).toISOString()}` } }, 1),
-      readRows<{ agentId: string; userId: string; state: string }>({ find: 'CryptoPositionOwners', filter: { _id: `${accountKey!}:${productId}` } }, 1),
-      readRows({ find: 'ManagedCryptoOrders', filter: { accountKey: accountKey!, state: 'SUBMITTING' } }, 100),
-      readRows<{ tradesReserved: number; positionsOpenedReserved: number }>({ find: 'AgentDailyRiskUsage', filter: { _id: `${agent.id}:${timezone}:${day}` } }, 1),
+      readRows<{ equity: number }>({ find: COLLECTIONS.CryptoAccountDailyEquity, filter: { _id: `${accountKey!}:${new Date(dayStart).toISOString()}` } }, 1),
+      readRows<{ agentId: string; userId: string; state: string }>({ find: COLLECTIONS.CryptoPositionOwners, filter: { _id: `${accountKey!}:${productId}` } }, 1),
+      readRows({ find: COLLECTIONS.ManagedCryptoOrders, filter: { accountKey: accountKey!, state: 'SUBMITTING' } }, 100),
+      readRows<{ tradesReserved: number; positionsOpenedReserved: number }>({ find: COLLECTIONS.AgentDailyRiskUsage, filter: { _id: `${agent.id}:${timezone}:${day}` } }, 1),
     ]);
     if (baseline[0] && (!Number.isFinite(baseline[0].equity) || baseline[0].equity <= 0))
       refuse('Today’s saved account equity baseline is invalid. Reconcile account safety before previewing.');
@@ -183,7 +184,7 @@ export async function entryPreview(userId: string, input: Input): Promise<EntryP
     const selectedLeverage = selected?.leverage ?? leverage;
     if (actualLeverage?.marginMode !== 'isolated' || actualLeverage.longLeverage !== selectedLeverage || actualLeverage.shortLeverage !== selectedLeverage)
       notes.push(`Sizing assumes isolated ${selectedLeverage}× leverage. The preview has not applied broker settings; Start or entry preparation must verify them.`);
-    if ((await readRows({ find: 'ExecutionLocks', filter: lockFilter }, 104)).length || !await prisma.agent.findFirst({ where: { id: agent.id, userId, status: 'PAUSED', updatedAt: agent.updatedAt }, select: { id: true } })) refuse('Account or agent state changed during the preview. Refresh before using these numbers.');
+    if ((await readRows({ find: COLLECTIONS.ExecutionLocks, filter: lockFilter }, 104)).length || !await prisma.agent.findFirst({ where: { id: agent.id, userId, status: 'PAUSED', updatedAt: agent.updatedAt }, select: { id: true } })) refuse('Account or agent state changed during the preview. Refresh before using these numbers.');
     return { ok: true, provisional, timestamp: new Date().toISOString(), notes, scenario, sizing: { amount: sized.amount, notional: sized.notional, marginRequired: Number(sized.marginRequired), riskAtStop: Number(sized.riskAtStop), selectedLeverage, limitingConstraint: String(sized.limitingConstraint), ...(selected ? { diagnostics: selected.diagnostics } : {}) } };
   } catch (error) {
     return { ok: false, provisional, timestamp: new Date().toISOString(), notes, ...(scenario ? { scenario } : {}), message: error instanceof TRPCError ? error.message : scenario && error instanceof OrderRejectedError ? error.message : 'Could not safely verify this preview. Check the saved account and connection, then retry.' };

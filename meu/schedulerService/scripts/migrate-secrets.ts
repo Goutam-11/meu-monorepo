@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import { decryptSecret, encryptSecret } from "../src/config/encryption";
+import { COLLECTIONS } from "../../../shared/persistence/collections";
 
 // Dry-run by default. --apply migrates with compare-and-set; never logs secret values.
 const apply = process.argv.includes("--apply");
@@ -11,7 +12,7 @@ const client = new MongoClient(uri);
 try {
   await client.connect();
   const db = client.db(process.env.DATABASE_NAME ?? "meu");
-  for (const [name, fields] of [["Exchange", ["apiKey", "secret", "accessToken"]], ["Credentials", ["apiKey"]]] as const) {
+  for (const [name, fields] of [[COLLECTIONS.Exchange, ["apiKey", "secret", "accessToken"]], [COLLECTIONS.Credentials, ["apiKey"]]] as const) {
     let pending = 0, migrated = 0;
     for await (const doc of db.collection(name).find({})) {
       for (const field of fields) {

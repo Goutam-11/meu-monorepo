@@ -3,6 +3,7 @@ import type { Job } from "bullmq";
 import { notificationSchema, sourceMap, type DeliveryContext } from "../contracts/notification";
 import { sendPush } from "../channels/web-push/delivery";
 import { log, errMeta } from "../infrastructure/logger";
+import { COLLECTIONS } from "../../../../shared/persistence/collections";
 
 export function createNotificationProcessor(db: Db) {
   return async (job: Job) => {
@@ -20,7 +21,7 @@ export function createNotificationProcessor(db: Db) {
     const deliveryLog = log.child(context);
     deliveryLog.info({ event: "notification.started", attempt: job.attemptsMade + 1, notificationType: data.type }, "Notification processing started");
     try {
-      const result = await db.collection("Notification").updateOne(
+      const result = await db.collection(COLLECTIONS.Notification).updateOne(
         { deliveryJobId: context.deliveryId },
         { $setOnInsert: {
           userId: data.userId, agentId: data.agentId ?? null, exchangeId: data.exchangeId ?? null,

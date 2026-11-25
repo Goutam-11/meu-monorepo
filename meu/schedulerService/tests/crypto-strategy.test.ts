@@ -4,13 +4,14 @@ import type {Db} from 'mongodb';
 import {runLiveCryptoStrategy,runPaperStrategy} from '../src/algorithms/crypto/runCryptoStrategy';
 import type {ExecutionSafety} from '../src/execution/tradeGuard';
 import {createHash} from 'node:crypto';
+import { COLLECTIONS } from "../../../shared/persistence/collections";
 const interval=3600,end=Math.floor(Date.now()/1000/interval)*interval;
 const config={id:'ema' as const,fastPeriod:2,slowPeriod:3,lookback:3,atrPeriod:2,stopAtr:2,rewardRisk:1.5,timeframe:'1h' as const,simulation:{initialCapital:10000,leverage:2,riskPerTradePct:5,maxMarginPct:25,feeBps:5,slippageBps:2,fundingRatePct8h:0,maxTradesPerDay:10,maxPositionsOpenedPerDay:5,maxDailyLossPct:10,direction:'both' as const},contract:{symbol:'BTCUSD',contractSize:0.001,minContracts:1,maintenanceMarginRate:0.0025,settlement:'USD' as const}};
 const bar=(timestamp:number,close=100)=>({timestamp,open:close,close,high:close+1,low:close-1,volume:10,closed:true});
 function fixture(freshClose=110){
  const records=new Map<string,Record<string,unknown>>();const sent:unknown[][]=[];const reservations:unknown[]=[];
  const state:Record<string,unknown> & {lastCandle:number;history:ReturnType<typeof bar>[] }={_id:'strategy-agent',userId:'owner',lastCandle:end-2*interval,history:[bar(end-5*interval),bar(end-4*interval),bar(end-3*interval),bar(end-2*interval)]};
- records.set('CryptoStrategyState',state);
+ records.set(COLLECTIONS.CryptoStrategyState,state);
  const db={collection:(name:string)=>({findOne:async()=>records.get(name)??null,insertOne:async(doc:Record<string,unknown>)=>{records.set(name,doc);return {insertedId:doc._id};},replaceOne:async(_filter:unknown,doc:Record<string,unknown>)=>{records.set(name,doc);return{modifiedCount:1};}})} as unknown as Db;
  const ex=new ccxt.delta();const symbol='BTC/USD:USD';
  const market={id:'BTCUSD',symbol,base:'BTC',quote:'USD',settle:'USD',type:'swap',contract:true,swap:true,linear:true,inverse:false,active:true,contractSize:0.001,taker:0.0005,precision:{amount:1,price:0.5},limits:{amount:{min:1,max:10000},cost:{min:0}},info:{settling_asset:{id:14},taker_commission_rate:'0.0005',maintenance_margin:'0.25',initial_margin:'0.5',max_leverage_notional:'100000',initial_margin_scaling_factor:'0.0000025',maintenance_margin_scaling_factor:'0.00000125'}} as unknown as MarketInterface;
@@ -30,7 +31,7 @@ function fixture(freshClose=110){
 test('live strategy routes fresh crossover through isolated guarded entry and does not replay',async()=>{
  const f=fixture();try{
  const args={db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config,safety:f.safety,exchange:f.ex};
- await runLiveCryptoStrategy(args);expect(f.sent).toHaveLength(1);expect(f.reservations).toHaveLength(1);const params=f.sent[0]![5] as Record<string,unknown>;expect(params.bracket_stop_loss_price).toBeDefined();expect(params.post_only).toBe(true);expect(f.records.get('CryptoStrategyState')!.entryOrderId).toBe('entry');
+ await runLiveCryptoStrategy(args);expect(f.sent).toHaveLength(1);expect(f.reservations).toHaveLength(1);const params=f.sent[0]![5] as Record<string,unknown>;expect(params.bracket_stop_loss_price).toBeDefined();expect(params.post_only).toBe(true);expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.entryOrderId).toBe('entry');
  await runLiveCryptoStrategy(args);expect(f.sent).toHaveLength(1);
  }finally{f.restore();}
 });
@@ -47,7 +48,7 @@ test('unowned account position and partial fills stop before broker mutation',as
 test('paper initialization uses only public data and never calls a broker',async()=>{
  const f=fixture();try{
  const response=await runPaperStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config,safety:f.safety});
- expect(response).toContain('PAPER: 0 new');expect(f.sent).toHaveLength(0);expect(f.reservations).toHaveLength(0);expect(f.records.get('PaperTradingState')).toBeDefined();
+ expect(response).toContain('PAPER: 0 new');expect(f.sent).toHaveLength(0);expect(f.reservations).toHaveLength(0);expect(f.records.get(COLLECTIONS.PaperTradingState)).toBeDefined();
  }finally{f.restore();}
 });
 test('opposite signal closes only the tracked position with reduceOnly and no same-run flip',async()=>{
@@ -91,7 +92,7 @@ test('deliberate resume rebuilds bounded history, skips old crossover signals an
  const activeAfter=end-300;
  const args={db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config,safety:f.safety,exchange:f.ex,activeAfter};
  expect(await runLiveCryptoStrategy(args)).toContain('resumed');
- const saved=f.records.get('CryptoStrategyState')!;
+ const saved=f.records.get(COLLECTIONS.CryptoStrategyState)!;
  expect(saved.lastCandle).toBe(end-interval);expect(saved.activeAfter).toBe(activeAfter);
  expect((saved.history as unknown[]).length).toBe(Math.max(config.slowPeriod,config.lookback,config.atrPeriod,15)*5+2);
  expect(f.sent).toHaveLength(0);expect(f.reservations).toHaveLength(0);
@@ -103,7 +104,7 @@ test('an unchanged activation marker does not hide a missed-candle outage',async
  const f=fixture();try{
  f.state.lastCandle=end-10*interval;f.state.activeAfter=end-20*interval;
  await expect(runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config,safety:f.safety,exchange:f.ex,activeAfter:end-20*interval})).rejects.toMatchObject({code:'MISSED_LIVE_CANDLES'});
- expect(f.sent).toHaveLength(0);expect(f.records.get('CryptoStrategyState')!.lastCandle).toBe(end-10*interval);
+ expect(f.sent).toHaveLength(0);expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.lastCandle).toBe(end-10*interval);
  }finally{f.restore();}
 });
 
@@ -118,9 +119,9 @@ test('resume keeps an owned filled position but rejects foreign positions and pa
    f.positions.push({symbol:'BTC/USD:USD',contracts:1,side:'long',info:{size:1}} as Position);
    const operation=runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config,safety:f.safety,exchange:f.ex,activeAfter:end-300});
    if(scenario==='owned'){
-    expect(await operation).toContain('resumed');expect(f.records.get('CryptoStrategyState')!.entryOrderId).toBe('tracked');
-    expect(f.records.get('CryptoStrategyState')!.side).toBe('long');
-   }else{await expect(operation).rejects.toThrow(scenario==='foreign'?'Unowned':'Partially filled');expect(f.records.get('CryptoStrategyState')!.lastCandle).toBe(end-10*interval);}
+    expect(await operation).toContain('resumed');expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.entryOrderId).toBe('tracked');
+    expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.side).toBe('long');
+   }else{await expect(operation).rejects.toThrow(scenario==='foreign'?'Unowned':'Partially filled');expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.lastCandle).toBe(end-10*interval);}
    expect(f.sent).toHaveLength(0);expect(f.reservations).toHaveLength(0);
   }finally{f.restore();}
  }
@@ -133,7 +134,7 @@ test('a sizing budget below one contract skips the signal, advances the cursor a
   const output=await runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config,safety:f.safety,exchange:f.ex});
   expect(output).toContain('entry skipped:');expect(output).toMatch(/contract|bound/);
   expect(output).not.toContain('preview is unavailable');expect(f.sent).toHaveLength(0);expect(f.reservations).toHaveLength(0);
-  expect(f.records.get('CryptoStrategyState')!.lastCandle).toBe(end-interval);
+  expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.lastCandle).toBe(end-interval);
  }finally{f.restore();}
 });
 
@@ -159,7 +160,7 @@ test('uncertain leverage update never submits an algorithm entry or advances the
   f.ex.fetchMarginMode=async()=>({info:{},symbol:'BTC/USD:USD',marginMode:'isolated'});
   f.ex.setLeverage=async()=>{throw new Error('response lost after update');};
   await expect(runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config:auto,safety:f.safety,exchange:f.ex})).rejects.toThrow('could not verify the automatic leverage update');
-  expect(f.sent).toHaveLength(0);expect(f.records.get('CryptoStrategyState')!.lastCandle).toBe(before);expect(f.reservations).toHaveLength(0);
+  expect(f.sent).toHaveLength(0);expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.lastCandle).toBe(before);expect(f.reservations).toHaveLength(0);
  }finally{f.restore();}
 });
 
@@ -170,7 +171,7 @@ test('automatic sizing quote timeout skips entry and reports the reason without 
   let settingsWrites=0;f.ex.setLeverage=async()=>{settingsWrites++;return {success:true} as never;};
   const output=await runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config:{...config,simulation:{...config.simulation,leverageMode:'AUTO'}},safety:f.safety,exchange:f.ex});
   expect(output).toContain('entry skipped: Automatic leverage sizing could not verify');expect(settingsWrites).toBe(0);expect(f.sent).toHaveLength(0);
-  expect(f.records.get('CryptoStrategyState')!.lastCandle).toBe(end-interval);
+  expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.lastCandle).toBe(end-interval);
  }finally{f.restore();}
 });
 
@@ -178,7 +179,7 @@ test('confirmation setup waits without requesting an entry on its signal candle'
  const f=fixture();try{
  const response=await runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config:{...config,entryTiming:{mode:'confirm',confirmationBars:1,maxWaitBars:3,cooldownBars:2}},safety:f.safety,exchange:f.ex});
  expect(f.sent).toHaveLength(0);expect(response).toContain('waiting for confirmation');
- expect(f.records.get('CryptoStrategyState')!.lastCandle).toBe(end-interval);
+ expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.lastCandle).toBe(end-interval);
  }finally{f.restore();}
 });
 
@@ -188,8 +189,8 @@ test('a broker-observed protected exit starts durable cooldown before a new cros
  f.setOrder({id:'tracked',clientOrderId:`m${createHash('sha256').update('strategy-agent').digest('hex').slice(0,12)}-abc`,filled:1,remaining:0} as Order);
  const response=await runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config:{...config,entryTiming:{mode:'immediate',confirmationBars:1,maxWaitBars:3,cooldownBars:2}},safety:f.safety,exchange:f.ex});
  expect(f.sent).toHaveLength(0);expect(response).toContain('cooldown active');
- expect(f.records.get('CryptoStrategyState')!.lastExitCandle).toBe(end-interval);
- expect(f.records.get('CryptoStrategyState')!.entryOrderId).toBeUndefined();
+ expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.lastExitCandle).toBe(end-interval);
+ expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.entryOrderId).toBeUndefined();
  }finally{f.restore();}
 });
 
@@ -210,7 +211,7 @@ test('improved live rules persist consumed setup identity only after guarded sub
   f.ex.fetchTicker=async()=>({symbol:'BTC/USD:USD',bid:102,ask:102,last:102}) as never;
   await runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config:{...config,executionRules:{version:1}},safety:f.safety,exchange:f.ex});
   expect(f.sent).toHaveLength(1);
-  expect(f.records.get('CryptoStrategyState')!.usedEntryProposalIds).toEqual([`ema:long:${end-interval}`]);
+  expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.usedEntryProposalIds).toEqual([`ema:long:${end-interval}`]);
  }finally{f.restore();}
 });
 
@@ -219,7 +220,7 @@ test('improved live rules reject a fresh quote through the setup boundary before
   f.ex.fetchTicker=async()=>({symbol:'BTC/USD:USD',bid:99,ask:99,last:99}) as never;
   const output=await runLiveCryptoStrategy({db:f.db,agentId:'strategy-agent',userId:'owner',symbol:'BTCUSD',config:{...config,executionRules:{version:1}},safety:f.safety,exchange:f.ex});
   expect(output).toContain('Fresh quote invalidated');expect(f.sent).toHaveLength(0);expect(f.reservations).toHaveLength(0);
-  expect(f.records.get('CryptoStrategyState')!.usedEntryProposalIds).toBeUndefined();
+  expect(f.records.get(COLLECTIONS.CryptoStrategyState)!.usedEntryProposalIds).toBeUndefined();
  }finally{f.restore();}
 });
 
