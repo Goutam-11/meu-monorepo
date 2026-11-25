@@ -109,6 +109,8 @@ flowchart TD
 
 ### Replay evidence and limitations
 
+**Reproducibility boundary.** The repository records hashes and producing commands for the local research artefacts, but does not ship the complete trade ledgers or candle caches. A re-run with the same frozen manifest and public candles reproduces the method and decision path, not byte-identical output. See the [research evidence inventory](reports/README.md).
+
 The three previously audited BTCUSD 1h September–October snapshots reproduced their legacy final equity exactly after these changes. On those same already-seen candles, opt-in results were:
 
 | Strategy | Legacy return / trades | Experimental return / trades | Experimental drawdown |
