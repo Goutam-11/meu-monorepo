@@ -1,4 +1,5 @@
 import {test,expect,mock,beforeEach} from 'bun:test';
+import { COLLECTIONS } from "../../shared/persistence/collections";
 const id='a'.repeat(24),exchangeId='b'.repeat(24),version=new Date('2026-10-07T00:00:00Z');
 const config={symbol:'XRPUSD',timeframe:'1h' as const,strategy:{id:'ema' as const,fastPeriod:12,slowPeriod:26,lookback:20,atrPeriod:14,stopAtr:2,rewardRisk:2},simulation:{dailyTimezone:'Asia/Kolkata' as const,initialCapital:100,leverage:2,riskPerTradePct:0.5,maxMarginPct:10,feeBps:10,slippageBps:5,fundingRatePct8h:0,maxTradesPerDay:1,maxPositionsOpenedPerDay:1,maxDailyLossPct:1,direction:'both' as const}};
 let agent:any,foreign=false,busy=false,exposure=false,owner=false,unfinished=false,stale=false,releaseFailure=false;
@@ -18,7 +19,7 @@ mock.module('@/lib/db',()=>({default:{
   commands.push(command);
   if(command.insert)return busy?{ok:1,n:0,writeErrors:[{code:11000}]}:{ok:1,n:1};
   if(command.delete)return{ok:releaseFailure?0:1,n:command.deletes.length};
-  if(command.find)return{ok:1,cursor:{id:0,firstBatch:((command.find==='CryptoPositionOwners'&&owner)||(command.find==='AgentExecutions'&&unfinished))?[{_id:'unresolved'}]:[]}};
+  if(command.find)return{ok:1,cursor:{id:0,firstBatch:((command.find===COLLECTIONS.CryptoPositionOwners&&owner)||(command.find===COLLECTIONS.AgentExecutions&&unfinished))?[{_id:'unresolved'}]:[]}};
   throw new Error('Unexpected mutation');
  },
 }}));
@@ -50,7 +51,7 @@ test('paper execution changes require acknowledgement and retain old state throu
  input.restartPaper=true;await editCryptoAgent('owner',input);
  expect(writes[0].strategyConfig.stateId).toStartWith(`${id}:`);expect(writes[0].strategyConfig).not.toHaveProperty('backtestRunId');
  expect(writes[0].strategyStartedAt).toBeNull();expect(writes[0].nextRunAt).toBeNull();
- expect(commands.filter(c=>c.delete).every(c=>c.delete==='ExecutionLocks')).toBe(true);
+ expect(commands.filter(c=>c.delete).every(c=>c.delete===COLLECTIONS.ExecutionLocks)).toBe(true);
 });
 test('ownership, running status, stale versions and identity changes fail before taking locks',async()=>{
  const input=request();foreign=true;await expect(editCryptoAgent('owner',input)).rejects.toMatchObject({code:'NOT_FOUND'});foreign=false;

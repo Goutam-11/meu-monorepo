@@ -1,6 +1,7 @@
 import { afterAll, describe, expect, mock, test } from "bun:test";
 import { decryptSecret } from "../src/lib/security/encryption";
 import { AgentStrategy, AgentType } from "../src/generated/prisma/enums";
+import { COLLECTIONS } from "../../shared/persistence/collections";
 
 const rows: { credentials: Record<string, unknown>[]; exchanges: Record<string, unknown>[] } = { credentials: [], exchanges: [] };
 let agentUpdateWhere: Record<string, unknown> | undefined;
@@ -23,13 +24,13 @@ let credentialLookupCalls = 0;
 
 const prismaStub = {
   $runCommandRaw: async (command: Record<string, unknown>) => {
-    if (command.insert === 'ExecutionLocks') return editLockBusy ? {ok:1,n:0,writeErrors:[{code:11000}]} : {ok:1,n:1};
-    if (command.delete === 'ExecutionLocks') {
+    if (command.insert === COLLECTIONS.ExecutionLocks) return editLockBusy ? {ok:1,n:0,writeErrors:[{code:11000}]} : {ok:1,n:1};
+    if (command.delete === COLLECTIONS.ExecutionLocks) {
       const deletion=(command.deletes as {q:{_id:string;executionId:string};limit:number}[])[0]!;
       expect(deletion.q._id).toBe('agent:agent-1');expect(deletion.q.executionId).toStartWith('edit:');expect(deletion.limit).toBe(1);
       editLockReleased = true; return {ok:1,n:editLockBusy?0:1};
     }
-    return {ok:1,cursor:{id:0,firstBatch:command.find==='AgentExecutions' && unfinishedExecution ? [{state:'REVIEW_REQUIRED'}] : command.find==='CryptoPositionOwners' && activeOwnership ? [{state:'OPEN'}] : command.find==='ManagedCryptoOrders' ? [] : deleteLocks}};
+    return {ok:1,cursor:{id:0,firstBatch:command.find===COLLECTIONS.AgentExecutions && unfinishedExecution ? [{state:'REVIEW_REQUIRED'}] : command.find===COLLECTIONS.CryptoPositionOwners && activeOwnership ? [{state:'OPEN'}] : command.find===COLLECTIONS.ManagedCryptoOrders ? [] : deleteLocks}};
   },
   agent: {
     findFirst: async () => credentialAgentRunning ? {id:"linked-agent"} : null,

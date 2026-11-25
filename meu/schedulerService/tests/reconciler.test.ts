@@ -1,15 +1,16 @@
 import { describe, expect, test } from "bun:test";
 import type { Collection, Db, Document } from "mongodb";
 import { reconcileOnce, type ReconcilerDeps } from "../src/reconciler/reconciler";
+import { COLLECTIONS } from "../../../shared/persistence/collections";
 
 type AnyDoc = Record<string, any>;
 
 function makeDb(seed: { executions?: AnyDoc[]; locks?: AnyDoc[]; intents?: AnyDoc[]; agents?: AnyDoc[] } = {}) {
   const docs = new Map<string, AnyDoc[]>([
-    ["AgentExecutions", seed.executions ?? []],
-    ["ExecutionLocks", seed.locks ?? []],
-    ["OrderIntents", seed.intents ?? []],
-    ["Agent", seed.agents ?? []],
+    [COLLECTIONS.AgentExecutions, seed.executions ?? []],
+    [COLLECTIONS.ExecutionLocks, seed.locks ?? []],
+    [COLLECTIONS.OrderIntents, seed.intents ?? []],
+    [COLLECTIONS.Agent, seed.agents ?? []],
   ]);
   const matches = (doc: AnyDoc, filter: AnyDoc) => Object.entries(filter).every(([key, value]) => doc[key] === value);
   const collection = (name: string): Collection<Document> => {
@@ -82,8 +83,8 @@ describe("execution reconciler", () => {
     });
     const deps = dependencies();
     const counts = await reconcileOnce(db.db, deps.value);
-    expect(db.rows("AgentExecutions")[0]!).toMatchObject({ state: "COMPLETED", outcome: "RESOLVED_NO_ACTION" });
-    expect(db.rows("ExecutionLocks")).toHaveLength(0);
+    expect(db.rows(COLLECTIONS.AgentExecutions)[0]!).toMatchObject({ state: "COMPLETED", outcome: "RESOLVED_NO_ACTION" });
+    expect(db.rows(COLLECTIONS.ExecutionLocks)).toHaveLength(0);
     expect(counts.reviewResolved).toBe(1);
     expect(deps.logs.some(event => event.event === "reconcile.review_resolved")).toBe(true);
   });
@@ -97,8 +98,8 @@ describe("execution reconciler", () => {
     const deps = dependencies();
     await reconcileOnce(db.db, deps.value);
     await reconcileOnce(db.db, deps.value);
-    expect(db.rows("AgentExecutions")[0]!.state).toBe("REVIEW_REQUIRED");
-    expect(db.rows("ExecutionLocks")).toHaveLength(1);
+    expect(db.rows(COLLECTIONS.AgentExecutions)[0]!.state).toBe("REVIEW_REQUIRED");
+    expect(db.rows(COLLECTIONS.ExecutionLocks)).toHaveLength(1);
     expect(deps.notices).toHaveLength(1);
     expect(deps.notices[0]!.code).toBe("AGENT_REVIEW_REQUIRED");
     expect(deps.logs.some(event => event.event === "reconcile.review_manual")).toBe(true);
@@ -112,8 +113,8 @@ describe("execution reconciler", () => {
     });
     const deps = dependencies();
     const counts = await reconcileOnce(db.db, deps.value);
-    expect(db.rows("AgentExecutions")[0]!).toMatchObject({ state: "COMPLETED", outcome: "STALE_CLAIM_RELEASED" });
-    expect(db.rows("ExecutionLocks")).toHaveLength(0);
+    expect(db.rows(COLLECTIONS.AgentExecutions)[0]!).toMatchObject({ state: "COMPLETED", outcome: "STALE_CLAIM_RELEASED" });
+    expect(db.rows(COLLECTIONS.ExecutionLocks)).toHaveLength(0);
     expect(counts.staleReleased).toBe(1);
     expect(deps.logs.some(event => event.event === "reconcile.stale_claim_released")).toBe(true);
   });
@@ -127,8 +128,8 @@ describe("execution reconciler", () => {
     });
     const deps = dependencies();
     await reconcileOnce(db.db, deps.value);
-    expect(db.rows("AgentExecutions")[0]!.state).toBe("STARTED");
-    expect(db.rows("ExecutionLocks")).toHaveLength(1);
+    expect(db.rows(COLLECTIONS.AgentExecutions)[0]!.state).toBe("STARTED");
+    expect(db.rows(COLLECTIONS.ExecutionLocks)).toHaveLength(1);
   });
 
   test("releases orphaned execution locks but leaves locks with order intents", async () => {
@@ -141,7 +142,7 @@ describe("execution reconciler", () => {
     });
     const deps = dependencies();
     await reconcileOnce(db.db, deps.value);
-    expect(db.rows("ExecutionLocks").map(lock => lock._id)).toEqual(["agent:uncertain"]);
+    expect(db.rows(COLLECTIONS.ExecutionLocks).map(lock => lock._id)).toEqual(["agent:uncertain"]);
     expect(deps.logs.some(event => event.event === "reconcile.orphaned_lock_released")).toBe(true);
   });
 
@@ -149,7 +150,7 @@ describe("execution reconciler", () => {
     const db = makeDb({ agents: [agent({ contractRefreshAt: old })] });
     const deps = dependencies({ readContract: async () => ({ ...savedContract, contractSize: 0.002 }) });
     await reconcileOnce(db.db, deps.value);
-    const parked = db.rows("Agent")[0]!;
+    const parked = db.rows(COLLECTIONS.Agent)[0]!;
     expect(parked.status).toBe("PAUSED");
     expect(parked.contractDrift.fields).toEqual(["contractSize"]);
     expect(new Date(parked.contractRefreshAt).getTime()).toBeGreaterThan(now.getTime());
@@ -173,7 +174,7 @@ describe("execution reconciler", () => {
     });
     const deps = dependencies();
     await reconcileOnce(db.db, deps.value);
-    expect(db.rows("Agent")[0]!.contractDrift).toBeNull();
+    expect(db.rows(COLLECTIONS.Agent)[0]!.contractDrift).toBeNull();
     expect(deps.logs.some(event => event.event === "reconcile.contract_verified")).toBe(true);
   });
 });

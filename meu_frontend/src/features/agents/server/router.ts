@@ -8,6 +8,7 @@ import { agentConfigSchema, requireOwnedReferences } from "../validation";
 import { editCryptoAgent, editCryptoAgentSchema } from './edit-crypto-agent';
 import {assertMarketSymbols} from '@/features/markets/server/catalog';
 import { entryPreview, entryPreviewSchema } from './entry-preview';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 const ITEMS_PER_PAGE = 5;
 async function assertOwnedReferences(
@@ -151,7 +152,7 @@ export const agentsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const saved = await prisma.agent.findFirstOrThrow({where:{id:input.id,userId:ctx.auth.user.id}});
       if (saved.status !== 'PAUSED') throw new TRPCError({code:'PRECONDITION_FAILED',message:'Pause the agent before deleting it.'});
-      const locks = await prisma.$runCommandRaw({find:'ExecutionLocks',filter:{$or:[{_id:`agent:${saved.id}`},{executionId:{$regex:`^${saved.id}-`}}]},projection:{_id:1},limit:1});
+      const locks = await prisma.$runCommandRaw({find:COLLECTIONS.ExecutionLocks,filter:{$or:[{_id:`agent:${saved.id}`},{executionId:{$regex:`^${saved.id}-`}}]},projection:{_id:1},limit:1});
       const cursor = locks.cursor as {firstBatch?: unknown[]} | undefined;
       if (locks.ok !== 1 || !Array.isArray(cursor?.firstBatch) || cursor.firstBatch.length)
         throw new TRPCError({code:'PRECONDITION_FAILED',message:'This agent has an active or retained execution lock. Recover or reconcile it before deleting.'});
@@ -209,11 +210,11 @@ export const agentsRouter = createTRPCRouter({
       const lockId = `agent:${saved.id}`;
       let acquired = false;
       try {
-        const claim = await prisma.$runCommandRaw({insert:'ExecutionLocks',documents:[{_id:lockId,executionId:editId,kind:'AGENT_EDIT',state:'PREPARING',createdAt:{$date:new Date().toISOString()}}]});
+        const claim = await prisma.$runCommandRaw({insert:COLLECTIONS.ExecutionLocks,documents:[{_id:lockId,executionId:editId,kind:'AGENT_EDIT',state:'PREPARING',createdAt:{$date:new Date().toISOString()}}]});
         if (claim.ok !== 1 || claim.n !== 1 || (Array.isArray(claim.writeErrors) && claim.writeErrors.length))
           throw new TRPCError({code:'CONFLICT',message:'An execution or retained lock is using this agent. Wait for the run or recover it before editing.'});
         acquired = true;
-        const executionRead = await prisma.$runCommandRaw({find:'AgentExecutions',filter:{agentId:saved.id,state:{$ne:'COMPLETED'}},limit:1,batchSize:1});
+        const executionRead = await prisma.$runCommandRaw({find:COLLECTIONS.AgentExecutions,filter:{agentId:saved.id,state:{$ne:'COMPLETED'}},limit:1,batchSize:1});
         const executionCursor = executionRead.cursor as {firstBatch?:unknown[];id?:number|{$numberLong:string}} | undefined;
         const executionCursorId = typeof executionCursor?.id === 'object' ? executionCursor.id.$numberLong : String(executionCursor?.id);
         if (executionRead.ok !== 1 || !Array.isArray(executionCursor?.firstBatch) || executionCursorId !== '0' || executionCursor.firstBatch.length)
@@ -222,8 +223,8 @@ export const agentsRouter = createTRPCRouter({
           JSON.stringify([...saved.market.symbols].sort()) !== JSON.stringify([...input.market.symbols].sort());
         if (routingChanged) {
           for (const [collection, filter] of [
-            ['CryptoPositionOwners',{agentId:saved.id,userId:ctx.auth.user.id,state:{$ne:'FLAT'}}],
-            ['ManagedCryptoOrders',{agentId:saved.id,userId:ctx.auth.user.id,state:'SUBMITTING'}],
+            [COLLECTIONS.CryptoPositionOwners,{agentId:saved.id,userId:ctx.auth.user.id,state:{$ne:'FLAT'}}],
+            [COLLECTIONS.ManagedCryptoOrders,{agentId:saved.id,userId:ctx.auth.user.id,state:'SUBMITTING'}],
           ] as const) {
             const result = await prisma.$runCommandRaw({find:collection,filter,limit:1,batchSize:1});
             const cursor = result.cursor as {firstBatch?:unknown[];id?:number|{$numberLong:string}} | undefined;
@@ -272,7 +273,7 @@ export const agentsRouter = createTRPCRouter({
         throw new TRPCError({code:'CONFLICT',message:'Could not verify or save this edit. Reload the agent and inspect recovery before retrying.'});
       } finally {
         try {
-          const released = await prisma.$runCommandRaw({delete:'ExecutionLocks',deletes:[{q:{_id:lockId,executionId:editId},limit:1}]});
+          const released = await prisma.$runCommandRaw({delete:COLLECTIONS.ExecutionLocks,deletes:[{q:{_id:lockId,executionId:editId},limit:1}]});
           if (released.ok !== 1 || typeof released.n !== 'number' || (acquired && released.n !== 1) || (Array.isArray(released.writeErrors) && released.writeErrors.length))
             throw new Error('Edit lock release was not confirmed');
         } catch {

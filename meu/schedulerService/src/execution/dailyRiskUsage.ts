@@ -1,6 +1,7 @@
 import { marketDate, type MarketTimezone } from '../../../../shared/trading/marketDay';
 import type { Db } from "mongodb";
 import { OrderRejectedError, type TradingPolicy } from "./tradeGuard";
+import { COLLECTIONS } from "../../../../shared/persistence/collections";
 
 type UsageRecord = {
   _id: string;
@@ -23,7 +24,7 @@ export async function reserveDailyEntry(
 ) {
   const day = marketDate(now.getTime() / 1000, timezone);
   const id = `${agentId}:${timezone}:${day}`;
-  const usage = db.collection<UsageRecord>("AgentDailyRiskUsage");
+  const usage = db.collection<UsageRecord>(COLLECTIONS.AgentDailyRiskUsage);
   const tradeCount = { $ifNull: ["$tradesReserved", 0] };
   const positionCount = { $ifNull: ["$positionsOpenedReserved", 0] };
   const filter = {

@@ -16,6 +16,8 @@ Schema: [`meu_frontend/prisma/schema.prisma`](../meu_frontend/prisma/schema.pris
 | AgentRuns | ObjectId run history; worker also writes additive structured memory/execution fields not all represented in Prisma. |
 | BacktestRun | Owner-scoped versioned strategy/config snapshot, contract, candles/data hash, assumptions, results and creation time. |
 | Notification / PushSubscription | Owner-scoped inbox and browser endpoints. Delivery job uniqueness is also maintained by the consumer. |
+
+Cross-process collection names and field paths live in [`shared/persistence/`](../shared/persistence/): services import `COLLECTIONS` instead of raw collection strings, and `meu_frontend/tests/persistence-contract.test.ts` fails if the documented `Agent` paths drift from `prisma/schema.prisma`. Queue payloads and execution documents are parsed with zod at the scheduler boundary.
 | Trades / Positions / OrderLogs | Existing schema models; do not treat them as the authoritative live execution ledger. Inspect actual writers before extending them. |
 
 Except explicit auth relations, many links are scalar identifiers enforced in application code. The diagram is logical, not a claim of Mongo foreign-key enforcement.

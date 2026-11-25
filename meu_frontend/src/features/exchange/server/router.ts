@@ -10,6 +10,7 @@ import { exchangeKiteRequestToken, kiteLoginUrl } from "@/features/exchange/serv
 import { decryptSecret, encryptSecret } from "@/lib/security/encryption";
 import { TRPCError } from "@trpc/server";
 import {loadMarketCatalog, searchMarkets} from '@/features/markets/server/catalog';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 const ITEMS_PER_PAGE = 5;
 const redactExchange = <T extends { apiKey: string; secret: string; accessToken?: string | null }>(row: T) => {
@@ -25,7 +26,7 @@ export const exchangeRouter = createTRPCRouter({
     const userId=ctx.auth.user.id;
     const connection=await prisma.exchange.findFirst({where:{id:input.id,userId},select:{id:true,name:true}});
     if(!connection || !['DELTA','BINANCE'].includes(connection.name.toUpperCase()))throw new TRPCError({code:'NOT_FOUND',message:'Supported crypto connection not found.'});
-    const [link]=await readRows<{accountKey:string}>({find:'BrokerAccountLinks',filter:{_id:input.id,userId}},1);
+    const [link]=await readRows<{accountKey:string}>({find:COLLECTIONS.BrokerAccountLinks,filter:{_id:input.id,userId}},1);
     const ids=link ? await linkedExchangeIds(link.accountKey,userId) : [input.id];
     const result=await prisma.agent.updateMany({where:{userId,exchangeId:{in:ids},status:'RUNNING',OR:[{executionMode:null},{executionMode:{isSet:false}},{executionMode:{not:'PAPER'}}]},data:{status:'PAUSED',updatedAt:new Date()}});
     return {message:`Paused ${result.count} live agents. Any in-flight run must finish before recovery; pausing does not cancel broker orders.`};
@@ -33,10 +34,10 @@ export const exchangeRouter = createTRPCRouter({
   recoverExecution: protectedProcedure.input(z.object({id:z.string().regex(/^[a-f0-9]{24}$/i)})).mutation(async({ctx,input})=>{
     const userId=ctx.auth.user.id;
     if(!await prisma.exchange.findFirst({where:{id:input.id,userId},select:{id:true}}))throw new TRPCError({code:'NOT_FOUND',message:'Exchange connection not found.'});
-    const [lock]=await readRows<{executionId:string;kind?:string}>({find:'ExecutionLocks',filter:{_id:`exchange:${input.id}`},projection:{executionId:1,kind:1}},1);
+    const [lock]=await readRows<{executionId:string;kind?:string}>({find:COLLECTIONS.ExecutionLocks,filter:{_id:`exchange:${input.id}`},projection:{executionId:1,kind:1}},1);
     if(!lock) return {message:'No retained execution lock exists on this connection.'};
     if(lock.kind)throw new TRPCError({code:'PRECONDITION_FAILED',message:'Account preparation or another recovery is in progress. Its lock cannot be released here.'});
-    const [execution]=await readRows<{agentId:string}>({find:'AgentExecutions',filter:{_id:lock.executionId},projection:{agentId:1}},1);
+    const [execution]=await readRows<{agentId:string}>({find:COLLECTIONS.AgentExecutions,filter:{_id:lock.executionId},projection:{agentId:1}},1);
     const agent=execution ? await prisma.agent.findFirst({where:{id:execution.agentId,userId,exchangeId:input.id,status:'PAUSED'}}) : null;
     if(!agent)throw new TRPCError({code:'PRECONDITION_FAILED',message:'The holding execution is active or its agent is unavailable. Scan the account to inspect its run ID.'});
     return {message:await recoverDeltaExecution(agent,userId)};
@@ -171,14 +172,14 @@ export const exchangeRouter = createTRPCRouter({
   executionState: protectedProcedure.input(z.object({ id:z.string() })).query(async ({ ctx,input }) => {
     const connection = await prisma.exchange.findFirst({ where:{id:input.id,userId:ctx.auth.user.id},select:{id:true,name:true} });
     if (!connection) throw new TRPCError({code:'NOT_FOUND',message:'Exchange not found'});
-    const links = await prisma.$runCommandRaw({find:'BrokerAccountLinks',filter:{_id:input.id,userId:ctx.auth.user.id},limit:1});
+    const links = await prisma.$runCommandRaw({find:COLLECTIONS.BrokerAccountLinks,filter:{_id:input.id,userId:ctx.auth.user.id},limit:1});
     const link = (links.cursor as {firstBatch?:{accountKey:string}[]})?.firstBatch?.[0];
     if (!link) return { initialized:false,limits:defaultAccountRisk,positions:[],orders:[] };
-    const account = await prisma.$runCommandRaw({find:'BrokerAccounts',filter:{_id:link.accountKey,userId:ctx.auth.user.id},limit:1});
+    const account = await prisma.$runCommandRaw({find:COLLECTIONS.BrokerAccounts,filter:{_id:link.accountKey,userId:ctx.auth.user.id},limit:1});
     const limits = accountRiskSchema.parse((account.cursor as {firstBatch?:{limits:unknown}[]})?.firstBatch?.[0]?.limits);
     const [owners,orderRows] = await Promise.all([
-      prisma.$runCommandRaw({find:'CryptoPositionOwners',filter:{accountKey:link.accountKey,userId:ctx.auth.user.id,state:{$ne:'FLAT'}},limit:101}),
-      prisma.$runCommandRaw({find:'ManagedCryptoOrders',filter:{accountKey:link.accountKey,userId:ctx.auth.user.id},sort:{createdAt:-1},limit:50}),
+      prisma.$runCommandRaw({find:COLLECTIONS.CryptoPositionOwners,filter:{accountKey:link.accountKey,userId:ctx.auth.user.id,state:{$ne:'FLAT'}},limit:101}),
+      prisma.$runCommandRaw({find:COLLECTIONS.ManagedCryptoOrders,filter:{accountKey:link.accountKey,userId:ctx.auth.user.id},sort:{createdAt:-1},limit:50}),
     ]);
     type OwnerRow={agentId:string;symbol:string;state:string;contracts?:number;side?:string;entryPrice?:number;collateral?:number;lastVerifiedAt?:{$date:string}};
     type OrderRow={clientOrderId:string;agentId:string;symbol:string;state:string;brokerOrderId?:string;brokerStatus?:string;filled?:number;remaining?:number;side:string;amount:number;reduceOnly:boolean};
@@ -197,16 +198,16 @@ export const exchangeRouter = createTRPCRouter({
     const {accountKey} = await registerExecutionAccount(exchange,input.id,ctx.auth.user.id);
     const ids = await linkedExchangeIds(accountKey,ctx.auth.user.id);
     const executionId=`risk:${randomUUID()}`,lockId=`account:${accountKey}`;
-    const lock = await prisma.$runCommandRaw({insert:'ExecutionLocks',documents:[{_id:lockId,executionId,kind:'START_PREFLIGHT',state:'PREPARING',createdAt:{$date:new Date().toISOString()}}]});
+    const lock = await prisma.$runCommandRaw({insert:COLLECTIONS.ExecutionLocks,documents:[{_id:lockId,executionId,kind:'START_PREFLIGHT',state:'PREPARING',createdAt:{$date:new Date().toISOString()}}]});
     if(lock.ok!==1||lock.n!==1||(Array.isArray(lock.writeErrors)&&lock.writeErrors.length)) throw new TRPCError({code:'CONFLICT',message:'Account execution is busy or requires reconciliation'});
     try {
       if(await prisma.agent.count({where:{userId:ctx.auth.user.id,exchangeId:{in:ids},status:'RUNNING',OR:[{executionMode:null},{executionMode:{isSet:false}},{executionMode:{not:'PAPER'}}]}}))
         throw new TRPCError({code:'PRECONDITION_FAILED',message:'Pause all live agents on this broker account before changing shared limits'});
-      const result = await prisma.$runCommandRaw({update:'BrokerAccounts',updates:[{q:{_id:accountKey,userId:ctx.auth.user.id},u:{$set:{limits:input.limits,updatedAt:{$date:new Date().toISOString()}}}}]});
+      const result = await prisma.$runCommandRaw({update:COLLECTIONS.BrokerAccounts,updates:[{q:{_id:accountKey,userId:ctx.auth.user.id},u:{$set:{limits:input.limits,updatedAt:{$date:new Date().toISOString()}}}}]});
       if(result.ok!==1||result.n!==1||(Array.isArray(result.writeErrors)&&result.writeErrors.length)) throw new TRPCError({code:'INTERNAL_SERVER_ERROR',message:'Account limits were not saved'});
       return {limits:input.limits};
     } finally {
-      const release=await prisma.$runCommandRaw({delete:'ExecutionLocks',deletes:[{q:{_id:lockId,executionId},limit:1}]});
+      const release=await prisma.$runCommandRaw({delete:COLLECTIONS.ExecutionLocks,deletes:[{q:{_id:lockId,executionId},limit:1}]});
       if(release.ok!==1||release.n!==1) throw new TRPCError({code:'CONFLICT',message:'Account settings lock could not be released; reconcile before starting'});
     }
   }),

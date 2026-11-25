@@ -4,6 +4,7 @@ import prisma from '@/lib/db';
 import type { Prisma } from '@/generated/prisma/client';
 import { executionConnection, registerExecutionAccount, linkedExchangeIds } from './execution-account';
 import { inspectDeltaOwnership, type ReconciliationOwner, type ReconciliationOrder } from '../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 const active = new Set<string>();
 export async function readRows<T>(command: Prisma.InputJsonObject, maximum: number): Promise<T[]> {
@@ -30,20 +31,20 @@ export async function reconciliationReport(exchangeId: string, userId: string) {
     type Lock = {_id:string;executionId:string;kind?:string;state?:string;createdAt?:{$date:string}};
     const lockFilter = {_id:{$in:[`account:${accountKey}`,...connectionIds.map(id=>`exchange:${id}`),...agents.flatMap(a=>[`agent:${a.id}`,`recovery:${a.id}`])]}};
     async function locks() {
-      return readRows<Lock>({find:'ExecutionLocks',filter:lockFilter},400);
+      return readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:lockFilter},400);
     }
     const before = await locks();
-    const owners = await readRows<ReconciliationOwner>({find:'CryptoPositionOwners',filter:{accountKey,userId,state:{$ne:'FLAT'}}},100);
+    const owners = await readRows<ReconciliationOwner>({find:COLLECTIONS.CryptoPositionOwners,filter:{accountKey,userId,state:{$ne:'FLAT'}}},100);
     if (owners.some(o => !Array.isArray(o.orderRefs) || o.orderRefs.length > 128)) throw new Error('Incomplete owner order references');
-    const orders = await readRows<ReconciliationOrder>({find:'ManagedCryptoOrders',filter:{accountKey,userId,$or:[{_id:{$in:owners.flatMap(o=>o.orderRefs)}},{state:'SUBMITTING'}]}},500);
+    const orders = await readRows<ReconciliationOrder>({find:COLLECTIONS.ManagedCryptoOrders,filter:{accountKey,userId,$or:[{_id:{$in:owners.flatMap(o=>o.orderRefs)}},{state:'SUBMITTING'}]}},500);
     await exchange.loadMarkets();
     const broker = await inspectDeltaOwnership(exchange,owners,orders);
     const executionIds = [...new Set(before.map(lock=>lock.executionId))];
     type Execution={_id:string;state:string;agentId:string};
     type Intent={_id:string;executionId:string;state:string;intent?:{symbol?:string}};
     const [executions,intents] = await Promise.all([
-      readRows<Execution>({find:'AgentExecutions',filter:{_id:{$in:executionIds}},projection:{_id:1,state:1,agentId:1}},300),
-      readRows<Intent>({find:'OrderIntents',filter:{executionId:{$in:executionIds},state:'PENDING'},projection:{_id:1,executionId:1,state:1,'intent.symbol':1}},500),
+      readRows<Execution>({find:COLLECTIONS.AgentExecutions,filter:{_id:{$in:executionIds}},projection:{_id:1,state:1,agentId:1}},300),
+      readRows<Intent>({find:COLLECTIONS.OrderIntents,filter:{executionId:{$in:executionIds},state:'PENDING'},projection:{_id:1,executionId:1,state:1,'intent.symbol':1}},500),
     ]);
     const after = await locks();
     const running = await prisma.agent.count({where:{userId,exchangeId:{in:connectionIds},status:'RUNNING',OR:[{executionMode:null},{executionMode:{isSet:false}},{executionMode:{not:'PAPER'}}]}});

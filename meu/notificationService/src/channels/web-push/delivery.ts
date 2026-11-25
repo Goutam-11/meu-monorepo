@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { validPushEndpoint, validPushKeys } from "./validation";
 import { log, errMeta } from "../../infrastructure/logger";
 import type { DeliveryContext } from "../../contracts/notification";
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 const PUSH_CONCURRENCY = 5;
 
@@ -28,7 +29,7 @@ export async function sendPush(db: Db, userId: string, payload: unknown, context
     deliveryLog.warn({ event: "push.skipped", reasonCode: "push_disabled" }, "Web push skipped");
     return;
   }
-  const subs = await db.collection("PushSubscription").find({ userId }).toArray();
+  const subs = await db.collection(COLLECTIONS.PushSubscription).find({ userId }).toArray();
   if (subs.length === 0) {
     deliveryLog.info({ event: "push.skipped", reasonCode: "no_subscriptions" }, "Web push skipped");
     return;
@@ -89,7 +90,7 @@ export async function sendPush(db: Db, userId: string, payload: unknown, context
         const status = (err as { statusCode?: number } | null)?.statusCode;
         if (status === 404 || status === 410) {
           try {
-            await db.collection("PushSubscription").deleteOne({ _id: sub._id });
+            await db.collection(COLLECTIONS.PushSubscription).deleteOne({ _id: sub._id });
             expired++;
             subscriptionLog.info({ event: "push.expired", durationMs: Date.now() - subscriptionStartedAt, ...errMeta(err) }, "Expired push subscription removed");
           } catch (cleanupError) {

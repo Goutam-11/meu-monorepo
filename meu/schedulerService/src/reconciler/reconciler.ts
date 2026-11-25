@@ -2,6 +2,8 @@ import { ObjectId, type Db, type Document } from "mongodb";
 import { logger, errMeta } from "@/lib/logger";
 import { contractDrift, reviewIsSafe, staleClaimIsSafe, type Contract } from "./policy";
 import { fetchDeltaContract } from "./deltaContract";
+import { agentExecutionSchema } from "@/persistence/schemas";
+import { COLLECTIONS } from "../../../../shared/persistence/collections";
 
 export type ReconcileLog = {
   info: (event: Record<string, unknown>, message?: string) => void;
@@ -100,10 +102,10 @@ export async function reconcileOnce(db: Db, overrides: ReconcilerDeps = {}): Pro
   const orphanAfterMs = overrides.orphanAfterMs ?? 60 * 60_000;
   const contractRefreshMs = overrides.contractRefreshMs ?? 6 * 60 * 60_000;
 
-  const executions = db.collection<ExecutionDoc>("AgentExecutions");
-  const locks = db.collection<LockDoc>("ExecutionLocks");
-  const intents = db.collection<IntentDoc>("OrderIntents");
-  const agents = db.collection<AgentDoc>("Agent");
+  const executions = db.collection<ExecutionDoc>(COLLECTIONS.AgentExecutions);
+  const locks = db.collection<LockDoc>(COLLECTIONS.ExecutionLocks);
+  const intents = db.collection<IntentDoc>(COLLECTIONS.OrderIntents);
+  const agents = db.collection<AgentDoc>(COLLECTIONS.Agent);
 
   const counts: ReconcileCounts = {
     reviewResolved: 0, reviewEscalated: 0, staleReleased: 0, staleEscalated: 0,
@@ -133,7 +135,13 @@ export async function reconcileOnce(db: Db, overrides: ReconcilerDeps = {}): Pro
   };
 
   // Review sweep: only executions that provably requested no broker operation may be released.
-  for (const execution of await executions.find({ state: "REVIEW_REQUIRED" }).toArray()) {
+  for (const storedExecution of await executions.find({ state: "REVIEW_REQUIRED" }).toArray()) {
+    const parsedExecution = agentExecutionSchema.safeParse(storedExecution);
+    if (!parsedExecution.success) {
+      log.warn({ event: "reconcile.invalid_execution", executionId: String(storedExecution._id), issueCount: parsedExecution.error.issues.length }, "Review execution did not match the persistence contract");
+      continue;
+    }
+    const execution = parsedExecution.data;
     const at = execution.finishedAt ?? execution.startedAt;
     if (!at || now.getTime() - new Date(at).getTime() < reviewAfterMs) continue;
     const intentCount = await intents.countDocuments({ executionId: String(execution._id) });
@@ -153,7 +161,13 @@ export async function reconcileOnce(db: Db, overrides: ReconcilerDeps = {}): Pro
   }
 
   // Stale claim sweep: a dead owner job with no order intent cannot have reached a venue.
-  for (const execution of await executions.find({ state: "STARTED" }).toArray()) {
+  for (const storedExecution of await executions.find({ state: "STARTED" }).toArray()) {
+    const parsedExecution = agentExecutionSchema.safeParse(storedExecution);
+    if (!parsedExecution.success) {
+      log.warn({ event: "reconcile.invalid_execution", executionId: String(storedExecution._id), issueCount: parsedExecution.error.issues.length }, "Stale execution did not match the persistence contract");
+      continue;
+    }
+    const execution = parsedExecution.data;
     if (!execution.startedAt || now.getTime() - new Date(execution.startedAt).getTime() < staleAfterMs) continue;
     if (await isJobActive(String(execution._id))) continue;
     const intentCount = await intents.countDocuments({ executionId: String(execution._id) });

@@ -3,6 +3,7 @@ import { MongoClient } from "mongodb";
 import { redisConnection } from "../infrastructure/redis";
 import { createNotificationProcessor } from "../workers/notification-processor";
 import { log, errMeta } from "../infrastructure/logger";
+import { COLLECTIONS } from "../../../../shared/persistence/collections";
 
 const NOTIFICATION_QUEUE_NAME = "notifications";
 const CONCURRENCY = 5;
@@ -18,7 +19,7 @@ export async function main() {
   const db = mongo.db(dbName);
   log.info({ event: "db.connected" }, "Connected to MongoDB");
 
-  await db.collection("Notification").createIndex({ deliveryJobId: 1 }, { unique: true, partialFilterExpression: { deliveryJobId: { $type: "string" } } });
+  await db.collection(COLLECTIONS.Notification).createIndex({ deliveryJobId: 1 }, { unique: true, partialFilterExpression: { deliveryJobId: { $type: "string" } } });
 
   // ── BullMQ consumer ──
   const connection = redisConnection();

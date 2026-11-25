@@ -3,6 +3,7 @@ import type {Db} from 'mongodb';
 import {initializePaperState,type PaperState} from '../../../shared/trading/paperTrading';
 import {runPaperStrategy} from '../src/algorithms/crypto/runCryptoStrategy';
 import type {ExecutionSafety} from '../src/execution/tradeGuard';
+import { COLLECTIONS } from "../../../shared/persistence/collections";
 const interval=3600,end=Math.floor(Date.now()/1000/interval)*interval;
 const config={id:'ema' as const,fastPeriod:2,slowPeriod:3,lookback:3,atrPeriod:2,stopAtr:2,rewardRisk:1.5,timeframe:'1h' as const,simulation:{initialCapital:1000,leverage:2,riskPerTradePct:1,maxMarginPct:25,feeBps:5,slippageBps:2,fundingRatePct8h:0,maxTradesPerDay:1,maxPositionsOpenedPerDay:1,maxDailyLossPct:5,direction:'both' as const},contract:{symbol:'BTCUSD',contractSize:1,minContracts:1,maintenanceMarginRate:0.005,settlement:'USD' as const}};
 
@@ -14,7 +15,7 @@ test('two paper agents advance independent portfolios and counters without priva
   records.set(id,{_id:id,userId:'owner',state,contract:{...config.contract,symbol}});
  }
  const db={collection:(name:string)=>{
-  expect(name).toBe('PaperTradingState');return{
+  expect(name).toBe(COLLECTIONS.PaperTradingState);return{
    findOne:async(filter:{_id:string;userId:string})=>{const record=records.get(filter._id);return record?.userId===filter.userId?record:null;},
    replaceOne:async(filter:{_id:string;userId:string;'state.lastCandle':number},record:{_id:string;userId:string;state:PaperState;contract:unknown})=>{
     const previous=records.get(filter._id);if(previous?.userId!==filter.userId||previous.state.lastCandle!==filter['state.lastCandle'])return{modifiedCount:0};records.set(filter._id,record);return{modifiedCount:1};

@@ -1,6 +1,7 @@
 import IORedis from "ioredis";
 import { ObjectId, type Db } from "mongodb";
 import { logger, errMeta } from "./logger";
+import { COLLECTIONS } from "../../../../shared/persistence/collections";
 
 const log = logger.child({ module: "redis" });
 
@@ -102,7 +103,7 @@ export async function getExchangeCached(
       await redis.del(key).catch(() => {});
     }
   }
-  const doc = await db.collection("Exchange").findOne(
+  const doc = await db.collection(COLLECTIONS.Exchange).findOne(
     { _id: new ObjectId(exchangeId) },
     { projection: { name: 1, urls: 1, userId: 1 } }
   );

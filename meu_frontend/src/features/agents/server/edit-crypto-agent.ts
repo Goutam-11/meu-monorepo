@@ -9,6 +9,7 @@ import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';
 import { projectCryptoPolicy } from './crypto-policy';
 import { executionConnection, registerExecutionAccount } from '@/features/exchange/server/execution-account';
 import { cryptoEntryMarket, fetchCryptoOpenOrders, normalizeCryptoPositions } from '../../../../../meu/schedulerService/src/brokers/crypto/cryptoRisk';
+import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
 export const editCryptoAgentSchema = configuredCryptoAgentSchema.safeExtend({
   id: z.string().regex(/^[a-f0-9]{24}$/i),
@@ -39,7 +40,7 @@ export async function editCryptoAgent(userId: string, input: z.infer<typeof edit
   try {
     const claim = async (id:string) => {
       attemptedLocks.push(id);
-      const result = await prisma.$runCommandRaw({insert:'ExecutionLocks',documents:[{_id:id,executionId,kind:'AGENT_EDIT',state:'PREPARING',createdAt:{$date:new Date().toISOString()}}]});
+      const result = await prisma.$runCommandRaw({insert:COLLECTIONS.ExecutionLocks,documents:[{_id:id,executionId,kind:'AGENT_EDIT',state:'PREPARING',createdAt:{$date:new Date().toISOString()}}]});
       if (result.ok !== 1 || result.n !== 1 || (Array.isArray(result.writeErrors) && result.writeErrors.length))
         throw new TRPCError({code:'CONFLICT',message:'An execution or retained lock is still using this agent or account. Wait for the run or reconcile it before editing.'});
       acquiredLocks.push(id);
@@ -52,7 +53,7 @@ export async function editCryptoAgent(userId: string, input: z.infer<typeof edit
       if(cursor.firstBatch.length)throw new TRPCError({code:'PRECONDITION_FAILED',message:'This agent has unfinished execution, active ownership or an uncertain submission. Inspect account reconciliation before changing settings.'});
     };
     await claim(`agent:${agent.id}`);
-    await requireNoRecords('AgentExecutions',{agentId:agent.id,state:{$ne:'COMPLETED'}});
+    await requireNoRecords(COLLECTIONS.AgentExecutions,{agentId:agent.id,state:{$ne:'COMPLETED'}});
     let contract = raw?.contract;
     if (changed && agent.executionMode === 'LIVE') {
       await claim(`exchange:${agent.exchangeId}`);
@@ -65,8 +66,8 @@ export async function editCryptoAgent(userId: string, input: z.infer<typeof edit
       if (normalizeCryptoPositions(exchange,positions).some(p=>p.symbol===market.symbol && Number(p.contracts)>0) || orders.some(o=>o.symbol===market.symbol))
         throw new TRPCError({code:'PRECONDITION_FAILED',message:'This ticker still has a position or pending order. Resolve its exposure on Delta before changing execution settings.'});
       for (const [collection,filter] of [
-        ['CryptoPositionOwners',{accountKey,userId,agentId:agent.id,state:{$ne:'FLAT'}}],
-        ['ManagedCryptoOrders',{accountKey,userId,agentId:agent.id,state:'SUBMITTING'}],
+        [COLLECTIONS.CryptoPositionOwners,{accountKey,userId,agentId:agent.id,state:{$ne:'FLAT'}}],
+        [COLLECTIONS.ManagedCryptoOrders,{accountKey,userId,agentId:agent.id,state:'SUBMITTING'}],
       ] as const) {
         await requireNoRecords(collection,filter);
       }
@@ -102,7 +103,7 @@ export async function editCryptoAgent(userId: string, input: z.infer<typeof edit
   } finally {
     if(attemptedLocks.length) {
       try {
-        const result=await prisma.$runCommandRaw({delete:'ExecutionLocks',deletes:attemptedLocks.map(id=>({q:{_id:id,executionId},limit:1}))});
+        const result=await prisma.$runCommandRaw({delete:COLLECTIONS.ExecutionLocks,deletes:attemptedLocks.map(id=>({q:{_id:id,executionId},limit:1}))});
         if(result.ok!==1 || typeof result.n!=='number' || result.n<acquiredLocks.length || (Array.isArray(result.writeErrors)&&result.writeErrors.length))throw new Error('Lock release failed');
       } catch {
         throw new TRPCError({code:'CONFLICT',message:saved?'Settings were saved, but the edit lock could not be released. Keep the agent paused and inspect account reconciliation.':'The edit did not finish and its lock could not be released. Reload and inspect account reconciliation.'});

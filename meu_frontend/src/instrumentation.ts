@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import { emitNotificationChange } from "@/features/notifications/server/events";
+import { COLLECTIONS } from "../../shared/persistence/collections";
 
 const state = globalThis as typeof globalThis & { notificationWatcherStarted?: boolean };
 async function startNotificationWatcher() {
@@ -18,7 +19,7 @@ async function startNotificationWatcher() {
   let attempt = 0;
   let retry: ReturnType<typeof setTimeout> | undefined;
   function watch() {
-    const stream = client.db().collection("Notification").watch([], { fullDocument: "updateLookup" });
+    const stream = client.db().collection(COLLECTIONS.Notification).watch([], { fullDocument: "updateLookup" });
     const reconnect = () => {
       if (retry) return;
       retry = setTimeout(() => { retry = undefined; watch(); }, Math.min(1000 * 2 ** attempt++, 30000));

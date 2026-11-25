@@ -5,6 +5,7 @@ import { MissedLiveCandlesError } from '../src/algorithms/crypto/cryptoStrategyC
 import { ObjectId, type Db } from "mongodb";
 import { OrderRejectedError, CryptoProtectionError, CryptoSettingsUncertainError, DeltaLeverageUncertainError, type ExecutionSafety } from "../src/execution/tradeGuard";
 import { buildRunMemory, memoryContext } from "../src/agents/llm/runMemory";
+import { COLLECTIONS } from "../../../shared/persistence/collections";
 
 let runLive: (params:Record<string,unknown>)=>Promise<string> = async()=>"ALGO ok";
 let runPaper: (params: Record<string, unknown>) => Promise<string> = async () => "PAPER ok";
@@ -61,9 +62,9 @@ function makeDb(options: { credentialOwner?: string; exchangeOwner?: string; age
   if(options.paper || options.liveAlgo)Object.assign(agent,{type:'CRYPTO',strategy:'ALGO_TRADING',executionMode:options.liveAlgo ? 'LIVE':'PAPER',market:{symbols:['BTCUSD'],agentCycles:60},capital:{allocated:1000,currency:'USD'},risk:{maxRiskPerTradePct:1,maxDailyLossPct:5,maxOpenPositions:1,maxTradesPerDay:10,maxPositionsOpenedPerDay:5},strategyConfig:{id:'ema',fastPeriod:2,slowPeriod:3,lookback:3,atrPeriod:2,stopAtr:2,rewardRisk:2,timeframe:'1h',contract:{symbol:'BTCUSD',settlement:'USD'},simulation:{initialCapital:1000,leverage:2,riskPerTradePct:1,maxDailyLossPct:5,maxMarginPct:10,feeBps:5,slippageBps:2,fundingRatePct8h:0,maxTradesPerDay:10,maxPositionsOpenedPerDay:5,direction:'both'}}});
   const records = new Map<string, Map<string, Record<string, unknown>>>();
   const runs: Record<string, unknown>[] = [];
-  records.set("AgentExecutions", new Map());
-  records.set("ExecutionLocks", new Map());
-  records.set("OrderIntents", new Map());
+  records.set(COLLECTIONS.AgentExecutions, new Map());
+  records.set(COLLECTIONS.ExecutionLocks, new Map());
+  records.set(COLLECTIONS.OrderIntents, new Map());
 
   const matches = (doc: Record<string, unknown> | undefined, filter: Record<string, unknown>) => {
     if (!doc) return false;
@@ -78,25 +79,25 @@ function makeDb(options: { credentialOwner?: string; exchangeOwner?: string; age
     const map = records.get(name) ?? new Map<string, Record<string, unknown>>();
     records.set(name, map);
     return {
-      findOne: async (filter: Record<string, unknown>) => name === "Agent"
+      findOne: async (filter: Record<string, unknown>) => name === COLLECTIONS.Agent
         ? (matches(agent, filter) ? agent : null)
-        : [...map.values()].find((doc) => matches(doc, filter)) ?? (name === "Credentials" && matches({ _id: credentialId, userId: options.credentialOwner ?? owner }, filter) ? { _id: credentialId, userId: options.credentialOwner ?? owner, type: "OPENAI", apiKey: "key" } : null)
-          ?? (name === "Exchange" && matches({ _id: exchangeId, userId: options.exchangeOwner ?? owner }, filter) ? { _id: exchangeId, userId: options.exchangeOwner ?? owner, name: options.paper || options.liveAlgo ? "DELTA" : "BINANCE", apiKey: "key", secret: "secret", sandbox: false } : null),
+        : [...map.values()].find((doc) => matches(doc, filter)) ?? (name === COLLECTIONS.Credentials && matches({ _id: credentialId, userId: options.credentialOwner ?? owner }, filter) ? { _id: credentialId, userId: options.credentialOwner ?? owner, type: "OPENAI", apiKey: "key" } : null)
+          ?? (name === COLLECTIONS.Exchange && matches({ _id: exchangeId, userId: options.exchangeOwner ?? owner }, filter) ? { _id: exchangeId, userId: options.exchangeOwner ?? owner, name: options.paper || options.liveAlgo ? "DELTA" : "BINANCE", apiKey: "key", secret: "secret", sandbox: false } : null),
       countDocuments: async (filter: Record<string, unknown>) => runs.filter(run => matches(run, filter)).length,
       find: (filter: Record<string, unknown>) => ({ toArray:async()=>[], sort: () => ({ limit: (count: number) => ({ toArray: async () => runs.filter(run => matches(run, filter)).sort((a, b) => Number(b.createdAt) - Number(a.createdAt)).slice(0, count) }) }) }),
       insertOne: async (doc: Record<string, unknown>) => {
         const key = String(doc._id);
         if (map.has(key)) throw Object.assign(new Error("duplicate"), { code: 11000 });
         map.set(key, doc);
-        if (name === "AgentRuns") runs.push(doc);
+        if (name === COLLECTIONS.AgentRuns) runs.push(doc);
         return { insertedId: doc._id };
       },
       updateOne: async (filter: Record<string, unknown>, update: { $set: Record<string, unknown> }) => {
-        const target = name === "Agent" ? agent : map.get(String(filter._id));
+        const target = name === COLLECTIONS.Agent ? agent : map.get(String(filter._id));
         if (!matches(target, filter)) return { modifiedCount: 0 };
         if (!target) return { modifiedCount: 0 };
         Object.assign(target, update.$set);
-        if (name === "AgentRuns") runs.push(target);
+        if (name === COLLECTIONS.AgentRuns) runs.push(target);
         return { modifiedCount: 1 };
       },
       deleteOne: async (filter: Record<string, unknown>) => {
@@ -109,13 +110,21 @@ function makeDb(options: { credentialOwner?: string; exchangeOwner?: string; age
     };
   };
   const db = { collection } as unknown as import("mongodb").Db;
-  return { db, agent, executions: collection("AgentExecutions")._map, locks: collection("ExecutionLocks")._map, intents: collection("OrderIntents")._map, runs };
+  return { db, agent, executions: collection(COLLECTIONS.AgentExecutions)._map, locks: collection(COLLECTIONS.ExecutionLocks)._map, intents: collection(COLLECTIONS.OrderIntents)._map, runs };
 }
 
 beforeEach(() => { preparationFailure=false; ownerActive = false; scheduled.length = 0; notices.length = 0; logEvents.length = 0; runAgent = async () => "ok"; runPaper=async()=>"PAPER ok";runLive=async()=>"ALGO ok"; });
 afterAll(() => mock.restore());
 
 describe("worker replay and durable claims", () => {
+  test("rejects an invalid queue payload before any database or lock access", async () => {
+    const state = makeDb();
+    const processor = (await import("../src/workers/worker")).createRunProcessor(state.db) as Processor;
+    await expect(processor({ id: "invalid-job", data: { agentId: "not-an-object-id", userId: owner, runAt } } as never)).rejects.toThrow();
+    expect(state.executions.size).toBe(0);
+    expect(state.locks.size).toBe(0);
+  });
+
   test("only five compatible memories reach the LLM and its decision and broker receipts are saved separately", async () => {
     const state = makeDb();
     const context = memoryContext(state.agent, { name: "BINANCE", sandbox: false });
@@ -344,7 +353,7 @@ describe("worker replay and durable claims", () => {
   test("a retained execution remains blocked even if its queue job appears active", async () => {
     const state = makeDb(); ownerActive = true; const holder = `exchange:${exchangeId}`;
     state.locks.set(holder, { _id: holder, executionId: 'review-job', createdAt: new Date() });
-    state.executions.set('review-job', { _id: 'review-job', state: 'REVIEW_REQUIRED' });
+    state.executions.set('review-job', { _id: 'review-job', state: 'REVIEW_REQUIRED', agentId: agentId.toHexString(), startedAt: new Date(0) });
     const processor = (await import("../src/workers/worker")).createRunProcessor(state.db) as Processor;
     await processor({ id:'blocked-job',data:{agentId:agentId.toHexString(),userId:owner,runAt} });
     expect(state.agent.status).toBe('RUNNING');expect(scheduled).toHaveLength(1);expect(state.locks.size).toBe(1);
@@ -413,7 +422,7 @@ test('a repeated LLM deadline notifies despite an inherited failure count, resch
 
 test('worker forwards the owned Bedrock endpoint and region to the agent and failure details',async()=>{
  const state=makeDb();const row={_id:credentialId,userId:owner,type:'AMAZON_BEDROCK',apiKey:'fixture',region:'us-east-1',bedrockEndpoint:'mantle'};
- (state.db.collection('Credentials') as any)._map.set(String(credentialId),row);
+ (state.db.collection(COLLECTIONS.Credentials) as any)._map.set(String(credentialId),row);
  state.agent.llmModel='openai.gpt-oss-20b';
  runAgent=async(params)=>{expect(params.providerId).toBe('bedrock');expect(params.providerRegion).toBe('us-east-1');expect(params.providerEndpoint).toBe('mantle');expect(params.model).toBe('openai.gpt-oss-20b');throw new DOMException('fixture','TimeoutError');};
  await ((await import('../src/workers/worker')).createRunProcessor(state.db) as Processor)({id:'mantle-forwarding',data:{agentId:agentId.toHexString(),userId:owner,runAt}});
@@ -498,7 +507,7 @@ test('LLM-swallowed protection failures preserve typed reason and account locks'
 
 test('database failure after a read-only timeout preserves recovery evidence independently in the queue',async()=>{
  const state=makeDb();const captured:Record<string,unknown>[]=[];
- const brokenDb={collection:(name:string)=>{const col=state.db.collection(name);return name==='AgentExecutions'?{...col,updateOne:async()=>{throw new Error('database unavailable');}}:col;}} as unknown as Db;
+ const brokenDb={collection:(name:string)=>{const col=state.db.collection(name);return name===COLLECTIONS.AgentExecutions?{...col,updateOne:async()=>{throw new Error('database unavailable');}}:col;}} as unknown as Db;
  runAgent=async()=>{throw Object.assign(new Error('provider timed out'),{name:'TimeoutError'});};
  const job={id:'orphan-readonly-timeout',data:{agentId:String(agentId),userId:owner,runAt},updateData:async(data:Record<string,unknown>)=>{captured.push(data);}};
  await expect(((await import('../src/workers/worker')).createRunProcessor(brokenDb) as Processor)(job)).rejects.toThrow('database unavailable');
