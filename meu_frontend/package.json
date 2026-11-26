@@ -8,7 +8,8 @@
     "start": "next start",
     "online": "ngrok http 3000 --url https://doomfully-gastric-nestor.ngrok-free.dev",
     "lint": "eslint",
-    "test": "for test_file in ./tests/*.test.ts; do bun test \"$test_file\" || exit $?; done"
+    "test": "for test_file in ./tests/*.test.ts; do bun test \"$test_file\" || exit $?; done",
+    "e2e:dashboard": "bun scripts/e2e/dashboard-first-paint.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.3",
