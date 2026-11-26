@@ -38,6 +38,27 @@ const TREND_SLOPE_BARS = 5;
 const MIN_TREND_SLOPE_ATR = 0.25;
 const MIN_REGIME_SEPARATION_ATR = 0.25;
 export type Signal = 'long' | 'short' | 'exit' | 'hold';
+export type StrategyDefinition = {
+    readonly adaptive: boolean;
+    readonly regime: boolean;
+    readonly emaEntry: 'crossover' | 'trend' | 'combined';
+};
+/** Explicit behaviours keyed by the saved configuration's legacy flags. */
+export const STRATEGY_DEFINITIONS = {
+    legacy: { adaptive: false, regime: false, emaEntry: 'combined' },
+    adaptiveV1: { adaptive: true, regime: false, emaEntry: 'combined' },
+    adaptiveV2Crossover: { adaptive: true, regime: true, emaEntry: 'crossover' },
+    adaptiveV2Trend: { adaptive: true, regime: true, emaEntry: 'trend' },
+    adaptiveV2Combined: { adaptive: true, regime: true, emaEntry: 'combined' },
+} as const satisfies Record<string, StrategyDefinition>;
+export function resolveStrategyDefinition(c: StrategyConfig): StrategyDefinition {
+    if (c.executionRules?.version === 2) {
+        if (c.executionRules.emaEntry === 'crossover') return STRATEGY_DEFINITIONS.adaptiveV2Crossover;
+        if (c.executionRules.emaEntry === 'trend') return STRATEGY_DEFINITIONS.adaptiveV2Trend;
+        return STRATEGY_DEFINITIONS.adaptiveV2Combined;
+    }
+    return c.executionRules?.version === 1 ? STRATEGY_DEFINITIONS.adaptiveV1 : STRATEGY_DEFINITIONS.legacy;
+}
 export const STRATEGY_VERSION = '1.1.0';
 export const strategyCatalog = [
     { id: 'ema', name: 'EMA crossover', description: 'Follow closed-candle fast/slow EMA crossovers. Can whipsaw in ranges.' },
@@ -73,8 +94,10 @@ export function prepareStrategy(bars: readonly Candle[], c: StrategyConfig, acti
     validateStrategy(c);
     const closes = bars.map(b => b.close), fast = ema(closes, c.fastPeriod), slow = ema(closes, c.slowPeriod);
     const signals: Signal[] = [], rawSignals: Signal[] = [], decisions: string[] = [], atr: (number | undefined)[] = [];
-    const adaptive = c.executionRules !== undefined;
-    const regimeRules = c.executionRules?.version === 2;
+    const definition = resolveStrategyDefinition(c);
+    const adaptive = definition.adaptive;
+    const regimeRules = definition.regime;
+    const emaEntry = definition.emaEntry;
     const entryProposals: (EntryProposal | undefined)[] = [], exitSignals: ('long' | 'short' | undefined)[] = [], means: (number | undefined)[] = [];
     let setup: { side: 'long' | 'short'; index: number; level: number; confirmations: number; touched: boolean; expiresTimestamp: number; source?: EntryProposal['source']; proposal?: EntryProposal } | undefined;
     let breakoutEpisode: { side: 'long' | 'short'; level: number } | undefined;
@@ -181,7 +204,7 @@ export function prepareStrategy(bars: readonly Candle[], c: StrategyConfig, acti
                     if (trendEpisode.weakBars >= 3) trendEpisode.confirmed = false;
                 }
                 const eligible = !!side && !regimeReason(side);
-                const mode = c.executionRules?.version === 2 ? c.executionRules.emaEntry : 'combined';
+                const mode = emaEntry;
                 entryRaw = mode === 'trend' ? 'hold' : crossoverSignal;
                 if (mode !== 'crossover' && side && eligible && !previouslyEligible && !trendEpisode?.confirmed) entryRaw = side;
                 previouslyEligible = eligible;
@@ -235,7 +258,7 @@ export function prepareStrategy(bars: readonly Candle[], c: StrategyConfig, acti
             if (!setup && b.timestamp >= activeAfter && (raw === 'long' || raw === 'short')) {
                 const interval = prev ? b.timestamp - prev.timestamp : 1;
                 const level = c.id === 'ema' ? slow[i]! : c.id === 'donchian' ? breakoutEpisode!.level : raw === 'long' ? bands[i]!.lower : bands[i]!.upper;
-                setup = { side: raw, index: i, level, confirmations: 0, touched: false, expiresTimestamp: b.timestamp + (timing.maxWaitBars + 1) * interval, ...(regimeRules ? {source:c.id === 'ema' ? (raw === crossoverSignal && c.executionRules?.version === 2 && c.executionRules.emaEntry !== 'trend' ? 'crossover' as const : 'trend' as const) : c.id === 'donchian' ? 'breakout' as const : 'range' as const} : {}) };
+                setup = { side: raw, index: i, level, confirmations: 0, touched: false, expiresTimestamp: b.timestamp + (timing.maxWaitBars + 1) * interval, ...(regimeRules ? {source:c.id === 'ema' ? (raw === crossoverSignal && regimeRules && emaEntry !== 'trend' ? 'crossover' as const : 'trend' as const) : c.id === 'donchian' ? 'breakout' as const : 'range' as const} : {}) };
                 decision = timing.mode === 'retest' ? 'Setup found; waiting for retest' : 'Setup found; waiting for confirmation';
             }
             if (setup && !setup.proposal) {
