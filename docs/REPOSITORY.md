@@ -26,6 +26,8 @@ The original workspace may supply optional `Makefile.local` paper-experiment com
 
 Credentials and populated environment files, generated Prisma clients, dependency/build caches, runtime state, design explorations, college documents and personal screenshots are excluded by `.gitignore`. Commit the `.env.example` templates, Prisma schema, runtime design assets and maintained design-system sources. Do not force-add excluded files.
 
+`report/` is a separate deliverable: the LaTeX sources, assets and the built PDF live outside version control, and the Tectonic cache (`report/build/`) and downloaded binary (`report/bin/`) are never committed. The whole directory is ignored so a ~98 MB build tree cannot enter history by accident.
+
 ## Migration from the separate repositories
 
 The new monorepo begins with a clean snapshot of the current application. The previous `Goutam-11/meu` and `Goutam-11/meu_frontend` repositories retain their existing remote histories; they are not deleted or overwritten. Their local Git metadata, bundles and tracked-change patches were backed up outside this repository under `~/.local/share/meu-git-backups/` before removing nested Git roots.

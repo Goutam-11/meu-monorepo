@@ -37,6 +37,9 @@
 !/docs/reports/SHA256SUMS
 /docs/*20??-??-??*.md
 
+# Minor-project report: separate deliverable, built outside Git
+/report/
+
 # College submissions and personal screenshots
 /docs/*.docx
 /docs/*.pptx
