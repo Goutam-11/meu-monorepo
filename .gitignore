@@ -17,6 +17,9 @@
 !**/.env.example
 **/*.pem
 **/*.key
+
+# Local harness scratch space (Chromium profiles, PR bodies, E2E artifacts)
+/.tmp/
 /.local/
 **/.cache/
 **/.impeccable/
