@@ -37,7 +37,11 @@ From the indicated directory:
 | meu_frontend | `bun run build --webpack` | Production server/browser bundle boundary, including cross-project imports. |
 | meu/schedulerService | `bun run test` and `bun run typecheck` | Offline execution, sizing, ownership, cursor and recovery behavior. |
 | meu/notificationService | `bun run test` and `bun run typecheck` | Consumer idempotency, push delivery and failure handling. |
+| meu_frontend | `bun run e2e:dashboard` | Browser E2E: cached snapshot first paint, failed refresh and hidden-tab polling (needs the app and a seeded local database). |
+| meu_frontend | `bun run screenshots` | Regenerate `docs/images/*.webp` from the running app. |
 | Root | `make check` and `make docs` | Compose validation and refreshed source/function reference. |
+
+GitHub Actions runs the three package suites, type checks and the frontend production build on every push to `main` and every pull request ([ci.yml](../.github/workflows/ci.yml)). The research reproduction suite and candle caches are local-only, so they stay out of CI; the browser checks need MongoDB and a running app, so they are run on demand.
 
 Tests use fake brokers and storage. Passing tests does not demonstrate profitability, provider permissions or private exchange integration. Do not run ad hoc live order scripts as a regression suite. Browser visual checks should be reported separately from source/build checks.
 

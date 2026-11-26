@@ -1,6 +1,6 @@
 # Meu documentation
 
-Source review: **11 October 2026**. This is the maintained entry point. Historical audit reports are evidence from their stated dates; they do not override the current implementation.
+Last reviewed: **26 November 2026** (source review: 11 October 2026). This is the maintained entry point. Historical audit reports are evidence from their stated dates; they do not override the current implementation.
 
 ## Start here
 
@@ -19,6 +19,7 @@ Source review: **11 October 2026**. This is the maintained entry point. Historic
 | Review trend, breakout and range research across the fixed ticker universe | [Multi-market algorithm research and qualification](MULTI_MARKET_RESEARCH.md) |
 | Understand the internal four-hour squeeze candidate and its measured limits | [Squeeze + directional efficiency specification](SQUEEZE_RESEARCH.md) |
 | Review the plan for simpler, capital-efficient automated trading | [Small-account trading audit and development plan](SMALL_ACCOUNT_TRADING_PLAN.md) |
+| Run browser checks or regenerate the README screenshots | [Browser E2E and screenshots](../meu_frontend/scripts/e2e/README.md) |
 
 ## Feature references
 
