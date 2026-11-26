@@ -38,27 +38,25 @@ const TREND_SLOPE_BARS = 5;
 const MIN_TREND_SLOPE_ATR = 0.25;
 const MIN_REGIME_SEPARATION_ATR = 0.25;
 export type Signal = 'long' | 'short' | 'exit' | 'hold';
-export type StrategyDefinition = {
+export type PreparedStrategy = {
+    signals: Signal[];
+    rawSignals: Signal[];
+    decisions: string[];
+    atr: (number | undefined)[];
+    entryProposals: (EntryProposal | undefined)[];
+    exitSignals: ('long' | 'short' | undefined)[];
+    means: (number | undefined)[];
+};
+export type StrategyRules = {
     readonly adaptive: boolean;
     readonly regime: boolean;
     readonly emaEntry: 'crossover' | 'trend' | 'combined';
 };
-/** Explicit behaviours keyed by the saved configuration's legacy flags. */
-export const STRATEGY_DEFINITIONS = {
-    legacy: { adaptive: false, regime: false, emaEntry: 'combined' },
-    adaptiveV1: { adaptive: true, regime: false, emaEntry: 'combined' },
-    adaptiveV2Crossover: { adaptive: true, regime: true, emaEntry: 'crossover' },
-    adaptiveV2Trend: { adaptive: true, regime: true, emaEntry: 'trend' },
-    adaptiveV2Combined: { adaptive: true, regime: true, emaEntry: 'combined' },
-} as const satisfies Record<string, StrategyDefinition>;
-export function resolveStrategyDefinition(c: StrategyConfig): StrategyDefinition {
-    if (c.executionRules?.version === 2) {
-        if (c.executionRules.emaEntry === 'crossover') return STRATEGY_DEFINITIONS.adaptiveV2Crossover;
-        if (c.executionRules.emaEntry === 'trend') return STRATEGY_DEFINITIONS.adaptiveV2Trend;
-        return STRATEGY_DEFINITIONS.adaptiveV2Combined;
-    }
-    return c.executionRules?.version === 1 ? STRATEGY_DEFINITIONS.adaptiveV1 : STRATEGY_DEFINITIONS.legacy;
-}
+export type StrategyDefinition = StrategyRules & {
+    readonly id: 'legacy' | 'adaptive-v1' | 'adaptive-v2-crossover' | 'adaptive-v2-trend' | 'adaptive-v2-combined';
+    readonly version: string;
+    prepare: (bars: readonly Candle[], c: StrategyConfig, activeAfter?: number) => PreparedStrategy;
+};
 export const STRATEGY_VERSION = '1.1.0';
 export const strategyCatalog = [
     { id: 'ema', name: 'EMA crossover', description: 'Follow closed-candle fast/slow EMA crossovers. Can whipsaw in ranges.' },
@@ -90,14 +88,13 @@ function ema(values: number[], period: number) {
     return out;
 }
 /** Each index uses only the prefix ending at that index; executable after its close. */
-export function prepareStrategy(bars: readonly Candle[], c: StrategyConfig, activeAfter = 0) {
+function prepareWithRules(bars: readonly Candle[], c: StrategyConfig, activeAfter: number, rules: StrategyRules): PreparedStrategy {
     validateStrategy(c);
     const closes = bars.map(b => b.close), fast = ema(closes, c.fastPeriod), slow = ema(closes, c.slowPeriod);
     const signals: Signal[] = [], rawSignals: Signal[] = [], decisions: string[] = [], atr: (number | undefined)[] = [];
-    const definition = resolveStrategyDefinition(c);
-    const adaptive = definition.adaptive;
-    const regimeRules = definition.regime;
-    const emaEntry = definition.emaEntry;
+    const adaptive = rules.adaptive;
+    const regimeRules = rules.regime;
+    const emaEntry = rules.emaEntry;
     const entryProposals: (EntryProposal | undefined)[] = [], exitSignals: ('long' | 'short' | undefined)[] = [], means: (number | undefined)[] = [];
     let setup: { side: 'long' | 'short'; index: number; level: number; confirmations: number; touched: boolean; expiresTimestamp: number; source?: EntryProposal['source']; proposal?: EntryProposal } | undefined;
     let breakoutEpisode: { side: 'long' | 'short'; level: number } | undefined;
@@ -329,6 +326,30 @@ export function prepareStrategy(bars: readonly Candle[], c: StrategyConfig, acti
         decisions.push(decision);
     }
     return { signals, rawSignals, decisions, atr, entryProposals, exitSignals, means };
+}
+const definition = (id: StrategyDefinition['id'], version: string, rules: StrategyRules): StrategyDefinition => ({
+    id, version, ...rules,
+    prepare: (bars, c, activeAfter = 0) => prepareWithRules(bars, c, activeAfter, rules),
+});
+/** Explicit rulesets keyed by the saved configuration's legacy flags. */
+export const STRATEGY_DEFINITIONS = {
+    legacy: definition('legacy', '1.0.0', { adaptive: false, regime: false, emaEntry: 'combined' }),
+    adaptiveV1: definition('adaptive-v1', '1.1.0', { adaptive: true, regime: false, emaEntry: 'combined' }),
+    adaptiveV2Crossover: definition('adaptive-v2-crossover', '2.0.0', { adaptive: true, regime: true, emaEntry: 'crossover' }),
+    adaptiveV2Trend: definition('adaptive-v2-trend', '2.0.0', { adaptive: true, regime: true, emaEntry: 'trend' }),
+    adaptiveV2Combined: definition('adaptive-v2-combined', '2.0.0', { adaptive: true, regime: true, emaEntry: 'combined' }),
+} as const satisfies Record<string, StrategyDefinition>;
+export function resolveStrategyDefinition(c: StrategyConfig): StrategyDefinition {
+    if (c.executionRules?.version === 2) {
+        if (c.executionRules.emaEntry === 'crossover') return STRATEGY_DEFINITIONS.adaptiveV2Crossover;
+        if (c.executionRules.emaEntry === 'trend') return STRATEGY_DEFINITIONS.adaptiveV2Trend;
+        return STRATEGY_DEFINITIONS.adaptiveV2Combined;
+    }
+    return c.executionRules?.version === 1 ? STRATEGY_DEFINITIONS.adaptiveV1 : STRATEGY_DEFINITIONS.legacy;
+}
+/** Shared entry point for paper/live consumers; resolves one definition, then prepares. */
+export function prepareStrategy(bars: readonly Candle[], c: StrategyConfig, activeAfter = 0) {
+    return resolveStrategyDefinition(c).prepare(bars, c, activeAfter);
 }
 /** Shared entry point for paper/live consumers; does not access a broker. */
 export function evaluateStrategy(bars: readonly Candle[], config: StrategyConfig, activeAfter = 0) {
