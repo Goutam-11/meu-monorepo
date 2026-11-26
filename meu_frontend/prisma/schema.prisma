@@ -128,6 +128,8 @@ model Agent{
   risk RiskLimits
   capital Capital
   strategyConfig Json?
+  contractDrift Json?
+  contractRefreshAt DateTime?
   strategy AgentStrategy @default(LLM_TRADING)
  type AgentType @default(CRYPTO)
  lastRun DateTime?
