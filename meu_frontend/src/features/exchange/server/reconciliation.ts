@@ -5,6 +5,7 @@ import type { Prisma } from '@/generated/prisma/client';
 import { executionConnection, registerExecutionAccount, linkedExchangeIds } from './execution-account';
 import { inspectDeltaOwnership, type ReconciliationOwner, type ReconciliationOrder } from '../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation';
 import { COLLECTIONS } from "../../../../../shared/persistence/collections";
+import { executionRowSchema, intentRowSchema, lockRowSchema, type LockRow } from './records';
 
 const active = new Set<string>();
 export async function readRows<T>(command: Prisma.InputJsonObject, maximum: number): Promise<T[]> {
@@ -14,6 +15,9 @@ export async function readRows<T>(command: Prisma.InputJsonObject, maximum: numb
   if (result.ok !== 1 || !Array.isArray(cursor?.firstBatch) || cursorId !== '0' || cursor.firstBatch.length > maximum)
     throw new Error('Incomplete reconciliation records');
   return cursor.firstBatch;
+}
+export async function readRowsParsed<T>(command: Prisma.InputJsonObject, maximum: number, schema: { parse(value: unknown): T }): Promise<T[]> {
+  return (await readRows<unknown>(command, maximum)).map(row => schema.parse(row));
 }
 export async function reconciliationReport(exchangeId: string, userId: string) {
   let claimedAccount: string | undefined;
@@ -28,10 +32,9 @@ export async function reconciliationReport(exchangeId: string, userId: string) {
     if (agents.length > 100) throw new TRPCError({code:'PRECONDITION_FAILED',message:'Too many linked agents to scan safely.'});
     if (agents.some(a => a.status === 'RUNNING' && a.executionMode !== 'PAPER'))
       throw new TRPCError({code:'PRECONDITION_FAILED',message:'Pause all live agents on this broker account before scanning.'});
-    type Lock = {_id:string;executionId:string;kind?:string;state?:string;createdAt?:{$date:string}};
     const lockFilter = {_id:{$in:[`account:${accountKey}`,...connectionIds.map(id=>`exchange:${id}`),...agents.flatMap(a=>[`agent:${a.id}`,`recovery:${a.id}`])]}};
     async function locks() {
-      return readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:lockFilter},400);
+      return readRowsParsed({find:COLLECTIONS.ExecutionLocks,filter:lockFilter},400,lockRowSchema);
     }
     const before = await locks();
     const owners = await readRows<ReconciliationOwner>({find:COLLECTIONS.CryptoPositionOwners,filter:{accountKey,userId,state:{$ne:'FLAT'}}},100);
@@ -40,15 +43,13 @@ export async function reconciliationReport(exchangeId: string, userId: string) {
     await exchange.loadMarkets();
     const broker = await inspectDeltaOwnership(exchange,owners,orders);
     const executionIds = [...new Set(before.map(lock=>lock.executionId))];
-    type Execution={_id:string;state:string;agentId:string};
-    type Intent={_id:string;executionId:string;state:string;intent?:{symbol?:string}};
     const [executions,intents] = await Promise.all([
-      readRows<Execution>({find:COLLECTIONS.AgentExecutions,filter:{_id:{$in:executionIds}},projection:{_id:1,state:1,agentId:1}},300),
-      readRows<Intent>({find:COLLECTIONS.OrderIntents,filter:{executionId:{$in:executionIds},state:'PENDING'},projection:{_id:1,executionId:1,state:1,'intent.symbol':1}},500),
+      readRowsParsed({find:COLLECTIONS.AgentExecutions,filter:{_id:{$in:executionIds}},projection:{_id:1,state:1,agentId:1}},300,executionRowSchema),
+      readRowsParsed({find:COLLECTIONS.OrderIntents,filter:{executionId:{$in:executionIds},state:'PENDING'},projection:{_id:1,executionId:1,state:1,'intent.symbol':1}},500,intentRowSchema),
     ]);
     const after = await locks();
     const running = await prisma.agent.count({where:{userId,exchangeId:{in:connectionIds},status:'RUNNING',OR:[{executionMode:null},{executionMode:{isSet:false}},{executionMode:{not:'PAPER'}}]}});
-    const fingerprint=(rows:Lock[])=>JSON.stringify(rows.map(l=>[l._id,l.executionId,l.state,l.kind]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))));
+    const fingerprint=(rows:LockRow[])=>JSON.stringify(rows.map(l=>[l._id,l.executionId,l.state,l.kind]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))));
     const changed = running>0 || fingerprint(before)!==fingerprint(after);
     const label=(id:string)=>agents.find(a=>a.id===id)?.name ?? 'Deleted or unavailable agent';
     return {
