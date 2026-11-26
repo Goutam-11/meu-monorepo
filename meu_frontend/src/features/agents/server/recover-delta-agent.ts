@@ -5,6 +5,8 @@ import type { Agent, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/db';
 import { appLog } from '@/lib/logging/app-logger';
 import { readRows } from '@/features/exchange/server/reconciliation';
+import { readRowsParsed } from '@/features/exchange/server/read-rows';
+import { executionRowSchema, lockRowSchema } from '@/features/exchange/server/records';
 import { executionConnection, registerExecutionAccount, linkedExchangeIds } from '@/features/exchange/server/execution-account';
 import { loadDeltaBacktestData } from '@/features/backtests/server/delta-data';
 import { strategyStateKey } from '../../../../../shared/trading/strategies';
@@ -12,8 +14,6 @@ import { intervals, validateCryptoStrategy } from '../../../../../meu/schedulerS
 import { inspectDeltaOwnership } from '../../../../../meu/schedulerService/src/brokers/delta/deltaReconciliation';
 import { COLLECTIONS } from "../../../../../shared/persistence/collections";
 
-type Lock = { _id: string; executionId: string; kind?: string };
-type Execution = { _id: string; agentId: string; state: string; reviewReason?: string; failure?: {stage?:string;brokerOperationRequested?:boolean;errorType?:string}; startedAt: {$date:string}; finishedAt?: {$date:string}; recovery?: { outcome?: string; fromCandle?: number } };
 type State = { _id: string; userId: string; lastCandle: number; activeAfter?: number; entryOrderId?: string; side?: string; filled?: number };
 const missedMessage = 'Missed live strategy candles; review required rather than trading stale signals';
 const fail = (message: string): never => { throw new TRPCError({code:'PRECONDITION_FAILED',message}); };
@@ -29,12 +29,12 @@ export async function recoverDeltaAgent(agent: Agent, userId: string, requestId?
   let recoveryLock = '', recoveryId = '';
   let acquired = false;
   try {
-    const [held] = await readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:{_id:`exchange:${agent.exchangeId}`}},1);
+    const [held] = await readRowsParsed({find:COLLECTIONS.ExecutionLocks,filter:{_id:`exchange:${agent.exchangeId}`}},1, lockRowSchema);
     if (!held || held.kind) fail('The exchange is busy or requires manual reconciliation; this is not a missed-candle worker lock.');
     recoveryLock = `recovery:${agent.id}`; recoveryId = `recover:${randomUUID()}`;
     written(await prisma.$runCommandRaw({insert:COLLECTIONS.ExecutionLocks,documents:[{_id:recoveryLock,executionId:recoveryId,kind:'MISSED_CANDLE_RECOVERY',createdAt:{$date:new Date().toISOString()}}]}),1);
     acquired = true;
-    const [execution] = await readRows<Execution>({find:COLLECTIONS.AgentExecutions,filter:{_id:held.executionId,agentId:agent.id}},1);
+    const [execution] = await readRowsParsed({find:COLLECTIONS.AgentExecutions,filter:{_id:held.executionId,agentId:agent.id}},1, executionRowSchema);
     const previouslyRecovered = execution?.state === 'COMPLETED' && execution.recovery?.outcome === 'SKIPPED_STALE_SIGNALS';
     if (!execution || (execution.state !== 'REVIEW_REQUIRED' && !previouslyRecovered)) fail('The execution is still active or its failure cannot be recovered automatically.');
     let resumeHistoryFailure = false;
@@ -63,7 +63,7 @@ export async function recoverDeltaAgent(agent: Agent, userId: string, requestId?
     if (previouslyRecovered) {
       // Finish an interrupted release only after restoring exclusive ownership.
       for (const scope of scopes) {
-        const [lock] = await readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:{_id:scope}},1);
+        const [lock] = await readRowsParsed({find:COLLECTIONS.ExecutionLocks,filter:{_id:scope}},1, lockRowSchema);
         if (!lock) written(await prisma.$runCommandRaw({insert:COLLECTIONS.ExecutionLocks,documents:[{_id:scope,executionId:held.executionId,createdAt:{$date:new Date().toISOString()}}]}),1);
       }
     }
@@ -75,13 +75,13 @@ export async function recoverDeltaAgent(agent: Agent, userId: string, requestId?
         const waiters=await readRows({find:COLLECTIONS.Agent,filter:{_id:{$in:running.map(a=>({$oid:a.id}))},userId,status:'RUNNING',executionWaitingOn:held.executionId},projection:{_id:1}},100);
         if(waiters.length!==running.length)fail('Pause live agents that are not waiting on this failed execution before recovering missed candles.');
       }
-      const locks = await readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:{_id:{$in:accountScopes}}},300);
+      const locks = await readRowsParsed({find:COLLECTIONS.ExecutionLocks,filter:{_id:{$in:accountScopes}}},300, lockRowSchema);
       if (locks.some(l=>l.executionId!==held.executionId || !scopes.includes(l._id) || l.kind) || locks.length!==3)
         fail('Other account operations or changed execution locks require reconciliation.');
       // Require zero broker operations, including confirmed/refused operations, for this run.
       if ((await readRows({find:COLLECTIONS.OrderIntents,filter:{executionId:held.executionId}},1)).length)
         fail('This execution attempted a broker operation. Reconcile its orders before resuming.');
-      const incomplete = await readRows<Execution>({find:COLLECTIONS.AgentExecutions,filter:{agentId:{$in:peers.map(a=>a.id)},state:{$ne:'COMPLETED'},_id:{$ne:held.executionId}}},100);
+      const incomplete = await readRowsParsed({find:COLLECTIONS.AgentExecutions,filter:{agentId:{$in:peers.map(a=>a.id)},state:{$ne:'COMPLETED'},_id:{$ne:held.executionId}}},100, executionRowSchema);
       if (incomplete.length) fail('Another execution on this account needs review before recovery.');
       const owners = await readRows({find:COLLECTIONS.CryptoPositionOwners,filter:{accountKey,userId,state:{$ne:'FLAT'}}},100);
       const submitting = await readRows({find:COLLECTIONS.ManagedCryptoOrders,filter:{accountKey,userId,state:'SUBMITTING'}},500);
@@ -111,7 +111,7 @@ export async function recoverDeltaAgent(agent: Agent, userId: string, requestId?
     written(await prisma.$runCommandRaw({update:COLLECTIONS.AgentExecutions,updates:[{q:{_id:held.executionId,agentId:agent.id,state:execution.state},u:{$set:{state:'COMPLETED',reviewReason:execution.reviewReason ?? 'MISSED_LIVE_CANDLES',originalState:'REVIEW_REQUIRED',recovery}}}]}),1);
     // Release the exchange lock last so an interrupted release can retry through Resume.
     // Never delete unrelated or replacement locks.
-    const remaining = await readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:{_id:{$in:scopes},executionId:held.executionId}},3);
+    const remaining = await readRowsParsed({find:COLLECTIONS.ExecutionLocks,filter:{_id:{$in:scopes},executionId:held.executionId}},3, lockRowSchema);
     written(await prisma.$runCommandRaw({delete:COLLECTIONS.ExecutionLocks,ordered:true,deletes:[scopes[0]!,scopes[2]!,scopes[1]!].filter(id=>remaining.some(l=>l._id===id)).map(id=>({q:{_id:id,executionId:held.executionId},limit:1}))}),remaining.length);
     appLog('info','agent.recovery.completed',{requestId,operation:'trpc.agents.statusChange'});
   } catch (error) {
@@ -135,10 +135,10 @@ export async function recoverPaperDataAgent(agent: Agent, userId: string, reques
   try {
     written(await prisma.$runCommandRaw({insert:COLLECTIONS.ExecutionLocks,documents:[{_id:recoveryLock,executionId:recoveryId,kind:'PAPER_DATA_RECOVERY',createdAt:{$date:new Date().toISOString()}}]}),1);
     acquired=true;
-    const [held]=await readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:{_id:scope}},1);
+    const [held]=await readRowsParsed({find:COLLECTIONS.ExecutionLocks,filter:{_id:scope}},1, lockRowSchema);
     if(!held)return;
     if(held.kind)fail('A paper operation or recovery lock needs review before resuming.');
-    const [execution]=await readRows<Execution>({find:COLLECTIONS.AgentExecutions,filter:{_id:held.executionId,agentId:agent.id}},1);
+    const [execution]=await readRowsParsed({find:COLLECTIONS.AgentExecutions,filter:{_id:held.executionId,agentId:agent.id}},1, executionRowSchema);
     const previouslyRecovered=execution?.state==='COMPLETED' && execution.recovery?.outcome==='PAPER_DATA_FETCH_RETRY';
     if(!execution || (execution.state!=='REVIEW_REQUIRED' && !previouslyRecovered))fail('The paper execution is active or needs reconciliation.');
     const transientCodes=['DELTA_DATA_TIMEOUT','DELTA_DATA_NETWORK','DELTA_DATA_RATE_LIMIT','DELTA_DATA_UPSTREAM'];
@@ -148,7 +148,7 @@ export async function recoverPaperDataAgent(agent: Agent, userId: string, reques
       const notice=await prisma.notification.findFirst({where:{userId,agentId:agent.id,exchangeId:agent.exchangeId,code:'AGENT_REVIEW_REQUIRED',message:'Delta public data request failed or timed out.',createdAt:{gte:new Date(from!),lte:new Date(new Date(to!).getTime()+60_000)}},select:{id:true}});
       if(!notice)fail('Only a verified pre-save temporary market-data failure can recover automatically.');
     }
-    const ownLocks=await readRows<Lock>({find:COLLECTIONS.ExecutionLocks,filter:{executionId:held.executionId}},3);
+    const ownLocks=await readRowsParsed({find:COLLECTIONS.ExecutionLocks,filter:{executionId:held.executionId}},3, lockRowSchema);
     if(ownLocks.length!==1 || ownLocks[0]?._id!==scope || (await readRows({find:COLLECTIONS.OrderIntents,filter:{executionId:held.executionId}},1)).length)
       fail('This paper run has unexpected locks or broker operations; review required.');
     if(!await prisma.agent.findFirst({where:{id:agent.id,userId,status:'PAUSED',updatedAt:agent.updatedAt},select:{id:true}}))fail('Agent settings changed; reload before resuming.');

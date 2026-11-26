@@ -63,6 +63,8 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
   const algorithmNames: Record<string, string> = { ema: 'EMA crossover', donchian: 'Donchian breakout', meanReversion: 'Bollinger + RSI' };
   const displaySetting = (value: unknown) => typeof value === 'number' && Number.isFinite(value) || typeof value === 'string' ? String(value) : 'Unavailable';
   const savedLeverage = simulation?.leverageMode==='AUTO' ? `Auto ≤ ${displaySetting(simulation?.leverage)}` : displaySetting(simulation?.leverage);
+  const contractDrift = agent.contractDrift as { fields?: string[]; detectedAt?: string } | null;
+  const contractRefreshAt = agent.contractRefreshAt ? new Date(agent.contractRefreshAt) : null;
   const statusChange = useStatusChangeAgent();
   const handleStatusChange = () => {
     statusChange.mutate({
@@ -129,6 +131,26 @@ export default function AgentDetailView({ agentId }: { agentId: string }) {
         </Button>
         </div>
       </motion.header>
+
+      {contractDrift ? (
+        <div role="alert" className="rounded-2xl border border-destructive/40 bg-destructive/10 p-5">
+          <div className="flex items-start gap-3">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-destructive" />
+            <div className="space-y-2">
+              <h2 className="text-sm font-medium">Agent parked — venue contract changed</h2>
+              <p className="text-sm text-muted-foreground">
+                Saved contract terms no longer match the venue
+                {contractDrift.fields?.length ? `: ${contractDrift.fields.join(", ")}` : "."} The agent stays paused for manual review.
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {contractDrift.detectedAt ? `Detected ${format(new Date(contractDrift.detectedAt), "MMM d, yyyy HH:mm")}. ` : ""}
+                {contractRefreshAt ? `Next automatic check: ${format(contractRefreshAt, "MMM d, yyyy HH:mm")}. ` : ""}
+                Compare the saved contract with the venue product before resuming.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {agent.executionMode ? <div className="space-y-3"><p className="text-sm font-semibold">{agent.executionMode === "PAPER" ? "Paper algorithm · simulated funds only" : "Live algorithm · real Delta orders"}</p><p className="text-sm text-muted-foreground">Pause the agent to edit algorithm and risk settings. Execution changes start a new state revision; live changes require a flat ticker and no pending orders. <Link href={`/agents/${agentId}/edit`} className="underline underline-offset-4">Edit settings</Link> · <Link href="/help#paper-live" className="underline underline-offset-4">Paper, live and pausing guide</Link></p>{agent.executionMode === "PAPER" ? <PaperPortfolio agentId={agentId}/> : <p className="text-xs text-muted-foreground">Native exchange brackets remain active while paused. Pausing the agent does not close live positions or cancel pending orders. Live sizing separately caps loss at the native stop, margin usage and leveraged exposure. Buffered costs and Delta margin-tier limits can reduce sizes compared with the backtest.</p>}</div> : null}
       {agent.executionMode && <Card>
