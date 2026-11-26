@@ -15,6 +15,8 @@ The application has three process packages and a shared trading library. Each pa
 | `docs/` | Maintained architecture, capability and maintenance documentation. |
 | `scripts/` | Repository tooling and internal analysis commands; research artifacts stay local and ignored. |
 
+`meu_frontend/scripts/e2e/` holds the DevTools-protocol browser harness for the dashboard first-paint check and the script that regenerates the README screenshots. It is tooling, not application code, and it is not imported by the app.
+
 The Next.js route tree, service startup paths and container configuration remain stable. Database collections, API routes, queue names and trading policies are unaffected by folder changes.
 
 ## Frontend
